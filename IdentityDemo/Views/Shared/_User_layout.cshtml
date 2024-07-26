@@ -1,0 +1,101 @@
+﻿@{
+    string title = ViewBag.Title as string;
+    TempData.Keep("title");
+    string foodLinkClass = title == "foods" ? "nav-link text-dark" : "nav-link text-dark";
+    string foodLinkStyle = title == "foods" ? "color:red;" : "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Near Foods</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/download_css/5_2_3_bootstrap.min.css" rel="stylesheets" />
+    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+
+    <style>
+        .navbar-nav {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+        .nav-link2:hover{
+            background-color:black;
+            color:white;
+            font-weight:850;   
+            border-radius:15px;
+        }
+
+        .nav-link2 {
+            color:#000; /* Link color */
+            text-decoration: none; /* Remove underline from links */
+            padding: 10px 15px; /* Padding around each item */
+            font-size: 16px; /* Font size */
+            font-weight: bold; /* Make text bold */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+            border-radius:15px;
+        }
+
+        .nav-link2.active {
+            color: red; /* Example color for active link */
+            font-weight: bold; /* Example font weight for active link */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-white mb-3 shadow" style="position:sticky;border-radius:0px;margin-top:0px;">
+            <div class="container">
+                <img src="~/img/hywm_img/items/logo1.png" style="height:60px;position:sticky"/>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-around" id="navbarNavi">
+                    <ul class="navbar-nav">
+                        <li class="nav-item" style="padding-left:0px">
+                            <a class="nav-link2 @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "landing_page2".ToLower() ? "active" : "")" asp-controller="Hywm" asp-action="Landing_page2">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link2 @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "restaurant".ToLower() ? "active" : "")" asp-controller="Shop" asp-action="Restaurant">Restaurants</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link2 @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "foods".ToLower() ? "active" : "")" asp-controller="Hywm" asp-action="Foods">Foods</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link2 @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "about".ToLower() ? "active" : "")" asp-controller="Home" asp-action="About">About us</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link2 @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "user_profile".ToLower() ? "active" : "")" asp-controller="Hywm" asp-action="User_profile">Profile</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link2 @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "login".ToLower() ? "active" : "")" asp-controller="Account" asp-action="Login">Log In</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @RenderBody()
+
+    
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

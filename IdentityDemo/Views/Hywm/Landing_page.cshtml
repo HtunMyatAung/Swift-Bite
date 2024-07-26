@@ -1,0 +1,425 @@
+﻿@model IdentityDemo.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="~/css/download_css/4_5_3_bootstrap.min.css" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
+    
+    <!--custom CSS -->
+    <link rel="stylesheet" href="~/css/hywm_css/Landing_page.css" />
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    <script src="~/js/download_js/2_5_4_popper.min.js"></script>
+    <script src="~/js/download_js/4_5_3_bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="vertical-text-container">
+                <h2 class="vertical-text">Near Foods</h2>
+            </div>
+            <ul class="food-items-logo">
+                <li class="item-breakfast">Breakfast<img src="~/img/hywm_img/items/breakfast.png" alt="Breakfast"></li>
+                <li class="item-lunch">Lunch<img src="~/img/hywm_img/items/lunch.png" alt="Lunch"></li>
+                <li class="item-fries">Fries<img src="~/img/hywm_img/items/fries.png" alt="Fries"></li>
+                <li class="item-traditional-food">Traditional Food<img src="~/img/hywm_img/items/food2.png" alt="Traditional Food"></li>
+            </ul>
+        </div>
+
+        <div class="right-section" id="home">
+            <div class="nav-buttons">
+                <img src="~/img/hywm_img/items/logo1.png" alt="Logo" style="width:60px;height:60px;">
+                <button id="home-button" onclick="scrollToSection('home', this)">Home</button>
+                <button id="restaurants-button" onclick="scrollToSection('restaurants', this)">Restaurants</button>
+                <button id="food-button" onclick="scrollToSection('food', this)">Food</button>
+                <button id="about-button" onclick="scrollToSection('about', this)">About Us</button>
+                <button id="login-button" onclick="location.href='@Url.Action("Login","Account")'" style="background-color:dimgray;border-radius:15px;">Log In</button>
+            </div>
+
+            <div  class="description">
+                <h1>Best Food For You</h1>
+                <p>Feel the taste of most popular foods from anywhere and anytime. Experience the culinary delights that transcend borders, bringing you a taste of global cuisine at your convenience.</p>
+            </div>
+            <div class="buttons">
+                <button class="signup-button" onclick="location.href='@Url.Action("Register","Account")'">Sign Up</button>
+
+                <button class="order-button"><i class="fa-solid fa-play"></i> How to Order</button>
+            </div>
+
+            <div>
+                <h1>5K+</h1>Happy customer
+                <p>This is the best foods website that ever exist</p>
+            </div> 
+        </div>
+    </div>
+
+    <div id="restaurants" class="restaurants_slider">
+        <p ><h3>Trending Restaurants in NearFoods</h3></p>
+        <div class="slider" onwheel="handleWheel(event)" ontouchstart="handleTouchStart(event)" ontouchmove="handleTouchMove(event)">
+            <div class="slide-container">
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 1.png" alt="Image 1">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 2.png" alt="Image 2">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 3.png" alt="Image 3">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 4.png" alt="Image 4">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 1.png" alt="Image 5">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 2.png" alt="Image 6">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 3.png" alt="Image 7">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 4.png" alt="Image 8">
+                </div>
+                <div class="slide">
+                    <img src="~/img/hywm_img/shops/Restaurants logo 1.png" alt="Image 9">
+                </div>
+                <!-- Add more slide divs as needed -->
+            </div>
+        </div>
+    </div>
+
+    <div id="food" class="food_list">
+        <p><h3>Various Foods in NearFoods</h3></p>
+        <div class="food_items">
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food1.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food2.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 2</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food3.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food4.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 4</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food5.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food1.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food2.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 2</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food3.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food4.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 4</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food5.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food1.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food2.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 2</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food3.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food4.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 4</span>
+                    </div>
+                </div>
+            </div>
+            <div class="food_item">
+                <div class="food_overlay">
+                    <img class="small_image" src="~/img/hywm_img/items/food5.png" alt="Small Background">
+                    <div class="text_bg_container">
+                        <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
+                        <span class="food_name">Food Item 5</span>
+                    </div>
+                </div>
+            </div>
+            <!-- -->
+        </div>
+    </div>
+    
+    <!--footer-->
+    <footer class="footer">
+        <div class="footer-column">
+            <img src="~/img/hywm_img/items/logo1.png" alt="Near Food Logo">
+            <h3>Near Foods</h3>
+        </div>
+        <div class="footer-column">
+            <h3>Follow Us</h3>
+            <div class="footer-icons">
+                <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f">a</i></a>
+                <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram">a</i></a>
+                <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter">a</i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Get Help</h3>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">How to Order</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Terms</h3>
+            <ul>
+                <li><a href="#">Terms and Conditions</a></li>
+                <li><a href="#">Be Our Partner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+
+    <script>
+        let touchStartX = 0;
+        let touchMoveX = 0;
+
+        function handleWheel(event) {
+            event.preventDefault();
+            const delta = Math.sign(event.deltaY);
+            const slider = document.querySelector('.slider');
+            slider.scrollLeft += delta * 50; // Adjust scrolling speed
+        }
+
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX; // Capture starting X position
+        }
+
+        function handleTouchMove(event) {
+            touchMoveX = event.touches[0].clientX; // Capture current X position
+            const slider = document.querySelector('.slider');
+            slider.scrollLeft -= (touchMoveX - touchStartX); // Scroll based on horizontal swipe
+            touchStartX = touchMoveX; // Update starting X position
+        }
+
+        // Add event listeners for wheel and touch events
+        document.addEventListener('wheel', handleWheel);
+        const slider = document.querySelector('.slider');
+        slider.addEventListener('touchstart', handleTouchStart);
+        slider.addEventListener('touchmove', handleTouchMove);
+    </script>
+
+
+    <script>//nav button action color funciton
+        // Function to adjust navigation bar width and stickiness
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.scrollY;
+            var rightSection = document.getElementById('home');
+            var navButtons = document.querySelector('.nav-buttons');
+
+            if (scrollPosition > rightSection.offsetTop) {
+                navButtons.classList.add('wide'); // Add wide class to make nav-buttons wider
+                navButtons.classList.add('sticky'); // Add sticky class to make nav-buttons stick to top
+            } else {
+                navButtons.classList.remove('wide');
+                navButtons.classList.remove('sticky');
+            }
+        });
+
+        function scrollToSection(sectionId, button) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+            setActiveButton(button);
+        }
+
+        function setActiveButton(button) {
+            const buttons = document.querySelectorAll('.nav-buttons button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+    </script>
+
+    <!-- JavaScript to initialize modals -->
+    <script>
+        var signupModal = new bootstrap.Modal(document.getElementById('signupForm'));
+        var loginModal = new bootstrap.Modal(document.getElementById('loginForm'));
+        var otpModal = new bootstrap.Modal(document.getElementById('otpForm'));
+
+        function showOtpForm(){
+            loginModal.hide();
+            signupModal.hide();
+            otpModal.show();
+        }
+        function showSignUpForm() {
+            otpModal.hide();
+            loginModal.hide();  // Hide login form if open
+            signupModal.show(); // Show sign-up form
+        }
+
+        function showLogInForm() {
+            otpModal.hide();
+            signupModal.hide(); // Hide sign-up form if open
+            loginModal.show();  // Show login form
+        }
+
+        document.addEventListener('click', function (event) {
+            if (event.target === document.getElementById('signupForm')) {
+                signupModal.hide();
+            }
+            if (event.target === document.getElementById('loginForm')) {
+                loginModal.hide();
+            }
+        });
+    </script>
+    <script>
+        //change image size when scroll
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.scrollY;
+            var rightSection = document.getElementById('home'); // Adjust according to your section ID
+            var image = rightSection.querySelector('img'); // Assuming there's only one image to resize
+
+            if (scrollPosition > 100) { // Adjust the scroll position threshold as needed
+                image.style.width = '50px'; // Example size change
+                image.style.height = '50px'; // Example size change
+            } else {
+                image.style.width = '60px'; // Reset to original size
+                image.style.height = '60px'; // Reset to original size
+            }
+        });
+    </script>
+    <script>//otp for action
+        function moveFocus(currentIndex) {
+            const otpInput = document.getElementById('otp' + currentIndex);
+            if (otpInput.value.length === 1 && currentIndex < 6) {
+                document.getElementById('otp' + (currentIndex + 1)).focus();
+            }
+            // Optionally, handle backspace to move focus to the previous input
+            otpInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Backspace' && currentIndex > 1 && otpInput.value.length === 0) {
+                    document.getElementById('otp' + (currentIndex - 1)).focus();
+                }
+            });
+        }
+        document.getElementById('otp-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            let enteredOTP = "";
+            let allInputsFilled = true;
+
+            for (let i = 1; i <= 6; i++) {
+                const otpInput = document.getElementById('otp' + i);
+                if (otpInput.value.trim() === '') {
+                    allInputsFilled = false;
+                    otpInput.focus();
+                    break;
+                }
+                enteredOTP += otpInput.value;
+            }
+
+            if (!allInputsFilled) {
+                document.getElementById('error-message').textContent = "Please enter the complete OTP.";
+                return;
+            }
+            const expectedOTP = document.getElementById('expected-otp').value;
+
+            if (enteredOTP === expectedOTP) {
+                window.location.href = '/Account/Save_register';
+            } else {
+                document.getElementById('error-message').textContent = "Invalid OTP. Please try again.";
+            }
+        });
+
+    </script>
+</body>
+</html>

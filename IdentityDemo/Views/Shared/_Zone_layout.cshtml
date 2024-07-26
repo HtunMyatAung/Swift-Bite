@@ -1,0 +1,114 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Home Page";
+    ApplicationUser currentUser = await UserManager.GetUserAsync(User);
+    var shopname = TempData["shopname"] as string;
+    var shopadd = TempData["shopadd"] as string;
+    var currentyear = DateTime.Now.Year;
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+   
+    <link href="~/css/download_css/5_2_3_bootstrap.min.css" rel="stylesheet" />    
+    <link href="~/css/download_css/5_2_docs.css" rel="stylesheet" />
+    <link href="~/css/custom_css/shoplayout.css" rel="stylesheet" />
+    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbarclass fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand me-auto logocss" href="@Url.Action("Index","Home")">uab Zone</a>
+            @*<a class="navbar-brand me-auto logocss" href="@Url.Action("Test64","Home")">Test</a>*@
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="btn-group">
+                    <a type="button" class="btn dropdown-toggle login-button dropdown-user" data-bs-toggle="dropdown" aria-expanded="false">
+                       @currentUser.UserName
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
+                        @if (currentUser.Role == "Admin")
+                        {
+                            <li><a class="dropdown-item" href="/AdminControl/Admin_dashboard">Dashboard</a></li>
+                        }
+                        else if (currentUser.Role == "Owner")
+                        {
+                            <li><a class="dropdown-item" href="/Account/User_profile">Profile</a></li>
+                            <li><a class="dropdown-item" href="/Shop/Owner_dashboard">Dashboard</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item" href="/Account/User_profile">Profile</a></li>
+                        }
+                        
+                        
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit" class="dropdown-item">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+
+                <a href="@Url.Action("Login","Account")" class="btn login-button dropdown-user">Login</a>
+            }
+        </div>
+    </nav>
+    <div style="margin-top: 74px">
+        @RenderBody()
+        @RenderSection("Scripts", required: false)
+        @RenderSection("Shopidcss",required:false)
+    </div>
+    <footer class=" text-white text-center py-3" style="background-color: black;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li >Email: contact@uabzone.com</li>
+                        <li>Phone: +95-9660213131</li>
+                        <li>Address: Kyun Taw, Yangon, Myanmar</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Follow Us</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Facebook</a></li>
+                        <li><a href="#" class="text-white">Twitter</a></li>
+                        <li><a href="#" class="text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Services</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="@Url.Action("About","Home")" class="text-white">Contact Us</a></li>
+                        <li><a href="@Url.Action("About","Home")" class="text-white">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p>&copy; @(currentyear) uab zone. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

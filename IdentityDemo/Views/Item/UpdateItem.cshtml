@@ -1,0 +1,236 @@
+﻿@model IdentityDemo.ViewModels.SingleItemViewModel
+@{
+    Layout = "_Owner_layout";
+}
+<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/download_css/5_15_3_all.min.css" />
+<style>
+    .discount_dropdown select {
+        padding: 5px;
+    }
+
+        .discount_dropdown select option {
+            padding: 5px;
+        }
+
+    .discount-group {
+        display: none;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+<div class="container" style="padding-top: 30px;">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Item Update</h2>
+                </div>
+                <div class="card-body">
+                    
+                    <form asp-action="UpdateItem" asp-controller="Item" method="post" enctype="multipart/form-data" runat="server">
+                        <input type="hidden" asp-for="ItemId" />
+                        <!-- Image Preview Section -->
+                        <div class="form-group row mb-3">
+                            <label for="profileImage" class="col-sm-2 col-form-label">Item Image</label>
+                            <div class="col-sm-10">
+                                
+                                <!--<img id="blah" class="image-preview" src="#" alt="Preview Image" style="max-width: 100%; max-height: 200px; display: block; margin-top: 10px;" />-->
+                                <input asp-for="ItemImage" class="form-control-file" accept="image/*" type="file" id="imgInp" name="ItemImage" onchange="previewImage(event)" />
+                            </div>
+                        </div>
+                        <!--item update form-->
+                        <div class="form-group row mb-3">
+                            <label asp-for="ItemName" class="col-sm-2 col-form-label">Name*</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" asp-for="ItemName" placeholder="Enter item name" id="nameInput" />
+                                <span asp-validation-for="ItemName" class="text-danger" id="nameValidationMessage"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label asp-for="ItemPrice" class="col-sm-2 col-form-label">Price*</label>
+                            <div class="col-sm-10">
+                                <input type="number" step="0.01" class="form-control" asp-for="ItemPrice" placeholder="Enter item price" id="priceInput" />
+                                <span asp-validation-for="ItemPrice" class="text-danger" id="priceValidationMessage"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label asp-for="ItemQuantity" class="col-sm-2 col-form-label">Quantity*</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" asp-for="ItemQuantity" placeholder="Enter item quantity" id="quantityInput" />
+                                <span asp-validation-for="ItemQuantity" class="text-danger" id="quantityValidationMessage"></span>
+                            </div>
+                            
+                        </div>    
+                        <div class="form-group row mb-3">
+                            <label asp-for="Category" class="col-sm-2 col-form-label">Category*</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" asp-for="Category" placeholder="Enter category" id="categoryInput" />
+                                <span asp-validation-for="Category" class="text-danger" id="categoryValidationMessage"></span>
+                            </div>
+
+                        </div>
+                        <div class="d-flex align-items-center" style="margin-left: 17%;">
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="discountType" id="discountPrice" value="DiscountPrice" onchange="toggleInputFields()" @if(Model.ItemPrice > 0) { <text>checked</text> }/>
+                                <label class="form-check-label" for="discountPrice">
+                                    Discount Price
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="discountType" id="discountRate" value="DiscountRate" onchange="toggleInputFields()" @if(Model.Discount_rate > 0) { <text>checked</text> }/>
+                                <label class="form-check-label" for="discountRate">
+                                    Discount Rate(%)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group  row mb-3" id="discountPriceGroup">
+                            <label asp-for="Discount_price" class="col-sm-2 col-form-label">Discount Price</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" asp-for="Discount_price" placeholder="Enter discount price" id="discountpriceInput" />
+                                <span asp-validation-for="Discount_price" class="text-danger"></span>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group hidden row mb-3" id="discountRateGroup">
+                            <label asp-for="Discount_rate" class="col-sm-2 col-form-label">Discount Rate</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" asp-for="Discount_rate" placeholder="Enter discount rate" id="discountrateInput" />
+                                <span asp-validation-for="Discount_rate" class="text-danger"></span>
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label asp-for="ItemChangedPrice" class="col-sm-2 col-form-label">Final Price</label>
+                            <div class="col-sm-10">
+                                <input type="number" step="0.01" class="form-control" asp-for="ItemChangedPrice" readonly id="finalPriceInput" />
+                                <span asp-validation-for="ItemChangedPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <a href="@Url.Action("Owner_Item_List", "Shop")" class="btn btn-secondary w-25 mr-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary w-25" id="submitButton">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/itemvalidate.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const priceInput = document.getElementById("priceInput");
+        const discountPriceInput = document.getElementById("discountpriceInput");
+        const discountRateInput = document.getElementById("discountrateInput");
+        const finalPriceInput = document.getElementById("finalPriceInput");
+
+        function calculateFinalPrice() {
+            const price = parseFloat(priceInput.value) || 0;
+            let discountPrice = parseFloat(discountPriceInput.value) || 0;
+            let discountRate = parseFloat(discountRateInput.value) || 0;
+
+            let finalPrice = price;
+
+            if (discountRate > 0) {
+                discountPriceInput.value = 0;
+                finalPrice = price - (price * (discountRate / 100));
+            } 
+            if (discountPrice > 0) {
+                discountRateInput.value = 0;
+                finalPrice = price - discountPrice;
+            }
+
+            finalPriceInput.value = finalPrice.toFixed(2);
+        }
+
+        discountPriceInput.addEventListener("input", calculateFinalPrice);
+        discountRateInput.addEventListener("input", calculateFinalPrice);
+        priceInput.addEventListener("input", calculateFinalPrice);
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var nameInput = document.getElementById('nameInput');
+        var priceInput = document.getElementById('priceInput');
+        var quantityInput = document.getElementById('quantityInput');
+        var discountpriceInput = document.getElementById('discountpriceInput');
+        var discountrateInput = document.getElementById('discountrateInput');
+        var discountpriceValidationMessage = document.getElementById('discountpriceValidationMessage')
+        var discountrateValidationMessage = document.getElementById('discountrateValidationMessage')
+        var nameValidationMessage = document.getElementById('nameValidationMessage');
+        var priceValidationMessage = document.getElementById('priceValidationMessage');
+        var quantityValidationMessage = document.getElementById('quantityValidationMessage');
+
+        var submitButton = document.getElementById('submitButton');
+
+        // Decimal(7,2): Up to 7 digits in total, with up to 2 decimal places.
+        var pricePattern = /^\d{1,5}(\.\d{1,2})?$/;
+        // Integer pattern for quantity
+        var quantityPattern = /^\d+$/;
+        var ratePattern = /^100(\.0{1,2)?$|^\d{1,2}(\.\d{1,2})?$/;
+
+
+        function validateInput(input, pattern, validationMessage) {
+            if (!pattern.test(input.value.trim())) {
+                validationMessage.innerText = input.getAttribute('data-error-message');
+                submitButton.disabled = true;
+            } else {
+                validationMessage.innerText = '';
+                checkFormValidity();
+            }
+        }
+
+        function checkFormValidity() {
+            if (
+                nameInput.value.trim() !== '' &&
+                pricePattern.test(priceInput.value) &&
+                quantityPattern.test(quantityInput.value)
+            ) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        nameInput.addEventListener('input', function () {
+            validateInput(nameInput, /.+/, nameValidationMessage);
+        });
+
+        priceInput.addEventListener('input', function () {
+            validateInput(priceInput, pricePattern, priceValidationMessage);
+        });
+
+        quantityInput.addEventListener('input', function () {
+            validateInput(quantityInput, quantityPattern, quantityValidationMessage);
+        });
+        discountpriceInput.addEventListener('input', function () {
+            validateInput(discountpriceInput, pricePattern, discountpriceValidationMessage);
+        });
+        discountrateValidationMessage.addEventListener('input', function () {
+            validateInput(discountrateInput, ratePattern, discountrateValidationMessage);
+        })
+        // Initial check on page load
+        checkFormValidity();
+    });
+    toggleInputFields();
+    function toggleInputFields() {
+        const discountPriceInput = document.getElementById('discountPriceGroup');
+        const discountRateInput = document.getElementById('discountRateGroup');
+        if (discountPriceInput)
+        if (document.getElementById('discountPrice').checked) {
+            discountPriceInput.classList.remove('hidden');
+            discountRateInput.classList.add('hidden');
+        } else if (document.getElementById('discountRate').checked) {
+            discountPriceInput.classList.add('hidden');
+            discountRateInput.classList.remove('hidden');
+        }
+    }
+   
+</script>
+
+

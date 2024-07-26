@@ -1,0 +1,259 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!--custom CSS -->
+<link rel="stylesheet" href="~/css/hywm_css/Landing_page.css" />
+
+<!-- Bootstrap JS and dependencies -->
+<script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+<script src="~/js/download_js/2_5_4_popper.min.js"></script>
+<script src="~/js/download_js/4_5_3_bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/download_css/5_15_3_all.min.css" />
+<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+
+<script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+<script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+<style>
+    body {
+        background-image: url("/img/hywm_img/bg.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-form {
+        position: absolute;
+        align-items: center;
+        top: 10%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        width: 100%;
+        max-width: 600px;
+        border-radius: 8px;
+        overflow: visible; /* Allow overflow for image */
+        transition: top 0.3s ease; /* Smooth transition for sliding effect */
+    }
+
+        .popup-form.active {
+            top: 50px; /* Adjust as needed to control how far down it slides */
+        }
+
+        .popup-form h2 {
+            text-align: center;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .popup-form img {
+            width: 100%;
+            max-width: 92px; /* Adjust image size */
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            position: absolute;
+            top: -50px; /* Position image outside form */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust position */
+            z-index: 1; /* Ensure image stays above form */
+        }
+
+        .popup-form .form-container {
+            position: relative; /* Ensure relative positioning for contents */
+            z-index: 2; /* Ensure form content is above image */
+        }
+
+            .popup-form .form-container p {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .popup-form .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .popup-form label {
+            width: 30%;
+            margin-right: 10px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 12px;
+            height: 13px;
+        }
+
+        .popup-form .dotted-input {
+            flex: 1;
+            position: relative;
+        }
+
+            .popup-form .dotted-input input {
+                width: 80%;
+                padding: 10px;
+                font-size: 12px;
+                border: none;
+                border-bottom: 4px dotted #999;
+                box-sizing: border-box;
+                text-align: left;
+                outline: none; /* Remove default input focus outline */
+                height: 13px;
+            }
+
+            .popup-form .dotted-input .text-danger {
+                display: block;
+                margin-top: 5px; /* Add some space between input and error message */
+                font-size: 10px; /* Adjust font size */
+            }
+
+        .popup-form button {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 15px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .popup-form .social-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+            .popup-form .social-icons img {
+                width: 40px;
+                height: 40px;
+                margin: 0 10px;
+                cursor: pointer;
+            }
+
+        .popup-form .already-account {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .popup-form .already-account a {
+                color: blue;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+        .popup-form button[type="submit"]:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        .popup-form .error {
+            color: red; /* Adjust error message color */
+            margin-top: 10px;
+            align-content: center;
+        }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+        .input-with-icon i {
+            position: absolute;
+            right: 70px; /* Adjust to position icon on the left */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .input-with-icon input {
+            padding-left: 30px; /* Adjust to make space for the icon */
+        }
+
+    .error-message .text-danger {
+        flex: 1;
+        display: block;
+        margin-top: 5px; /* Add some space between input and error message */
+        font-size: 10px;
+        margin-left: 33%;
+    }
+</style>
+
+<body>
+    <div class="popup-form">
+        <img src="~/img/hywm_img/otp1.png" alt="Image">
+        <div class="form-container">
+            <h2>OTP Verification</h2>
+            <p>Enter the 6 digit code we sent to example@gmail.com<br>It's only valid for 90 seconds</p>
+            <form id="otp-form">
+                <div class="otp-inputs">
+                    <!-- Inputs for OTP digits, each with an oninput handler to move focus -->
+                    <input type="text" maxlength="1" class="otp-input" id="otp1" name="otp1" oninput="moveFocus(1)">
+                    <input type="text" maxlength="1" class="otp-input" id="otp2" name="otp2" oninput="moveFocus(2)">
+                    <input type="text" maxlength="1" class="otp-input" id="otp3" name="otp3" oninput="moveFocus(3)">
+                    <input type="text" maxlength="1" class="otp-input" id="otp4" name="otp4" oninput="moveFocus(4)">
+                    <input type="text" maxlength="1" class="otp-input" id="otp5" name="otp5" oninput="moveFocus(5)">
+                    <input type="text" maxlength="1" class="otp-input" id="otp6" name="otp6" oninput="moveFocus(6)">
+                </div>
+                <button type="submit">Submit</button> <!-- Submission button -->
+                <input type="hidden" id="expected-otp" value="@TempData["otpcode"]" />
+            </form>
+            <div id="error-message" class="error"></div> <!-- Error message container -->
+
+        </div>
+    </div>
+    <script>
+        //otp for action
+        function moveFocus(currentIndex) {
+            const otpInput = document.getElementById('otp' + currentIndex);
+            if (otpInput.value.length === 1 && currentIndex < 6) {
+                document.getElementById('otp' + (currentIndex + 1)).focus();
+            }
+            // Optionally, handle backspace to move focus to the previous input
+            otpInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Backspace' && currentIndex > 1 && otpInput.value.length === 0) {
+                    document.getElementById('otp' + (currentIndex - 1)).focus();
+                }
+            });
+        }
+        document.getElementById('otp-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            let enteredOTP = "";
+            let allInputsFilled = true;
+
+            for (let i = 1; i <= 6; i++) {
+                const otpInput = document.getElementById('otp' + i);
+                if (otpInput.value.trim() === '') {
+                    allInputsFilled = false;
+                    otpInput.focus();
+                    break;
+                }
+                enteredOTP += otpInput.value;
+            }
+
+            if (!allInputsFilled) {
+                document.getElementById('error-message').textContent = "Please enter the complete OTP.";
+                return;
+            }
+            const expectedOTP = document.getElementById('expected-otp').value;
+
+            if (enteredOTP === expectedOTP) {
+                window.location.href = '/Account/Save_register';
+            } else {
+                document.getElementById('error-message').textContent = "Invalid OTP. Please try again.";
+            }
+        });
+
+    </script>
+</body>

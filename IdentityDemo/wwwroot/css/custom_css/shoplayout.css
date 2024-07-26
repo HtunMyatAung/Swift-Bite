@@ -1,0 +1,67 @@
+﻿.navbarclass {
+    background-color: black;
+
+}
+.logocss {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    transition: color 0.3s ease; 
+}
+
+    .logocss:hover {
+        color: ghostwhite; 
+        transform: scale(1.1); 
+    }
+
+.login-button.dropdown-user {
+    background-color: #FF5721;
+    color: white;
+    margin-right: 0px;
+    font-size: 14px;
+    padding: 8px 25px;
+    border-radius: 45px;
+    text-decoration: none;
+    transition: 0.3s background-color;
+}
+    .login-button.dropdown-user:hover {
+        background-color: #f29c33;
+        color: white;
+        font-size: 14px;
+        padding: 8px 25px;
+        border-radius: 45px;
+        text-decoration: none;
+    }
+
+.navbar-toggler{
+    border:none;
+    font-size: 1.25rem;
+}
+.navbar-togger:focus, .btn-close:focus{
+    box-shadow: none;
+    outline: none;
+}
+.nav-link{
+    color: black;
+    font-weight: 500;
+    position: relative;
+}
+    .nav-link:hover, .nav-link.active {
+        color: tomato;
+    }
+.nav-link::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: aquamarine;
+    visibility: hidden;
+    transition: 0.2s ease-in-out;
+}
+.nav-link:hover::before,.nav-link.active::before{
+    width: 100%;
+    visibility: visible;
+}

@@ -1,0 +1,138 @@
+﻿@using Newtonsoft.Json
+@model IdentityDemo.ViewModels.DashboardViewModel
+@{
+    Layout = "_Owner_layout";
+}
+<head>
+    <link rel="stylesheet" href="~/css/download_css/3_1_0_adminlte.min.css" />
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <script src="~/js/download_js/npm_chart.js"></script>
+    <style>
+        /* Apply fixed height to chart container */
+       
+        .chart-container {           
+            height: 300px; /* Adjust the height as needed */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-4 col-4">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    @{
+                        //Console.WriteLine("count" + Model.OrderCount);
+                        if (Model.OrderCount == null)
+                        {
+                            <h3>0</h3>
+                        }
+                        else
+                        {
+                            <h3>@Model.OrderCount</h3>
+                        }
+                    }
+
+                    <p>Orders</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-cart-plus"></i>
+                </div>
+                <a href="@Url.Action("Owner_order_list", "Shop")" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-4 col-4">
+            <!-- small box -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    @{
+                       // Console.WriteLine("count"+Model.ItemCount);
+                        if (Model.ItemCount == null)
+                        {
+                            <h3>0</h3>
+                        }
+                        else
+                        {
+                            <h3>@Model.ItemCount</h3>
+                        }
+                    }
+                    <p>Items</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <a href="@Url.Action("Owner_item_list", "Shop")" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-4 col-4">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    @{
+                       /// Console.WriteLine("count" + Model.ItemCount);
+                        if (Model.CustomerCount == null)
+                        {
+                            <h3>0</h3>
+                        }
+                        else
+                        {
+                            <h3>@Model.CustomerCount</h3>
+                        }
+                    }
+
+                    <p>Customers</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <a class="small-box-footer">Customers</a>
+                
+            </div>
+        </div>
+        
+        <!-- ./col -->
+    </div>
+
+    <div class="chart-container">
+        <h2>Orders per Day</h2>
+        <canvas id="orderLineChart"></canvas>
+    </div>
+
+    @section Scripts {
+        <script>
+            var labels = @Html.Raw(Json.Serialize(Model.Labels));
+            var data = @Html.Raw(Json.Serialize(Model.Datas));
+
+            var ctx = document.getElementById('orderLineChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Orders per Day',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    }
+    <script src="~/js/download_js/3_5_1_chart.min.js"></script>
+</body>

@@ -1,0 +1,526 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IdentityDemo.ViewModels.ProfileViewModel
+@{
+    Layout = "_User_layout";
+    int counter = 1;
+    int counter1 = 1;
+    ApplicationUser currentUser = await UserManager.GetUserAsync(User);
+
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | User Profile</title>
+    <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="~/css/download_css/css_family.css" />
+    <link rel="stylesheet" href="~/css/download_css/5_15_3_all.min.css" />
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+    <style>
+        .wishlist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .wishlist-table td, .wishlist-table th {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .wishlist-table .item-column {
+                display: flex;
+                justify-content: center; /* Horizontally centers content */
+                align-items: center; /* Vertically centers content */
+            }
+
+            .wishlist-table .item-details {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start; /* Align details to the left */
+            }
+
+                .wishlist-table .item-details .label {
+                    font-weight: bold;
+                }
+
+            .wishlist-table img {
+                max-width: 150px; /* Ensures the image doesn’t exceed a certain width */
+                max-height: 150px; /* Ensures the image doesn’t exceed a certain height */
+            }
+
+            .wishlist-table .image-column {
+                width: 200px; /* Set a fixed width for the image column */
+                text-align: center; /* Center content in the column */
+            }
+
+            .wishlist-table .details-column {
+                width: calc(100% - 200px); /* Adjust width for details column to take the remaining space */
+            }
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-height: 600px; /* Container height */
+            height: 100%; /* Ensures container takes up full height of its parent */
+            overflow-y: auto;
+            text-align: center;
+            border: 1px solid #ccc; /* Optional: for visual debugging */
+            padding: 20px; /* Optional: padding around content */
+            border:none;
+        }
+
+            .center-content img {
+                width: 100px;
+                height: 100px;
+                margin-top:100px;
+            }
+
+            .center-content label {
+                margin-top: 10px;
+            }
+
+        .list-group-item1 {
+            background-color: #D9D9D9;
+            border: 1px solid black; /* Sets border color to black */
+            border-radius: 8px; /* Adjust border radius as needed */
+            height: 51px; /* Adjust height based on content */
+            margin-bottom: 5px;
+            margin-top:5px;
+            list-style-type: none; /* Remove default list item bullets */
+            display: flex;
+            flex-direction: column; /* Stack label and value vertically */
+            padding: 10px; /* Add padding inside the list item */
+            font-size:12px;
+        }
+
+            .list-group-item1 .label {
+                font-weight: bold;
+            }
+
+            .list-group-item1 .value {
+                margin-top: 1px; /* Space between label and value */
+            }
+
+        .list-group-item1 .value input.form-control {
+            /* Add custom styling here to match the existing .value div styling */
+            width: 100%; /* Ensuring the input takes the full width */
+            padding: 0px; /* Adjust padding if necessary */
+            border: none; /* Remove border if the original .value had no border */
+            background-color: transparent; /* Match background color */
+            box-shadow: none; /* Remove box-shadow if necessary */
+            margin-top:-10px;
+            font-size:12px;
+        }
+        .nav-pills .nav-bar-border {
+            position: relative;
+            padding-bottom: 10px; /* Adjust the padding as needed */
+        }
+
+            .nav-pills .nav-bar-border.active::after {
+                content: '';
+                display: block;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 2px;
+                width:300px;; /* Adjust the width as needed */
+                background: #007bff; /* Adjust the color as needed */
+                margin-top: 5px; /* Adjust the spacing as needed */
+            }
+
+        .hide {
+            display: none !important;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .img-position-relative {
+            position: relative;
+        }
+
+        .camera-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(60%, 80%);
+            color: white; /* Adjust as needed */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            border-radius: 50%;
+            padding: 10px; /* Adjust padding as needed */
+            font-size: 10px; /* Adjust size as needed */
+        }
+
+        .fixed-height{
+            height:555px;
+        }
+
+        .fixed-height-order {
+            height:450px;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse; /* Ensures no gaps between borders */
+        }
+
+            .order-table th,
+            .order-table td {
+                border: 1px solid black; /* Defines the border color and width */
+                padding: 10px; /* Adds padding for better readability */
+                text-align: center; /* Centers the text in each cell */
+            }
+
+            .order-table th {
+                background-color: #f2f2f2; /* Light gray background for headers */
+                font-weight: bold; /* Makes header text bold */
+            }
+
+            .order-table tbody tr:nth-child(even) {
+                background-color: #f9f9f9; /* Alternating row colors for better readability */
+            }
+
+            .order-table tbody tr:hover {
+                background-color: #ddd; /* Light gray background on row hover */
+            }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <div style="height: 95vh;">         
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row d-flex h-130">
+                        <div id="profileCard1" class="col-md-4 h-130 d-flex flex-column flex-grow-1 show">
+                            <!-- Profile Image -->
+                            <div class="card card-primary card-outline" style="background-color:#D9D9D9;">
+                                <div class="card-body box-profile">
+                                    <div class="text-center mb-0">
+                                        <img class="profile-user-img img-fluid img-circle" style="width: 110px;height:110px;"
+                                             src="../../img/users/@currentUser.UserImageName"
+                                             alt="User profile picture">
+                                    </div>
+                                    <a  href="#" style="color:black" data-toggle="modal" data-target="#editModal" ><h3 class="profile-username text-center mb-3">Edit<i  style="margin-left:3px;font-size:18px;"class="fas fa-edit"></i> </h3></a>
+                                   
+
+                                    <!--<p class="text-muted text-center">Software Engineer</p>-->
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item1">
+                                            <div class="label">Full Name</div>
+                                            <div class="value">@Model.UserName</div>
+                                        </li>
+                                        <li class="list-group-item1">
+                                            <div class="label">Phone Number</div>
+                                            <div class="value">@Model.UserPhone</div>
+                                        </li>
+                                        <li class="list-group-item1" >
+                                            <div class="label">Email</div>
+                                            <div class="value">@Model.UserEmail</div>
+                                        </li>
+                                        <li class="list-group-item1" >
+                                            <div class="label">Address</div>
+                                            <div class="value">@Model.Address</div>
+                                        </li>
+                                        @if (Model.OrderCount == null)
+                                        {
+                                            <li class="list-group-item1" >
+                                                <div class="label">Orders</div>
+                                                <div class="value">0</div>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item1" >
+                                                <div class="label">Orders</div>
+                                                <div class="value">@Model.OrderCount</div>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        <button style="text-align:center; background-color:black; color:white;border-radius: 6px; height: 33px;" type="submit" class="dropdown-item">Logout</button>
+
+
+                                    </form>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                            <!-- About Me Box -->
+                            <!-- /.card -->
+                        </div>
+
+                        <div id="profileCard2" class="col-md-4 h-130 d-flex flex-column flex-grow-1 hide fixed-height">
+                            <!-- Profile Image -->
+                            <div class="card card-primary card-outline" style="background-color:#D9D9D9;height:100%;">
+                                <form asp-controller="Account" asp-action="User_profile" method="post" enctype="multipart/form-data" runat="server" class="form-horizontal">
+                                    <input type="hidden" asp-for="UserId" />
+                                    <div class="card-body box-profile">
+                                        <div class="text-center mb-0 img-position-relative">
+                                            <label for="imgInp">
+                                            <img id="blah" src="~/img/users/@currentUser.UserImageName" alt="Preview Image" class="profile-user-img img-fluid img-circle" style="width: 110px;height:110px;" />
+                                            </label>
+                                            <input asp-for="UserImage" class="form-control-file" accept="image/*" type="file" id="imgInp" name="UserImage" onchange="previewImage(event)" style="display: none;" />
+
+                                            <label for="imgInp" >
+                                                <i class="fas fa-camera camera-icon"></i>
+                                            </label>
+                                        </div>                                     
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <li class="list-group-item1">
+                                                <div class="label">Full Name</div>
+                                                <div class="value">
+                                                    <input asp-for="UserName" class="form-control" >
+                                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                                </div>
+
+                                            </li>
+                                            <li class="list-group-item1">
+                                                <div class="label">Phone Number</div>
+                                                <div class="value">
+                                                    <input asp-for="UserPhone" class="form-control" placeholder="Phone number">
+                                                    <span asp-validation-for="UserPhone" class="text-danger"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item1">
+                                                <div class="label">Email</div>
+                                                <div class="value">
+                                                    <input asp-for="UserEmail" class="form-control" >
+                                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item1">
+                                                <div class="label">Address</div>
+                                                <div class="value">
+                                                    <input asp-for="Address" class="form-control" placeholder="Address">
+                                                    <span asp-validation-for="UserPhone" class="text-danger"></span>
+                                                </div>
+                                            </li>                                            
+
+                                        </ul>
+
+                                        <button type="submit" style="text-align:center; background-color:black; color:white;border-radius: 6px; height: 33px;" type="submit" class="dropdown-item">Submit</button>
+                                        
+
+
+                                    </div>
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                            <!-- About Me Box -->
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-8 h-130 d-flex flex-column">
+                            <div class="card flex-grow-1" style="background-color:#D9D9D9">
+                                <div class="card-header p-2">
+                                    <ul class="nav nav-pills justify-content-around">
+                                        <li class="nav-item"><a class="nav-bar-border" href="#Order_list" data-toggle="tab">Order History</a></li>
+                                        <li class="nav-item"><a class="nav-bar-border" href="#wishlist" data-toggle="tab">Wish List</a></li>
+
+                                    </ul>
+                                </div><!-- /.card-header -->
+                                <div class="card-body" style="position:sticky">
+                                    <div class="tab-content">
+
+                                        <!-- /.tab-pane -->
+                                        <div class="active tab-pane" id="Order_list">
+                                            <div class="container-fluid mt-4">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        @{
+                                                            if (Model.Orders == null || !Model.Orders.Any())
+                                                            {
+                                                                <div class="center-content fixed-height-order">
+                                                                    <img src="~/img/hywm_img/Empty.png" />
+                                                                    <label>Oops! you haven't ordered anything yet!</label>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <!--style-->
+                                                                <table class="order-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>#</th>
+                                                                            <th>Order Price</th>
+                                                                            <th>Shop</th>
+                                                                            <th>Order Date</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                            @foreach (var order in Model.Orders)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@counter</td>
+                                                                                    <td>@order.OrderPrice</td>
+                                                                                    <td>@order.Shop_Name</td>
+                                                                                    <td>@order.OrderDate</td>
+                                                                                </tr>
+                                                                                counter += 1;
+                                                                            }                                                                        
+                                                                    </tbody>
+                                                                </table>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                        <div class="tab-pane" id="wishlist">
+                                            <div class="container-fluid mt-4">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div style="max-height: 450px; overflow-y: auto;" class="fixed-height-order">
+                                                            @{
+                                                                // Check the condition
+                                                                if (Model.WishlistItems != null || Model.WishlistItems.Any()) // Replace this with your actual condition
+                                                                {
+                                                                // Render the table if the condition is true
+                                                                    <table class="wishlist-table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>#</th>
+                                                                                <th>Item</th>
+                                                                                <th>Details</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @foreach(var item in Model.WishlistItems)
+                                                                            {
+                                                                                <!-- Each table row represents an item -->
+                                                                                <tr class="clickable-row" data-href="https://example.com/item1">
+                                                                                <td>
+                                                                                @counter1
+                                                                                </td>
+                                                                                    <td class="image-column">
+                                                                                        <img src="~/img/items/@item.ItemImageName" alt="Item Image" />
+                                                                                    </td>
+                                                                                    <td class="details-column">
+                                                                                        <div class="item-details">
+                                                                                            <div class="label">Item Name</div>
+                                                                                            <div>@item.ItemName</div>
+                                                                                            <div class="label">Item Price</div>
+                                                                                            <div>@item.ItemChangedPrice</div>
+                                                                                            <div class="label">Shop</div>
+                                                                                            <div>@item.Shop_Id</div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                counter1 += 1;
+                                                                            }
+                                                                            
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                }
+                                                                else
+                                                                {
+                                                                // Render alternative content if the condition is false
+                                                                    <div class="center-content">
+                                                                        <img src="~/img/hywm_img/empty-wish.png" />
+                                                                        <label>No wish list here!</label>
+                                                                    </div>
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- /.tab-pane -->
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div><!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->        
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 300px;border-radius: 30%;max-height: 100px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex flex-column">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    
+                    <button class="btn  mb-2" onclick="location.href='@Url.Action("UpdatePassword","Account")'"><i class="fas fa-key"></i> Change Password</button>
+                    <button class="btn  mb-2" type="button" class="close" data-dismiss="modal" aria-label="Close" id="editProfileBtn"><i class="fas fa-address-card"></i> Edit Profile</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- jQuery -->
+    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    <script src="~/js/download_js/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
+    <script>
+        // Initialize DataTable
+        $(document).ready(function () {
+            $('#Order_list').DataTable();
+        });
+        function previewImage(event) {
+            const imgInp = event.target;
+            const file = imgInp.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('blah').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', function () {
+                window.location.href = this.dataset.href;
+            });
+        });
+        //btn click for hide normal profile and hide edit profile
+        
+        $(document).ready(function () {
+            $('#editProfileBtn').click(function () {
+                $('#profileCard1').removeClass('show').addClass('hide');
+                $('#profileCard2').removeClass('hide').addClass('show');
+            });
+        });
+    </script>
+</body>
+</html>

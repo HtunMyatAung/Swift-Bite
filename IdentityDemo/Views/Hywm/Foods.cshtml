@@ -1,0 +1,446 @@
+﻿@model IdentityDemo.ViewModels.ItemsViewModel
+@{
+    Layout = "_User_layout";
+    int counter = 1;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteBite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="~/css/download_css/5_2_3_bootstrap.min.css" rel="stylesheets" />
+    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css" />
+    <link href="~/css/landingpage1.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Piazzolla', serif;
+        }
+
+
+        /* Container styling */
+        .container {
+            padding: 0 15px; /* Add some horizontal padding */
+        }
+
+        /* Row styling for centering images */
+        .row.photoloader {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+            justify-content: center; /* Center items horizontally */
+            margin: 0; /* Remove default margins */
+            gap: 10%; /* Add spacing between images */
+        }
+
+            /* Common image styling */
+            .row.photoloader img {
+                border-radius: 8px; /* Optional: Add rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow effect */
+                display: block; /* Remove extra space below images */
+                object-fit: fill; /* Maintain aspect ratio and cover the assigned height */
+            }
+
+        /* Larger image sizes */
+        .photo1, .photo3 {
+            height: 10%; /* Custom height for larger images */
+            width: 15%; /* Maintain aspect ratio */
+            margin-bottom: 20px;
+        }
+
+        .photo6, .photo8 {
+            height: 130px; /* Custom height for larger images */
+            width: 15%; /* Maintain aspect ratio */
+        }
+
+        /* Smaller image sizes */
+        .photo2, .photo4 {
+            margin-top: 5%;
+            height: 70px; /* Custom height for smaller images */
+            width: 15%;
+            margin-bottom: 20px;
+        }
+
+        .photo5, .photo7 {
+            height: 90px; /* Custom height for smaller images */
+            width: auto; /* Maintain aspect ratio */
+        }
+
+        .navbar {
+            background-color: #f8f9fa; /* Background color of the navbar */
+            padding: 10px 0; /* Vertical padding */
+            border-bottom: 1px solid #dee2e6; /* Bottom border for separation */
+            border-radius: 30px;
+        }
+
+        .container {
+            max-width: 1200px; /* Adjust to your needs */
+            margin: 0 auto; /* Center the container */
+            padding: 0 15px; /* Horizontal padding */
+            box-shadow: 10px black;
+        }
+
+
+
+        .nav-link1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black; /* Link color */
+            text-decoration: none; /* Remove underline from links */
+            font-size: 16px; /* Font size */
+            font-weight: bold; /* Make text bold */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+        }
+
+
+            .nav-link1:hover {
+                background-color: black; /* Background color on hover */
+                color: #ffffff; /* Text color on hover */
+                border-radius: 5px; /* Rounded corners on hover */
+                width: auto;
+                text-align: center;
+                align-content: center;
+            }
+
+
+        .menu-item1 {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding-right: 20px;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+            .menu-item1:hover {
+                transform: translateY(-10px);
+            }
+
+            .menu-item1 img {
+                width: 120px;
+                height: 120px;
+                border-radius: 8px;
+                margin-right: 20px;
+            }
+
+            .menu-item1 h5 {
+                color: black;
+                margin-top: 0;
+                font-weight: bold;
+            }
+
+            .menu-item1 p {
+                margin: 5px 0;
+                color: black;
+            }
+
+        .titlefontsize {
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 2rem;
+            text-indent: 5px;
+        }
+
+        .textoffood {
+            position: absolute;
+            top: 67%; /* Position text vertically in the middle */
+            left: 40%; /* Center horizontally */
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white; /* Adjust text color */
+            z-index: 3;
+            text-align: center; /* Center align text */
+            width: 100%; /* Ensure text spans the width of the card-body */
+        }
+
+        .qrtext {
+            font-size: 1.5rem;
+            text-align: justify;
+        }
+
+
+        .rectangleloc {
+            width: 100%;
+            max-width: 200px;
+            height: 100%;
+            max-height: 300px;
+        }
+
+        footer {
+            font-family: sans-serif;
+            margin-left: 0px;
+        }
+
+            footer a {
+                text-decoration: none;
+            }
+
+        .qrphoto {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        .hoveffect {
+            position: relative;
+            display: block;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 30px;
+            color: #666;
+            transition: .5s;
+        }
+
+            .hoveffect::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: blue;
+                transition: .5s;
+                transform: scale(.9);
+                z-index: -1;
+            }
+
+            .hoveffect:hover::before {
+                transform: scale(1);
+            }
+
+            .hoveffect:hover {
+                color: blue;
+                text-shadow: 0 0 5px blue;
+            }
+
+        .menu-item1 .heart-button {
+            position: absolute;
+            top: 10px; /* Adjust as needed */
+            right: 10px; /* Adjust as needed */
+            background: white; /* Ensure no background color */
+            border: none; /* Remove border */
+            font-size: 1.5rem; /* Adjust size as needed */
+            color: gray; /* Initial empty heart color */
+            cursor: pointer;
+            outline: none;
+            padding: 0;
+            transition: color 0.3s; /* Smooth color transition */
+            
+        }
+
+        .heart-button.active {
+            color: red; /* Filled heart color */
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="row d-flex justify-content-center photoloader">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg1.png" alt="Photo 1" class="photo1 d-flex shadow">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg2.png" alt="Photo 2" class="photo2">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg3.png" alt="Photo 3" class="photo3">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg4.png" alt="Photo 4" class="photo4">
+
+        </div>
+        <div class="row d-flex justify-content-center photoloader">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg5.png" alt="Photo 5" class="photo5">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg6.png" alt="Photo 6" class="photo6">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg7.png" alt="Photo 7" class="photo7">
+            <img src="~/img/hywm_img/img/afterlogin/landingpageimg8.png" alt="Photo 8" class="photo8">
+        </div>
+    </div>
+    <div class="navbar d-flex justify-content-around shadow mt-3">
+        <a href="#all" class="nav-link1">All</a>
+        @foreach (var category in Model.Categories)
+        {
+            <a href="#" class="nav-link1">@category</a>
+        }
+    </div>
+
+
+    <div class="container mt-4">
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-md-6 col-lg-4 col-sm-12">
+                    <div class="menu-item1">
+                        <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
+                        <div>
+                            <h5>@item.ItemName</h5>
+                            <p><small>Restaurant name</small></p>
+                            <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
+                        </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var isInWishlist = Model.WishlistItems != null && Model.WishlistItems.Any(w => w.ItemId == item.ItemId);
+                            <button class="heart-button @(isInWishlist ? "active" : "")" data-item-id="@item.ItemId">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="container-fluid qrcontainer mb-3"></div>
+    <form id="csrf-form" method="post">
+        @Html.AntiForgeryToken()
+    </form>
+
+
+    <!-- Footer -->
+    <footer class="bg-body-tertiary">
+        <!-- Grid container -->
+        <div class="container p-0">
+
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="~/img/hywm_img/img/afterlogin/MainLogo.png" alt="Logo" height="70">
+                            </div>
+                            <div class="col-md-9">
+                                <h5 class="text-uppercase mt-4">NearFoods</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0 mt-lg-5">
+                        <p class="text-uppercase">Follow us and keep updated!</p>
+                        <div class="row">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-2">
+                                <a href="#" class="hoveffect">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="#" class="hoveffect">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="#" class="hoveffect">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--Grid column-->
+                    <!--Grid column-->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+
+                        <ul class="list-unstyled mb-0 mt-lg-4">
+                            <li class="mb-2">
+                                <h5><a class="text-body" href="#!">Get help</a></h5>
+                            </li>
+                            <li class="mb-2">
+                                <h5><a class="text-body" href="#!">privacy policy</a></h5>
+                            </li>
+                            <li class="mb-2">
+                                <h5><a class="text-body" href="#!">How to order</a></h5>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <ul class="list-unstyled mb-0 mt-lg-4">
+                            <li class="mb-2">
+                                <h5><a class="text-body" href="#!">terms and conditions</a></h5>
+                            </li>
+                            <li class="mb-2">
+                                <h5><a class="text-body" href="#!">be our partner</a></h5>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+        </div>
+        <!-- Grid container -->
+        <!-- Copyright -->
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.titellink');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+        function scrollToSection(sectionId, button) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+            setActiveButton(button);
+        }
+        function setActiveButton(button) {
+            const buttons = document.querySelectorAll('.nav-buttons button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+    </script>
+    <script src="~/js/download_js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.heart-button').click(function () {
+                var button = $(this);
+                var itemId = button.data('item-id');
+                var isActive = button.hasClass('active');
+                var action = isActive ? 'remove' : 'add'; // Determine action based on button state
+
+                var url = '@Url.Action("SaveWishlistItem", "Item")';
+                console.log('Heart icon clicked for item:', itemId, 'Action:', action);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        itemId: itemId,
+                        action: action,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        console.log('AJAX response:', response);
+                        if (response.success) {
+                            button.toggleClass('active');
+                        } else {
+                            alert('Failed to update wishlist: ' + response.message);
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error('AJAX error details:', {
+                            status: status,
+                            error: error,
+                            responseText: xhr.responseText,
+                            statusCode: xhr.status,
+                            responseHeaders: xhr.getAllResponseHeaders()
+                        });
+                        alert('An error occurred while processing your request. Status: ' + status + ', Error: ' + error + ', Response: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

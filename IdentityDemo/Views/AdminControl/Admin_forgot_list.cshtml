@@ -1,0 +1,66 @@
+﻿@model IEnumerable<IdentityDemo.Models.ApplicationUser>
+@{
+    Layout = "_Admin_layout";
+    int counter = 1;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Table</title>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+    <style>
+        /* Optional CSS for custom styling */
+       
+    </style>
+</head>
+<body>
+    <div style="padding-top:2%;">
+        <table id="shoptable" class="display" style="width:100%">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Reset Password</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr style="text-align: center;">
+                        <td>@counter</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <form asp-controller="AdminControl" asp-action="ResetPassword" method="post" style="display:inline;">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <button type="submit" class="fas fa-check-circle" style="border:none; background:none;">
+                                </button>
+                            </form>
+                            <button class="fas fa-times-circle" style="border:none; background:none;"></button>
+                        </td>
+
+                    </tr>
+                    counter += 1;
+                    <!-- Add more rows with data as needed -->
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
+    <script>
+        // Initialize DataTable
+        $(document).ready(function () {
+            $('#shoptable').DataTable();
+        });
+    </script>
+</body>
+</html>

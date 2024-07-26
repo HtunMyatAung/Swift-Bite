@@ -1,0 +1,72 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<IdentityDemo.ViewModels.ShopViewModel>
+@{
+    Layout = "_Admin_layout";
+    int counter = 1;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Table</title>
+    @section Scripts{
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+
+        <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+        <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+        <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+        <!-- jQuery -->
+        <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+        <!-- DataTables JS -->
+        <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
+
+        <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
+        <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+        <script>
+            // Initialize DataTable
+            $(document).ready(function () {
+                $('#shoplisttable').DataTable();
+            });
+        </script>
+    }
+    
+</head>
+<body>
+    <div style="padding-top: 2%;">
+        <table id="shoplisttable" class="display" style="width:100%">
+            <thead>
+                <tr style ="text-align: center;">
+                    <th style="text-align:center;">No.</th>
+                    <th style ="text-align:center;">Owner</th>
+                    <th style="text-align:center;">Name</th>
+                    <th style="text-align:center;">Phone</th>
+                    <th style="text-align:center;">Email</th>
+                    <th style="text-align:center;">Address</th>
+                    <th style="text-align:center;">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var shop in Model)
+                {
+                    <tr style ="text-align: center;">
+                        <td style ="text-align:center;">@counter</td>
+                        <td style="text-align:center;">@shop.ShopOwnerName</td>
+                        <td style="text-align:center;">@shop.ShopName</td>
+                        <td style="text-align:center;">@shop.ShopPhone</td>
+                        <td style="text-align:center;">@shop.ShopEmail</td>
+                        <td style="text-align:center;">@shop.ShopAddress</td>
+                        <td style="text-align:center;">@shop.ShopDescription</td>
+                    </tr>
+                    counter += 1;
+                    <!-- Add more rows with data as needed -->
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

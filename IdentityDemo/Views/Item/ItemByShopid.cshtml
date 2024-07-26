@@ -1,0 +1,331 @@
+﻿@model IdentityDemo.ViewModels.ItemsViewModel
+@{
+    Layout = "_Zone_layout";
+    var isitem = TempData["items"];
+    TempData["shopname"] = Model.Shop.ShopName;
+    TempData["shopadd"] = Model.Shop.ShopAddress;
+    var currentyear = DateTime.Now.Year;
+}
+
+<style>
+    .main-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .container1 {
+        width: 65%;
+        margin-left: 60px;
+    }
+
+    .container2 {
+        border-style: solid;
+        width: 27%;
+        margin-left: 30px;
+        margin-right: 60px;
+        height: 85vh;
+        border-color: lightgray;
+        border-radius: 10px;
+        border-width: 1px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: sticky;
+        top: 80px;
+    }
+
+    .sticky {
+        margin-top: 9px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 80px;
+    }
+
+    .card-custom {
+        position: relative;
+        height: 400px;
+        width:300px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .img-box{
+        height:300px;
+        align-content:center;
+        
+    }
+        .card-custom img {
+           
+            width: 100%;
+            height: 250; /* Ensures image fits container height */
+            object-fit: fill;
+            border-radius: 15px 15px 0 0;
+        }
+
+    .card-body {
+        padding: 1.35rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        
+        height: 100px; /* Ensures card body fills available space */
+    }
+
+    .btn-primary {
+        border-radius: 20px;
+        float: right;
+    }
+
+    .card-title {
+        font-size: 16px;
+        margin-bottom: 5px; /* Adjust margin between title and text */
+        height: 10; /* Ensures text height fits dynamically */
+    }
+
+    .card-text {
+        font-size: 14px;
+        margin-bottom: 5px; /* Adjust margin between text and buttons */
+        height:50; /* Ensures text height fits dynamically */
+    }
+
+    .formargin {
+        margin-top: 10px;
+    }
+
+    .buttonshop {
+        width: 400px;
+        border-style: none;
+        border-radius: 20px;
+        background-color: white;
+        color: gray;
+        margin-bottom: 8px;
+    }
+
+        .buttonshop:hover {
+            width: 400px;
+            border-style: solid;
+            border-color: dimgray;
+            border-width: 1px;
+            border-radius: 20px;
+            background-color: white;
+            color: gray;
+            margin-bottom: 8px;
+        }
+    .purchaseitem {
+        background-color: lightgray;
+        border-radius: 10px;
+        margin: 10px;
+        padding: 10px;
+        font-size: 20px;
+        width: 96%;
+        height: auto; /* Ensures variable height based on content */
+    }
+
+    .marginname {
+        margin-left: 10px;
+    }
+
+    .marginname2 {
+        margin-right: 10px;
+    }
+
+    .list-container {
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .scrollable-list {
+        height: 100%;
+        padding: 10px;
+    }
+
+    .sticky-button-container {
+        height: 10%;
+        position: sticky;
+        bottom: 0;
+        align-self: center;
+    }
+
+    .buttonsize {
+        width: 310px;
+        max-width: 310px;
+        height: 50px;
+        max-height: 50px;       
+       
+    }
+</style>
+
+@if (isitem != null)
+{
+    <img src="~/img/no_item.png" style="width:100%; max-height: 50vh; object-fit: contain;">
+    <h3 style="height:50vh; text-align:center;padding:auto;justify-content:center;align-items:center;">No item yet!</h3>
+}
+else
+{
+    <section class="py-3">
+        <div class="main-container">
+            <div class="container1">
+                <div class="row justify-content-left formargin">
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="col-lg-4 col-md-8 d-flex justify-content-center">
+                            <div class="card card-custom" data-id="@item.ItemId">
+                                <div class="img-box">
+                                <img src="~/img/items/@item.ItemImageName" class="card-img-top" alt="Product 1">
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">@item.ItemName</h5>
+                                        <p class="card-text">@item.ItemChangedPrice MMK</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Available: <span class="px-2 count" id="supercount">@item.ItemQuantity</span>
+                                        </div>
+                                        <a href="#" class="btn btn-secondary btn-sm add-to-cart-btn" data-id="@item.ItemId">Add cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="container2">
+                <div class="list-container">
+                    <div class="scrollable-list">
+                        <div id="item-names" class="text-center">
+                            <!-- Item names with quantities will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="sticky-button-container">
+                    <div class="text-center">
+                        <button class="btn btn-primary mb-3 buttonsize" id="submittocart">Purchase</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<script src="~/js/download_js/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var selectedItems = {}; // Object to store item quantities in the cart
+
+        // Disable the Purchase button on page load
+        $('#submittocart').attr('disabled', 'disabled');
+
+        // Function to increment quantity
+        $(document).on('click', '.increment-btn', function () {
+            var itemId = $(this).closest('.purchaseitem').data('id');
+            selectedItems[itemId]++;
+            updateCartDisplay();
+        });
+
+        // Function to decrement quantity
+        $(document).on('click', '.decrement-btn', function () {
+            var itemId = $(this).closest('.purchaseitem').data('id');
+            if (selectedItems[itemId] > 1) {
+                selectedItems[itemId]--;
+            } else {
+                delete selectedItems[itemId];
+            }
+            updateCartDisplay();
+        });
+
+        // Function to add item to cart
+        $(document).on('click', '.add-to-cart-btn', function (e) {
+            e.preventDefault();
+            var itemId = $(this).data('id');
+            if (selectedItems[itemId]) {
+                selectedItems[itemId]++;
+            } else {
+                selectedItems[itemId] = 1;
+            }
+            updateCartDisplay();
+        });
+
+        // Function to delete item from cart
+        $(document).on('click', '.delete-item-btn', function () {
+            var itemId = $(this).closest('.purchaseitem').data('id');
+            delete selectedItems[itemId];
+            updateCartDisplay();
+        });
+
+        // Function to update cart display
+        function updateCartDisplay() {
+            var itemNamesDiv = $('#item-names');
+            itemNamesDiv.empty(); // Clear previous content
+
+            // Update display for each item in selectedItems
+            Object.keys(selectedItems).forEach(function (itemId) {
+                var itemName = $('.card[data-id="' + itemId + '"] .card-title').text().trim();
+                var itemQuantity = selectedItems[itemId];
+
+                // Create elements for item display
+                var itemDiv = $('<div></div>').addClass('d-flex justify-content-between align-items-center mb-2 purchaseitem').attr('data-id', itemId);
+
+                // Left container for item name
+                var nameContainer = $('<div></div>').addClass('marginname').text(itemName);
+
+                // Right container for buttons
+                var buttonContainer = $('<div></div>').addClass('d-flex align-items-center marginname2');
+
+                // Decrement button in cart
+                var decrementButtonCart = $('<button>-</button>').addClass('btn btn-circle btn-secondary btn-sm custom-btn mx-1 decrement-btn ');
+                // Quantity display in cart
+                var quantityDisplayCart = $('<span></span>').addClass('px-2 count').text(itemQuantity);
+
+                // Increment button in cart
+                var incrementButtonCart = $('<button  style="width:25px;height:27px;align:center;">+</button>').addClass('btn btn-secondary btn-sm custom-btn mx-1 increment-btn');
+
+                // Delete button in cart
+                var deleteButtonCart = $('<i class="fas fa-trash-alt btn" style="color:red;"></i>').addClass(' ml-1 delete-item-btn');
+
+                // Append buttons to button container
+                buttonContainer.append(decrementButtonCart, quantityDisplayCart, incrementButtonCart, deleteButtonCart);
+
+                // Append name container and button container to item div
+                itemDiv.append(nameContainer, buttonContainer);
+
+                // Append item div to itemNamesDiv
+                itemNamesDiv.append(itemDiv);
+            });
+
+            // Update disabled attribute of Purchase button
+            var submitButton = $('#submittocart');
+            if (Object.keys(selectedItems).length > 0) {
+                submitButton.removeAttr('disabled');
+            } else {
+                submitButton.attr('disabled', 'disabled');
+            }
+        }
+
+        // Placeholder function to get item name by ID (replace with actual function)
+        function getItemNameById(itemId) {
+            return "item" + itemId;
+        }
+
+        // Click event handler for the Purchase button
+        $('#submittocart').click(function () {
+            // Prepare data for submission
+            var form = $('<form action="/Order/Order_confirm" method="post"></form>');
+
+            // Add each item as a hidden input in the form
+            $.each(selectedItems, function (itemId, quantity) {
+                form.append('<input type="hidden" name="selectedItems[' + itemId + ']" value="' + quantity + '">');
+            });
+
+            // Append form to body and submit
+            $('body').append(form);
+            form.submit();
+        });
+    });
+</script>
