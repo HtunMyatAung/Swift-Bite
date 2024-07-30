@@ -1,0 +1,464 @@
+﻿@model IdentityDemo.ViewModels.ItemsViewModel
+@{
+    Layout = "_User_layout";    
+    var Nullitem = TempData["itemsthere"];
+   
+    var currentyear = DateTime.Now.Year;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Spicy Meal Restaurant</title>
+    <link href="~/css/uniquerestarutant.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .nav-buttons {
+            height: 40px;
+            width: 250px;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+            .nav-buttons .btn {
+                margin: 2px 0;
+                margin-right: 10px;
+                border-radius: 10px;
+            }
+
+        .choice:hover {
+                    background-color:gray;
+                }
+        .search-container {
+            width: 300px;
+            display: flex;
+            align-items: center;
+        }
+
+            .search-container input {
+                border: none;
+                border-bottom: 1px solid #000;
+                outline: none;
+                margin-right: 5px;
+            }
+
+        .getoverhere {
+            display: flex;
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        }
+
+        .uniqueimage {
+            margin-left: 10px;
+            width: 100%;
+            height: auto; /* Maintains aspect ratio */
+            max-width: 250px;
+        }
+
+        .shopimageclass {
+            flex: 1 1 30%;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .shoptextclass {
+            flex: 1 1 70%;
+            height: auto;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .allandpromotion {
+            margin: 2px 0;
+            padding: 2px 20px;
+            margin-right: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+
+            .allandpromotion.active {
+                margin: 2px 0;
+                margin-right: 10px;
+                border-radius: 10px;
+                background-color: #000000;
+                color: #FFFFFF !important;
+                border-radius: 8px;
+            }
+
+        .menu-item {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding-right: 20px;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            color: white;
+            position:relative;
+        }
+
+            .menu-item img {
+                width: 120px;
+                height: 120px;
+                border-radius: 8px;
+                margin-right: 20px;
+            }
+
+            .menu-item h5 {
+                color: black;
+                margin-top: 0;
+                font-weight: bold;
+            }
+
+            .menu-item p {
+                margin: 5px 0;
+                color: black;
+            }
+
+        .plus-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            padding: 5px;
+            font-size: 16px;
+            color:black;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        .plus-icon:hover{
+            font-size:20px;
+            color:orangered;
+        }
+        .floating-cart {
+            position: fixed;
+            top: 40px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+            .cart-item .item-quantity {
+                width: 40px;
+                text-align: center;
+                border: 1px solid #ddd;
+                margin: 0 5px;
+            }
+
+            .cart-item div {
+                display: flex;
+                align-items: center;
+            }
+
+            .cart-item span {
+                flex: 1;
+            }
+
+            .cart-item .btn {
+                background: none;
+                padding: 5px;
+                font-size: 18px;
+                cursor: pointer;
+            }
+
+            .cart-item .itemeachprice {
+                text-align: right;
+            }
+
+        .maincandiv {
+            height: 90vh;
+            width: 100%;
+        }
+
+        .foodcandiv {
+            height: 75vh;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        .submitcandiv {
+            height: 15vh;
+            width: 100%;
+        }
+
+        .submittocart1 {
+            width: 60%;
+            height: 45px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="getoverhere">
+            <div class="shopimageclass">
+                <img src="~/img/shop/@Model.Shop.ProfileImagePath" alt="@Model.Shop.ProfileImagePath" class="uniqueimage" />
+            </div>
+            <div class="shoptextclass">
+                <h1 class="shoptext">@Model.Shop.ShopName</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header-container">
+            <div class="nav-buttons d-flex justify-content-around shadow">
+                <a class="nav-link active allandpromotion choice" id="allButton" href="#">All</a>
+                <a class="nav-link allandpromotion choice" id="promotionButton" href="#">Promotion</a>
+            </div>
+            <div class="search-container">
+                <input type="text" class="form-control" placeholder="Search">
+                <button class="btn btn-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.414-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4" id="all">
+        @if (Nullitem != null)
+        {
+            <p>hi</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="col-md-6 col-lg-4 col-sm-12">
+                        <div href="#" class="menu-item">
+                            <img src="~/img/items/@item.ItemImageName" alt="@item.ItemImageName">
+
+                            <div class="item-details">
+                                <h5>@item.ItemName</h5>
+                                <p><small>@Model.Shop.ShopName</small></p>
+                                <p class="price">@item.ItemChangedPrice</p>
+                                <a href="#" class="menu-items" data-item-id="@item.ItemId" data-item-name="@item.ItemName" data-item-price="@item.ItemChangedPrice">
+                                    <i class="fas fa-plus plus-icon"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+        }
+
+    </div>
+    <div class="container mt-4" id="promotion" style="display:none;">
+        @if (Nullitem != null)
+        {
+            <p>hi</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var item in Model.Items.Where(i => i.ItemPrice != i.ItemChangedPrice))
+                {
+                    
+                    <div class="col-md-6 col-lg-4 col-sm-12">
+                        <div href="#" class="menu-item">
+                            <img src="~/img/items/@item.ItemImageName" alt="@item.ItemImageName">
+
+                            <div class="item-details">
+                                <h5>@item.ItemName</h5>
+                                <p><small>@Model.Shop.ShopName</small></p>
+                                <p class="price small" style="font-size:0.8em;text-decoration:line-through;">@item.ItemPrice</p>
+                                <p class="price">@item.ItemChangedPrice</p>
+                                <a href="#" class="menu-items" data-item-id="@item.ItemId" data-item-name="@item.ItemName" data-item-price="@item.ItemChangedPrice">
+                                    <i class="fas fa-plus plus-icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <a class="floating-cart" id="cartIcon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <i class="fas fa-shopping-cart" style="font-size: 24px;"></i>
+    </a>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Cart</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="maincandiv">
+            <div class="foodcandiv">
+                <div class="offcanvas-body" id="cartItems">
+                    <p>Your cart is empty.</p>
+                </div>
+            </div>
+            <div class="submitcandiv">
+                <p>Total Price :<span id="alltotalprice"></span></p>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" id="submittocart" class="btn btn-dark submittocart1" disabled>Purchase</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('allButton').addEventListener('click', function () {
+            document.getElementById('all').style.display = 'block';
+            document.getElementById('promotion').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('promotionButton').classList.remove('active');
+        });
+
+        document.getElementById('promotionButton').addEventListener('click', function () {
+            document.getElementById('all').style.display = 'none';
+            document.getElementById('promotion').style.display = 'block';
+            this.classList.add('active');
+            document.getElementById('allButton').classList.remove('active');
+        });
+    </script>
+    <script>
+        const selectedItems = {};
+
+        document.querySelectorAll('.menu-items').forEach(item => {
+            item.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const id = item.getAttribute('data-item-id');
+                const name = item.getAttribute('data-item-name');
+                const price = parseFloat(item.getAttribute('data-item-price'));
+
+                if (selectedItems[id]) {
+                    selectedItems[id].quantity++;
+                } else {
+                    selectedItems[id] = {
+                        name: name,
+                        price: price,
+                        quantity: 1
+                    };
+                }
+
+                updateCart();
+            });
+        });
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartItemTotal = document.getElementById('alltotalprice');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            for (const [id, item] of Object.entries(selectedItems)) {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartItemsContainer.innerHTML += `
+                                <div class="cart-item">
+                                    <span>${item.name}</span>
+                                    <div>
+                                        <button class="btn" onclick="changeQuantity('${id}', -1)">-</button>
+                                        <input type="text" class="item-quantity" value="${item.quantity}" readonly>
+                                        <button class="btn" onclick="changeQuantity('${id}', 1)">+</button>
+                                    </div>
+                                    <span class="itemeachprice">${itemTotal} MMK</span>
+                                </div>
+                            `;
+            }
+
+            cartItemTotal.innerHTML = total > 0 ? `${total} MMK` : '0 MMK';
+            // Update disabled attribute of Purchase button
+            const submitButton = document.getElementById('submittocart');
+            if (Object.keys(selectedItems).length > 0) {
+                submitButton.removeAttribute('disabled');
+                console.log('Button enabled');
+            } else {
+                submitButton.setAttribute('disabled', 'disabled');
+                console.log('Button disabled');
+            }
+        }
+
+        function changeQuantity(id, change) {
+            if (selectedItems[id]) {
+                selectedItems[id].quantity += change;
+                if (selectedItems[id].quantity <= 0) {
+                    delete selectedItems[id];
+                }
+                updateCart();
+            }
+        }
+        document.getElementById('submittocart').addEventListener('click', function () {
+            // Prepare data for submission
+            var form = document.createElement('form');
+            form.action = '/Order/Order_confirm';
+
+            form.method = 'post';
+
+            // Add each item as a hidden input in the form
+            for (var id in selectedItems) {
+                if (selectedItems.hasOwnProperty(id)) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = `selectedItems[${id}]`;
+                    input.value = selectedItems[id].quantity;
+                    form.appendChild(input);
+                }
+            }
+
+            // Append form to body and submit
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.allandpromotion');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

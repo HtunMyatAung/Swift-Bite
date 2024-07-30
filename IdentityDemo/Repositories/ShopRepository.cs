@@ -20,6 +20,11 @@ namespace IdentityDemo.Repositories
         {
             return _context.Shops.Count();
         }
+        public async Task<IEnumerable<ShopModel>> GetShopsListAsync()
+        {
+            // Fetch data from the database or data source
+            return await _context.Shops.ToListAsync(); // Fetch and return as IEnumerable<ShopModel>
+        }
         public IEnumerable<ShopModel> GetAllShopsAsync()
         {
             return _context.Shops.ToList();

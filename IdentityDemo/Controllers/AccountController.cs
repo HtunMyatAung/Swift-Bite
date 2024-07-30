@@ -178,7 +178,15 @@ namespace IdentityDemo.Controllers
                     }
                     else if (isuser.Role == "Owner")
                     {
-                        return RedirectToAction("Owner_dashboard", "Shop");
+                        if (model.Role== "user")
+                        {
+                            return RedirectToAction("User_profile", "Hywm");
+                        }
+                        else if (model.Role == "owner")
+                        {
+                            return RedirectToAction("Owner_dashboard", "Shop");
+                        }
+                        
                     }
                     else
                     {

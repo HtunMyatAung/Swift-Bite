@@ -90,7 +90,7 @@ namespace IdentityDemo.Controllers
 
                 await _orderService.SaveOrderAsync(invoiceViewModel);
 
-                return RedirectToAction("HomePageItems", "Item");
+                return RedirectToAction("Landing_page2", "Hywm");
             }
             catch (Exception ex)
             {

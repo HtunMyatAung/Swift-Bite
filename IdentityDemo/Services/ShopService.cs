@@ -25,6 +25,14 @@ namespace IdentityDemo.Services
             _environment = environment;
             _userRepository = userRepository;
         }
+        public async Task<List<ShopModel>> GetShopsListAsync()
+        {
+            // Get shops from repository
+            var shops = await _shopRepository.GetShopsListAsync();
+
+            // Ensure the return type matches List<ShopModel>
+            return shops.ToList(); // Convert IEnumerable<ShopModel> to List<ShopModel>
+        }
         public  IEnumerable<ShopModel> GetAllShopsAsync()
         {
             return  _shopRepository.GetAllShopsAsync();

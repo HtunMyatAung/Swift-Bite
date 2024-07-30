@@ -15,7 +15,8 @@ namespace IdentityDemo.Services
         private readonly ICategoryRepository _categroyRepository;
         private readonly AppDbContext _context;
         private readonly IWishListService _wishListService;
-        public ItemService(IWishListService wishListService,IItemRepository itemRepository, UserManager<ApplicationUser> userManager,ICategoryRepository categoryRepository,AppDbContext context,IWebHostEnvironment environment)
+        private readonly IShopService _shopService;
+        public ItemService(IShopService shopService,IWishListService wishListService,IItemRepository itemRepository, UserManager<ApplicationUser> userManager,ICategoryRepository categoryRepository,AppDbContext context,IWebHostEnvironment environment)
         {
             _itemRepository = itemRepository;
             _userManager = userManager;
@@ -23,6 +24,7 @@ namespace IdentityDemo.Services
             _context = context;
             _environment = environment;
             _wishListService = wishListService;
+            _shopService = shopService;
         }
         public async Task<List<ItemModel>> GetItemsByIdsAsync(List<int> itemIds)
         {
@@ -66,11 +68,14 @@ namespace IdentityDemo.Services
         {
             var shop = await _itemRepository.GetShopByIdAsync(shopId);
             var items = await _itemRepository.GetAllItemsAsync();
-            
+            var shops = await _shopService.GetShopsListAsync();
+            var shopLookup = shops.ToDictionary(s => s.ShopId, s => s.ShopName);
+
             return new ItemsViewModel
             {
                 Shop = shop,
-                Items = items.Where(i => i.Shop_Id == shopId).ToList()
+                Items = items.Where(i => i.Shop_Id == shopId).ToList(),
+                ShopLookup = shopLookup
             };
         }
 

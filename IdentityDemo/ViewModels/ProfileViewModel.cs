@@ -18,6 +18,9 @@ namespace IdentityDemo.ViewModels
         public List<OrderDetailModel>? OrderDetails { get; set; }
         public List<OrderViewModel>? Orders {  get; set; }
         public List<ItemModel>? WishlistItems { get; set; }
+        public List<ShopModel>? Shops { get; set; }
+        public Dictionary<int, string>? ShopLookup { get; set; }
+
 
         //public string? Order { get; set; }
     }

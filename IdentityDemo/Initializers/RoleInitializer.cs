@@ -34,7 +34,7 @@ namespace IdentityDemo.Initializers
                 {
                 adminUser = new ApplicationUser
                 {
-                    UserName = adminUserEmail,
+                    UserName = "admin",
                     Email = adminUserEmail,
                     ShopId = 0,
                     Role="Admin",

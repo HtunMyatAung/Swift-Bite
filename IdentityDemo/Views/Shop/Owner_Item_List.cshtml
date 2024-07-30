@@ -8,7 +8,6 @@
 @section Scripts {
     <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
 
-    <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
     <!-- jQuery -->
     <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
@@ -103,7 +102,7 @@
         ViewBag.id = item.Shop_Id;
     }
     <div class="my-auto">
-    <a href="@Url.Action("CreateItem","Item",new{shopid = @ViewBag.id})" class="btn btn-primary" ><i class="fa fa-circle-plus" ></i> New Item</a>
+    <a href="@Url.Action("CreateItem","Item",new{shopid = @ViewBag.id})" class="btn " style="background-color:black;color:white;"><i class="fa fa-circle-plus" ></i> New Item</a>
     </div>
 </div>
 <table id="shoptable" class="display" style="width:100%;">
@@ -180,9 +179,9 @@
 <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="buyItemModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color:black;color:white;">
                 <h5 class="modal-title" id="buyItemModalLabel">Item Details</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="color:white;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

@@ -9,6 +9,7 @@ namespace IdentityDemo.Services
     public interface IShopService
     {
         Task<int> ShopCount();
+        Task<List<ShopModel>> GetShopsListAsync();
         Task<List<ShopViewModel>> GetShopsNOwnersAsync();
         IEnumerable<ShopModel> GetAllShopsAsync();
         Task<ShopModel> GetShopByIdAsync(int shopId);

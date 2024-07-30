@@ -3,6 +3,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ApplicationUser currentUser = await UserManager.GetUserAsync(User);
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString().ToLower();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +46,12 @@
     <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
     @RenderSection("Datatablecss", false)
     @RenderSection("Database",false)
+    <style>
+        .btn-active{
+            background-color:rgba(0,0,0,0.7)!important;
+            color:white!important;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -55,17 +62,14 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <ol class="breadcrumb float-sm-right" style="background-color:white;">
-                    <li class="breadcrumb-item"><a href="@Url.Action("HomePageItems","Item")">Home</a></li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("User_profile","Account")">Profile</a></li>
-                </ol>                
+                              
             </ul>
             
             
         </nav>
         <!-- /.navbar -->
 
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-white elevation-4">
             <!-- Brand Logo -->
             @*<a href="index3.html" class="brand-link">
             <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -85,63 +89,56 @@
                 </div>
 
                 <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <hr style="border:2px solid; width:100%"/>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item menu-open">
-                            <a href="@Url.Action("Owner_dashboard", "Shop", new { shopId = currentUser.ShopId })" class="nav-link ">
+                    <ul class="nav nav-pills nav-sidebar flex-column mb-4" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open mb-2">
+                            <a href="@Url.Action("Owner_dashboard", "Shop", new { shopId = currentUser.ShopId })" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Owner_dashboard".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="@Url.Action("Shop_view", "Shop", new { shopId = currentUser.ShopId })" class="nav-link ">
+                        <li class="nav-item menu-open mb-2">
+                            <a href="@Url.Action("Shop_view", "Shop", new { shopId = currentUser.ShopId })" class="nav-link @(currentAction== "shop_view" ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-store"></i>
                                 <p>
                                     View Shop
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="@Url.Action("UpdateShop", "Shop")" class="nav-link ">
+                        <li class="nav-item menu-open mb-2">
+                            <a href="@Url.Action("UpdateShop", "Shop")" class="nav-link  @(currentAction== "UpdateShop".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-store"></i>
                                 <p>
                                     Update Shop Info
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="@Url.Action("Owner_item_List", "Shop")" class="nav-link ">
+                       
+                        <li class="nav-item menu-open mb-2">                            
+                            <a href="@Url.Action("Owner_Item_List", "Shop")" class="nav-link @(currentAction == "owner_item_list" ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-box"></i>
                                 <p>
-                                    Item list
+                                    Item list 
                                 </p>
                             </a>
+                            
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="@Url.Action("Owner_order_list", "Shop")" class="nav-link ">
+                        <li class="nav-item menu-open mb-2">
+                            <a href="@Url.Action("Owner_order_list", "Shop")" class="nav-link @(currentAction == "Owner_order_list".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
                                 <p>
                                     Order list
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item " style="margin-top:120px;">
                             <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
-                                <button type="submit" class="logout-button nav-link" style="background-color: white;">
+                                <button type="submit" class="logout-button nav-link" style="background-color:black;color:white;border-radius:15px;">
                                     <i class="nav-icon fas fa-sign-out-alt"></i>
                                     <p>Log Out</p>
                                 </button>

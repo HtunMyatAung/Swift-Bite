@@ -41,13 +41,13 @@
                     <img src="~/img/shop/@shop.ProfileImagePath" class="card-img-top topimagecard" alt="shop1" />
                     <div class="card-body">
                         <h5 class="card-title text-center">@shop.ShopName</h5>
-                        <p class="card-text">
-                            @shop.ShopDescription @shop.ShopId
+                        <p class="card-text " style="margin-left:10px;">
+                            @shop.ShopDescription 
                         </p>
                     </div>
                 </label>
                
-                <button id="go-page-@shop.ShopId" onclick="location.href='@Url.Action("ItemByShopid","Item",new{shopId=shop.ShopId})'" class="d-none"></button>
+                <button id="go-page-@shop.ShopId" onclick="location.href='@Url.Action("SingleShopView","Hywm",new{shopId=shop.ShopId})'" class="d-none"></button>
             }
            
             

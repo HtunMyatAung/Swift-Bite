@@ -53,6 +53,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- summernote -->
     <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
     @RenderSection("Datatablecss",false)
+    <style>
+        .btn-active{
+            background-color: #D9D9D9!important;            
+            color:black!important;
+        }
+    </style>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -106,7 +112,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="@Url.Action("Admin_dashboard", "AdminControl")" class="nav-link">
+                            
+                                <a href="@Url.Action("Admin_dashboard", "AdminControl")" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Admin_dashboard".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -115,7 +122,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Admin_user_list", "AdminControl")" class="nav-link">
+                            <a href="@Url.Action("Admin_user_list", "AdminControl")" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Admin_user_list".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon  fas fa-user"></i>
                                 <p>
                                     Users
@@ -126,7 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
 
                         <li class="nav-item">
-                            <a href="@Url.Action("Admin_shop_list", "AdminControl")" class="nav-link">
+                            <a href="@Url.Action("Admin_shop_list", "AdminControl")" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Admin_shop_list".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-store"></i>
                                 <p>
                                     Shops
@@ -136,7 +143,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Admin_category_list", "AdminControl")" class="nav-link">
+                            <a href="@Url.Action("Admin_category_list", "AdminControl")" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Admin_category_list".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>
                                     Categories
@@ -146,7 +153,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Admin_forgot_list", "AdminControl")" class="nav-link">
+                            <a href="@Url.Action("Admin_forgot_list", "AdminControl")" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Admin_forgot_list".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-sync"></i>
                                 <p>
                                     Reset Password
@@ -156,7 +163,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("Admin_change_password", "AdminControl")" class="nav-link">
+                            <a href="@Url.Action("Admin_change_password", "AdminControl")" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Admin_change_password".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-key"></i>
                                 <p>
                                     Change Password
@@ -165,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-top:100px;">
                             <form method="post" action="@Url.Action("Logout", "AdminControl")" class="logout-form">
                                 <button type="submit" class="logout-button nav-link" style="background-color: white;">
                                     <i class="nav-icon fas fa-sign-out-alt"></i>

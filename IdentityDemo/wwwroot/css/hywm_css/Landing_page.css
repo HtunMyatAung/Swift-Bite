@@ -240,7 +240,7 @@ body {
 
     .food_item:hover {
         transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border:none;
     }
 
 .food_overlay {
@@ -264,6 +264,7 @@ body {
 
 .food_item:hover .small_image {
     transform: scale(1.1);
+    border:none;
 }
 
 .text_bg_container {
@@ -483,6 +484,225 @@ body {
         margin-top: 10px;
         align-content:center;
     }
-    
 
-    
+
+@media (min-width: 10px) and (max-width: 1200px) {
+    .nav-buttons{
+        width:150px !important;
+    }
+        .nav-buttons button{
+            font-size:15px !important;
+            padding-right:35px;
+            padding-left:35px;
+        }
+        .superleft, .left {
+            display: none !important;
+        }
+
+    .right {
+        width: 100% !important;
+    }
+
+    .wefood {
+        font-size: 2rem !important;
+    }
+
+    .bestfood {
+        font-size: 3rem !important;
+    }
+
+    .usercount {
+        font-size: 3rem !important;
+    }
+
+    .happy {
+        font-size: 1.2rem !important;
+    }
+
+    .lakanquot {
+        font-size: 1rem !important;
+    }
+}
+body {
+    font-family: 'Piazzolla', serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.superleft {
+    width: 7%;
+    background-color: #B1454A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.directiontext {
+    writing-mode: vertical-rl;
+    color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+    font-size: 6rem;
+    transform: rotate(180deg);
+    position: absolute;
+}
+
+.left {
+    width: 23%;
+    background-color: #B1454A;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 20px;
+    position: relative;
+}
+
+.foodtext {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.food-img {
+    position: absolute;
+    z-index: 1;
+}
+
+.food1 {
+    top: 5%;
+    left: 50%;
+    height: 150px;
+    width: 150px;
+}
+
+.food2 {
+    top: 25%;
+    left: 75%;
+    height: 200px;
+    width: 200px;
+}
+
+.food3 {
+    top: 50%;
+    left: 40%;
+    height: 220px;
+    width: 220px;
+}
+
+.food4 {
+    top: 72%;
+    left: 80%;
+    height: 170px;
+    width: 170px;
+}
+
+.right {
+    width: 70%;
+    background-color: #F5F5F5;
+    position: relative;
+}
+
+.leftdesign {
+    padding-left: 15%;
+    padding-bottom: 0;
+    padding-right: 5%;
+}
+
+.foodtext1 {
+    font-size: 2rem;
+    color: white;
+    margin-top: 10%;
+}
+
+.foodtext2 {
+    font-size: 2rem;
+    margin-top: 30%;
+    color: white;
+    margin-left: 30%;
+}
+
+.foodtext3 {
+    font-size: 2rem;
+    margin-top: 30%;
+    color: white;
+    margin-left: 10%;
+}
+
+.foodtext4 {
+    font-size: 2rem;
+    margin-top: 26%;
+    color: white;
+    margin-left: 5%;
+}
+
+.wefood {
+    font-weight: bold;
+}
+
+.bestfood {
+    font-weight: bold;
+}
+
+.signupbtn {
+    margin-top: 0;
+    padding: 10px 20px;
+    font-size: 1.2rem; /* Adjusted this line */
+    font-weight: bold;
+}
+
+.howtobtn {
+    margin-left: 5%;
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 1.2rem; /* Adjusted this line */
+    display: inline-flex;
+    align-items: center;
+}
+
+    .howtobtn .play-button {
+        margin-right: 5px;
+    }
+
+.lastpart {
+    background-color: #D9D9D9;
+    width: 100%;
+    height: 20%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
+}
+
+.usercount {
+    padding-left: 5%;
+    margin: auto 0;
+    font-size: 5rem;
+}
+
+.happycustomer {
+    width: 40%;
+    height: 80%;
+    align-items: center;
+}
+
+.happy {
+    padding-left: 10%;
+    color: rgba(0,0,0,50%)
+}
+
+.vertical-line {
+    border-left: 6px solid rgba(0,0,0,80%);
+    height: 60%;
+}
+
+.lakanquot {
+    padding-left: 10%;
+    font-size: 1.4rem;
+}

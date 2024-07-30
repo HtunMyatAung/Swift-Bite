@@ -10,6 +10,8 @@ namespace IdentityDemo.ViewModels
         public List<ItemModel>? Items { get; set; }
         public List<string>? Categories { get; set; }
         public List<WishListModel>? WishlistItems { get; set; }
+
+        public Dictionary<int, string>? ShopLookup { get; set; }
         //public DateTime OrderDate { get; set; }
     }
 }

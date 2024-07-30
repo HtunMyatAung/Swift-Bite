@@ -27,46 +27,7 @@
         }
 
         /* Row styling for centering images */
-        .row.photoloader {
-            display: flex;
-            flex-wrap: wrap; /* Allow items to wrap to the next line */
-            justify-content: center; /* Center items horizontally */
-            margin: 0; /* Remove default margins */
-            gap: 10%; /* Add spacing between images */
-        }
-
-            /* Common image styling */
-            .row.photoloader img {
-                border-radius: 8px; /* Optional: Add rounded corners */
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow effect */
-                display: block; /* Remove extra space below images */
-                object-fit: fill; /* Maintain aspect ratio and cover the assigned height */
-            }
-
-        /* Larger image sizes */
-        .photo1, .photo3 {
-            height: 10%; /* Custom height for larger images */
-            width: 15%; /* Maintain aspect ratio */
-            margin-bottom: 20px;
-        }
-
-        .photo6, .photo8 {
-            height: 130px; /* Custom height for larger images */
-            width: 15%; /* Maintain aspect ratio */
-        }
-
-        /* Smaller image sizes */
-        .photo2, .photo4 {
-            margin-top: 5%;
-            height: 70px; /* Custom height for smaller images */
-            width: 15%;
-            margin-bottom: 20px;
-        }
-
-        .photo5, .photo7 {
-            height: 90px; /* Custom height for smaller images */
-            width: auto; /* Maintain aspect ratio */
-        }
+        
 
         .navbar {
             background-color: #f8f9fa; /* Background color of the navbar */
@@ -237,36 +198,112 @@
         .heart-button.active {
             color: red; /* Filled heart color */
         }
+
+        .causoralcontainer {
+            height: 300px;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: fill;
+        }
     </style>
 </head>
 <body>
 
 
-    <div class="container">
-        <div class="row d-flex justify-content-center photoloader">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg1.png" alt="Photo 1" class="photo1 d-flex shadow">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg2.png" alt="Photo 2" class="photo2">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg3.png" alt="Photo 3" class="photo3">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg4.png" alt="Photo 4" class="photo4">
+    <div class="container-fluid causoralcontainer ">
+        <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-6 col-sm-12 img1">
+                            <img src="~/img/hywm_img/advs banner/1.jpg" alt="First slide" class="d-block">
+                        </div>
+                        <div class="col-md-6 img2">
+                            <img src="~/img/hywm_img/advs banner/2.jpg" alt="Second slide" class="d-block">
+                        </div>
+                    </div>
 
-        </div>
-        <div class="row d-flex justify-content-center photoloader">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg5.png" alt="Photo 5" class="photo5">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg6.png" alt="Photo 6" class="photo6">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg7.png" alt="Photo 7" class="photo7">
-            <img src="~/img/hywm_img/img/afterlogin/landingpageimg8.png" alt="Photo 8" class="photo8">
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-6 col-sm-12 img1">
+                            <img src="~/img/hywm_img/advs banner/3.jpg" alt="Third slide" class="d-block">
+                        </div>
+                        <div class="col-md-6 img2">
+                            <img src="~/img/hywm_img/advs banner/4.jpg" alt="Second slide" class="d-block">
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-6 col-sm-12 img1">
+                            <img src="~/img/hywm_img/advs banner/5.jpg" alt="First slide" class="d-block">
+                        </div>
+                        <div class="col-md-6 img2">
+                            <img src="~/img/hywm_img/advs banner/6.jpg" alt="Second slide" class="d-block">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-6 col-sm-12 img1">
+                            <img src="~/img/hywm_img/advs banner/7.jpg" alt="Third slide" class="d-block">
+                        </div>
+                        <div class="col-md-6 img2">
+                            <img src="~/img/hywm_img/advs banner/1.jpg" alt="Second slide" class="d-block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </div>
     <div class="navbar d-flex justify-content-around shadow mt-3">
         <a href="#all" class="nav-link1">All</a>
         @foreach (var category in Model.Categories)
         {
-            <a href="#" class="nav-link1">@category</a>
+            <a href="#@category" class="nav-link1">@category</a>
         }
     </div>
 
 
-    <div class="container mt-4">
+    <div class="container mt-4" id="all">
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-md-6 col-lg-4 col-sm-12">
+                    <div class="menu-item1">
+                        <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
+                        <div>
+                            <h5>@item.ItemName</h5>
+                            <p>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</p>
+                            <p><small>Restaurant name</small></p>
+                            <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
+                        </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var isInWishlist = Model.WishlistItems != null && Model.WishlistItems.Any(w => w.ItemId == item.ItemId);
+                            <button class="heart-button @(isInWishlist ? "active" : "")" data-item-id="@item.ItemId">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="container mt-4" id="food">
         <div class="row">
             @foreach (var item in Model.Items)
             {
@@ -378,6 +415,21 @@
         <!-- Copyright -->
     </footer>
     <!-- Footer -->
+    <script>
+        document.getElementById('allButton').addEventListener('click', function () {
+            document.getElementById('all').style.display = 'block';
+            document.getElementById('promotion').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('promotionButton').classList.remove('active');
+        });
+
+        document.getElementById('promotionButton').addEventListener('click', function () {
+            document.getElementById('all').style.display = 'none';
+            document.getElementById('promotion').style.display = 'block';
+            this.classList.add('active');
+            document.getElementById('allButton').classList.remove('active');
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const navLinks = document.querySelectorAll('.titellink');

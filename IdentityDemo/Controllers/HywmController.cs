@@ -12,25 +12,44 @@ namespace Near_foods.Controllers
         private readonly IItemService _itemService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWishListService _wishListService;
-        public HywmController(IAccountService accountService, IItemService itemService,UserManager<ApplicationUser> userManager,IWishListService wishListService)
+        private readonly IShopService _shopService;
+        public HywmController(IShopService shopService,IAccountService accountService, IItemService itemService,UserManager<ApplicationUser> userManager,IWishListService wishListService)
         {
             _accountService = accountService;
             _itemService = itemService;
             _userManager = userManager;
             _wishListService = wishListService;
+            _shopService = shopService;
+        }
+        
+        public async Task<IActionResult> SingleShopView(int shopid)
+        {
+            var itemsViewModel = await _itemService.GetItemNShopByShopIdAsync(shopid);
+            if (!itemsViewModel.Items.Any())
+            {
+                TempData["itemsthere"] = "hello";
+            }
+            return View(itemsViewModel);
         }
         public async Task<IActionResult> Foods()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var wishes = await _wishListService.GetWishlistItemsAsync(user.Id);
 
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var wishes = await _wishListService.GetWishlistItemsAsync(user.Id);
+            var shops = await _shopService.GetShopsListAsync();
+           var shopLookup = shops.ToDictionary(s => s.ShopId, s => s.ShopName);
             var itemsViewModel = await _itemService.GetHomePageItemsAsync();
             var newItemsViewModel = new ItemsViewModel
             {
                 Shops = itemsViewModel.Shops,
                 Items = itemsViewModel.Items,
                 Categories = itemsViewModel.Categories,
-                WishlistItems = wishes
+                WishlistItems = wishes,
+                ShopLookup = shopLookup
             };
 
             return View(newItemsViewModel);

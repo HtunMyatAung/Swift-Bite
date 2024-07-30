@@ -24,7 +24,8 @@ namespace IdentityDemo.Services
         private readonly IEmailService _emailService;
         private readonly IWishListService _wishListService;
         private readonly IItemService _itemService;
-        public AccountService(IItemService itemService,IWishListService wishListService,UserManager<ApplicationUser> userManager,
+        private readonly IShopService _shopService;
+        public AccountService(IShopService shopService,IItemService itemService,IWishListService wishListService,UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager, IAccountRepository accountRepository, AppDbContext context, RoleManager<IdentityRole> roleManager, IWebHostEnvironment environment, IEmailService emailService)
         {
             _userManager = userManager;
@@ -36,6 +37,7 @@ namespace IdentityDemo.Services
             _accountRepository = accountRepository;
             _wishListService = wishListService;
             _itemService = itemService;
+            _shopService= shopService;
         }
         public async Task<UpdateUserViewModel> GetUpdateUserViewModelAsync(string userId)
         {
@@ -369,6 +371,7 @@ namespace IdentityDemo.Services
 
         public async Task<ProfileViewModel> GetUserProfileAsync(ClaimsPrincipal user)
         {
+            
             var applicationUser = await _userManager.GetUserAsync(user);
             if (applicationUser == null)
             {
@@ -379,6 +382,7 @@ namespace IdentityDemo.Services
             var itemIds = await _wishListService.GetItemIdsFromWishlistAsync(applicationUser.Id);
 
             // Get items by IDs
+            
             var items = await _itemService.GetItemsByIdsAsync(itemIds);
             var orders = await _context.Orders
                              .Where(o => o.User_Id == applicationUser.Id)
@@ -391,7 +395,8 @@ namespace IdentityDemo.Services
                 OrderPrice = o.OrderPrice,
                 Shop_Name = _context.Shops.FirstOrDefault(u => u.ShopId == o.Shop_Id)?.ShopName
             }).ToList();
-
+            var shops = await _shopService.GetShopsListAsync();
+            var shopLookup = shops.ToDictionary(s => s.ShopId, s => s.ShopName);
             var profileViewModel = new ProfileViewModel
             {
                 OrderCount = orders.Count,
@@ -401,7 +406,10 @@ namespace IdentityDemo.Services
                 UserName = applicationUser.UserName,
                 Address = applicationUser.Address,
                 Orders = orderViewModels,
-                WishlistItems = items
+                WishlistItems = items,
+                Shops=shops,
+                ShopLookup=shopLookup
+
             };
 
             return profileViewModel;

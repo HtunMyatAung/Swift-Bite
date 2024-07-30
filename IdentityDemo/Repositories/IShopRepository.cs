@@ -9,6 +9,7 @@ namespace IdentityDemo.Repositories
     {
         Task<int> ShopCount();
         Task<int> GetNewShopIdAsync();
+        Task<IEnumerable<ShopModel>> GetShopsListAsync();
         IEnumerable<ShopModel> GetAllShopsAsync();
         Task<ShopModel> GetShopByIdAsync(int shopId);
         Task AddShopAsync(ShopModel shop);
