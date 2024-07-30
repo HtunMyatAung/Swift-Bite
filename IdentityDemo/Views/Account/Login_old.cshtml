@@ -1,0 +1,357 @@
+﻿@model IdentityDemo.ViewModels.LoginViewModel
+@{
+    Layout = null;
+    string message = TempData["message"] as string;
+}
+
+<!--custom CSS -->
+<link rel="stylesheet" href="~/css/hywm_css/Landing_page.css" />
+
+<!-- Bootstrap JS and dependencies -->
+<script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+<script src="~/js/download_js/2_5_4_popper.min.js"></script>
+<script src="~/js/download_js/4_5_3_bootstrap.min.js"></script>
+<link href="~/css/download_css/4_5_3_bootstrap.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/download_css/5_15_3_all.min.css" />
+<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+
+<script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+<style>
+    body {
+        background-image: url("/img/hywm_img/bg.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-form {
+        position: absolute;
+        align-items: center;
+        top: 10%; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 8px;
+        overflow: visible; /* Allow overflow for image */
+        transition: top 0.3s ease; /* Smooth transition for sliding effect */
+    }
+
+        .popup-form.active {
+            top: 50px; /* Adjust as needed to control how far down it slides */
+        }
+
+        .popup-form h2 {
+            text-align: center;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .popup-form img {
+            width: 100%;
+            max-width: 92px; /* Adjust image size */
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            position: absolute;
+            top: -50px; /* Position image outside form */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust position */
+            z-index: 1; /* Ensure image stays above form */
+        }
+
+        .popup-form .form-container {
+            position: relative; /* Ensure relative positioning for contents */
+            z-index: 2; /* Ensure form content is above image */
+        }
+
+            .popup-form .form-container p {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .popup-form .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .popup-form label {
+            width: 30%;
+            margin-right: 10px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 18px;
+            margin-top:25px;
+        }
+
+        .popup-form .dotted-input {
+            flex: 1;
+            position: relative;
+        }
+
+            .popup-form .dotted-input input {
+                height:50px;
+                width: 75%;
+                padding: 1px;
+                font-size: 18px;
+                border: none;
+                border-bottom: 4px dotted #999;
+                box-sizing: border-box;
+                text-align: left;
+                outline: none; /* Remove default input focus outline */
+            }
+
+            .popup-form .dotted-input .text-danger {
+                display: block;
+                margin-top: 5px; /* Add some space between input and error message */
+                font-size: 10px; /* Adjust font size */
+            }
+
+        .popup-form button[type="submit"] {
+            display: block;
+            margin: 0 auto;            
+            border: none;
+            border-radius: 15px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .popup-form .social-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+            .popup-form .social-icons img {
+                width: 40px;
+                height: 40px;
+                margin: 0 10px;
+                cursor: pointer;
+            }
+
+        .popup-form .already-account {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .popup-form .already-account a {
+                color: black;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+        .popup-form button:hover {
+            font-weight:bolder; /* Darker shade on hover */
+        }
+
+        .popup-form .error {
+            color: red; /* Adjust error message color */
+            margin-top: 10px;
+            align-content: center;
+        }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+        .input-with-icon i {
+            position: absolute;
+            right: 60px; /* Adjust to position icon on the left */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .input-with-icon input {
+            padding-left: 30px; /* Adjust to make space for the icon */
+        }
+
+    .forgot .forgot-link{
+        flex:1;
+        margin-left:60%;
+    }
+
+    .close-button {
+        position: absolute;
+        top: -35px; /* Adjust as needed */
+        right: -25px; /* Adjust as needed */
+        background: transparent !important; /* Ensure no background color */
+        border: none; /* Remove border */
+        font-size: 1.0rem; /* Adjust size as needed */
+        color: black !important; /* Change icon color as needed */
+        cursor: pointer;
+        outline: none;
+        padding: 0;
+    }
+
+        .close-button:hover {
+            color: red !important;
+        }
+
+     
+</style>
+
+<body>
+    <div class="popup-form">
+        <img src="~/img/hywm_img/login1.png" alt="Image">
+        <div class="form-container">
+            <button  class="close-button" onclick="location.href='@Url.Action("Landing_page2","Hywm")'">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2>Log In</h2>
+            <p>Welcome back! Please enter your details.</p>
+            <form asp-action="Login" asp-controller="Account" method="post">
+                <div class="form-row">
+                    <label asp-for="UserName">Full Name</label>
+                    <div class="dotted-input">
+                        <input asp-for="UserName" type="text" id="username" name="username" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label asp-for="Password">Password</label>
+                    <div class="dotted-input input-with-icon">
+                        <i class="fas fa-eye-slash" id="togglePassword"></i>
+                        <input asp-for="Password" type="password" id="password" name="Password" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-4">
+                        <div class="d-flex align-items-center mt-4">
+                            <label class="col-form-label fs-6 me-3">Log in as:</label>
+                            <div class="d-flex align-items-center">
+                                <div class="form-check form-check-inline fs-6 me-3">
+                                    <input class="form-check-input" type="radio" name="Role" id="user" value="user" checked>
+                                    <label class="form-check-label" for="user">User</label>
+                                </div>
+                                <div class="form-check form-check-inline fs-6">
+                                    <input class="form-check-input" type="radio" name="Role" id="owner" value="owner">
+                                    <label class="form-check-label" for="owner">Owner</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="form-row forgot">
+                    <a data-toggle="modal" data-target="#forgotPasswordModal" class="forgot-link">Forgot Password?</a>
+                </div>
+                <div class="form-row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+                <button type="submit">Next</button>
+
+
+            </form>
+            <p>--------------------------or log in with--------------------------</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-google"></i></a>
+            </div>
+            <div class="already-account">
+                <p>Don't have an account? <a href="#" onclick="location.href='@Url.Action("Register","Account")'">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="forgotPasswordForm" method="post" asp-action="SendChangePasswordEmail" asp-controller="Account">
+                    <div class="form-group">
+                        <div class="modal-body">
+                            <label for="email">Enter your Gmail address:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <p id="errorMessage" class="text-danger" style="display: none;color:red;">Your email is not registered</p>
+                        <p id="emailSentMessage" style="display: none;">Reset password link has been sent to your email address.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;" onclick="closeModel()">Close</button>
+                        <button type="submit" class="btn btn-primary" onclick="submitForgotPasswordForm()" style="width: 100px;">OK</button>
+
+                    </div>
+
+                </form>
+                <input type="hidden" id="tempDataMessage" value="@message" />
+            </div>
+        </div>
+    </div>
+    <script>
+        // JavaScript for toggling password visibility
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('togglePassword');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        });
+    </script>
+    //forgot password mail
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var message = $('#tempDataMessage').val(); // Retrieve the message from the hidden input
+            if (message) {
+                $('#errorMessage').text(message).show(); // Display the message
+                $('#forgotPasswordModal').modal('show'); // Show the modal
+                $('#tempDataMessage').val(''); // Clear the hidden input
+            }
+        });
+        function closeModel() {
+            $('#forgotPasswordModal').modal('hide'); // hide the modal 
+
+        }
+        function submitForgotPasswordForm() {
+            const emailInput = document.getElementById('email');
+            const email = emailInput.value;
+            const emailSentMessage = document.getElementById('emailSentMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (email) {
+                // Perform validation and submit logic here
+                console.log('Email:', email);
+
+                // Example: Show success message and hide the form elements
+                emailInput.parentElement.style.display = 'none';
+                emailSentMessage.style.display = 'block';
+
+                setTimeout(() => {
+                    $('#forgotPasswordModal').modal('hide'); // Hide the modal
+                    emailInput.parentElement.style.display = 'block'; // Show the form elements again
+                    emailSentMessage.style.display = 'none'; // Hide the success message
+                    emailInput.value = ''; // Clear the email input field
+                }, 10000); // Adjust the delay as needed
+            } else {
+                errorMessage.textContent = 'Please enter your email address.'; // Show error message if email is empty
+                errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+
+</body>

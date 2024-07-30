@@ -220,8 +220,10 @@
                 <div class="form-row">
                     <label asp-for="UserName">Full Name*</label>
                     <div class="dotted-input">
-                        <input type="text" asp-for="UserName" id="nameInput">
-                        <span asp-validation-for="UserName" class="text-danger" id="nameInputValidationMessage"></span>
+                        <input id="nameInput"  class="form-control" data-error-message="Name cannot include number or special key">
+                        <input type="hidden" asp-for="UserName" id="UserName" />
+
+                        <span asp-validation-for="UserName" class="text-danger right-margin" id="nameInputValidationMessage"></span>
 
                     </div>
                 </div>
@@ -284,6 +286,13 @@
     </div>
     <script src="~/js/ValidForm.js"></script>
     <script>
+        // Add event listener to replace spaces with underscores
+        document.getElementById('nameInput').addEventListener('input', function () {
+            const visibleName = document.getElementById('nameInput').value;
+            const formattedName = visibleName.replace(/ /g, '_');
+            document.getElementById('UserName').value = formattedName;
+        });
+
         // JavaScript for toggling password visibility
         document.getElementById('togglePassword').addEventListener('click', function (e) {
             const passwordInput = document.getElementById('passwordInput');

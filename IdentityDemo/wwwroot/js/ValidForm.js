@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var phoneInput = document.getElementById('phoneInput');
     var passwordInput = document.getElementById('passwordInput');
     var confirmPasswordInput = document.getElementById('confirmPasswordInput');
-    var nameValidationMessage = document.getElementById('nameInputValidationMessage');
-    
+
+    var nameValidationMessage = document.getElementById('nameInputValidationMessage');    
     var emailValidationMessage = document.getElementById('emailInputValidationMessage');
     var phoneValidationMessage = document.getElementById('phoneInputValidationMessage');
     var passwordValidationMessage = document.getElementById('passwordInputValidationMessage');
@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     var passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
     var phonePattern = /^09\d{9}$/; // Simple pattern for a 10-digit phone number
+    var namePattern = /^[a-zA-Z\s]*$/;
+
+  
 
     function validatePasswordMatch() {
         if (passwordInput.value !== confirmPasswordInput.value) {
@@ -39,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validateForm() {
         var isFormValid =
-            validateInput(nameInput, /.+/, nameValidationMessage) &&
+            validateInput(nameInput, namePattern , nameValidationMessage) &&
             validateInput(emailInput, emailPattern, emailValidationMessage) &&
             validateInput(phoneInput, phonePattern, phoneValidationMessage) &&            
             validateInput(passwordInput, passwordPattern, passwordValidationMessage) &&
@@ -49,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     nameInput.addEventListener('input', function () {
-        validateInput(nameInput, /.+/, nameValidationMessage);
+        validateInput(nameInput, namePattern, nameValidationMessage);
         validateForm();
     });
 

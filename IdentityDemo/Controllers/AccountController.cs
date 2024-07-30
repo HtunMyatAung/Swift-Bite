@@ -78,7 +78,7 @@ namespace IdentityDemo.Controllers
             if (result)
             {
                 HttpContext.Session.Remove("RegisterViewModel");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Landing_page2", "Hywm");
             }
             else
             {
@@ -213,9 +213,9 @@ namespace IdentityDemo.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
-        [HttpGet]public IActionResult UpdatePassword(){return View();}
+        [HttpGet]public IActionResult ResetPassword(){return View();}
         [HttpPost][ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdatePassword(UpdateUserViewModel model)
+        public async Task<IActionResult> ResetPassword(UpdateUserViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -231,7 +231,7 @@ namespace IdentityDemo.Controllers
 
             if (user.Forgot == 0)
             {
-                ModelState.AddModelError(string.Empty, "Invalid user");
+                ModelState.AddModelError(string.Empty, "You are not allowed to reset password !!!");
                 return View(model);
             }
 
@@ -239,11 +239,11 @@ namespace IdentityDemo.Controllers
 
             if (resetResult)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Landing_page2", "Hywm");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Failed to reset password.");
+                ModelState.AddModelError(string.Empty, "Password must be 1 captital ,1 smaller ,1 digit and 1 special key");
                 return View(model);
             }
         }
@@ -291,7 +291,7 @@ namespace IdentityDemo.Controllers
             
             if (updateResult)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Landing_page2","Hywm");
             }
             else
             {

@@ -31,238 +31,156 @@
         align-items: center;
     }
 
-    .popup-form {
-        position: absolute;
-        align-items: center;
-        top: 10%; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #ffffff;
-        padding: 20px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        width: 100%;
-        max-width: 500px;
-        border-radius: 8px;
-        overflow: visible; /* Allow overflow for image */
-        transition: top 0.3s ease; /* Smooth transition for sliding effect */
-    }
-
-        .popup-form.active {
-            top: 50px; /* Adjust as needed to control how far down it slides */
-        }
-
-        .popup-form h2 {
-            text-align: center;
-            margin-bottom: 5px;
-            margin-top: 25px;
-        }
-
-        .popup-form img {
-            width: 100%;
-            max-width: 92px; /* Adjust image size */
-            display: block;
-            margin: 0 auto;
-            margin-bottom: 20px;
-            position: absolute;
-            top: -50px; /* Position image outside form */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust position */
-            z-index: 1; /* Ensure image stays above form */
-        }
-
-        .popup-form .form-container {
-            position: relative; /* Ensure relative positioning for contents */
-            z-index: 2; /* Ensure form content is above image */
-        }
-
-            .popup-form .form-container p {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-        .popup-form .form-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .popup-form label {
-            width: 30%;
-            margin-right: 10px;
-            font-weight: bold;
-            text-align: left;
-            font-size: 18px;
-            margin-top:25px;
-        }
-
-        .popup-form .dotted-input {
-            flex: 1;
-            position: relative;
-        }
-
-            .popup-form .dotted-input input {
-                height:50px;
-                width: 75%;
-                padding: 1px;
-                font-size: 18px;
-                border: none;
-                border-bottom: 4px dotted #999;
-                box-sizing: border-box;
-                text-align: left;
-                outline: none; /* Remove default input focus outline */
-            }
-
-            .popup-form .dotted-input .text-danger {
-                display: block;
-                margin-top: 5px; /* Add some space between input and error message */
-                font-size: 10px; /* Adjust font size */
-            }
-
-        .popup-form button[type="submit"] {
-            display: block;
-            margin: 0 auto;            
-            border: none;
-            border-radius: 15px;
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .popup-form .social-icons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-            .popup-form .social-icons img {
-                width: 40px;
-                height: 40px;
-                margin: 0 10px;
-                cursor: pointer;
-            }
-
-        .popup-form .already-account {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-            .popup-form .already-account a {
-                color: black;
-                text-decoration: none;
-                font-weight: bold;
-            }
-
-        .popup-form button:hover {
-            font-weight:bolder; /* Darker shade on hover */
-        }
-
-        .popup-form .error {
-            color: red; /* Adjust error message color */
-            margin-top: 10px;
-            align-content: center;
-        }
-
-    .input-with-icon {
+    .headerofmodel {
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
-        .input-with-icon i {
-            position: absolute;
-            right: 60px; /* Adjust to position icon on the left */
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-
-        .input-with-icon input {
-            padding-left: 30px; /* Adjust to make space for the icon */
-        }
-
-    .forgot .forgot-link{
-        flex:1;
-        margin-left:60%;
+    .modal-title {
+        margin: 0;
+        text-align: center;
     }
 
-    .close-button {
+    .btn-close {
         position: absolute;
-        top: -35px; /* Adjust as needed */
-        right: -25px; /* Adjust as needed */
-        background: transparent !important; /* Ensure no background color */
-        border: none; /* Remove border */
-        font-size: 1.0rem; /* Adjust size as needed */
-        color: black !important; /* Change icon color as needed */
-        cursor: pointer;
-        outline: none;
-        padding: 0;
+        top: 10px;
+        right: 10px;
     }
 
-        .close-button:hover {
-            color: red !important;
+    .form-control.dotted-underline {
+        border: none;
+        border-bottom: 4px dotted #000; /* Change color as needed */
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+        .form-control.dotted-underline:focus {
+            box-shadow: none;
+            border-bottom-color: #000; /* Change color as needed */
         }
 
-     
+    .modal-body {
+        margin-top: 40px !important;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10%;
+            background-color: #f0f0f0; /* Change this color as needed */
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .social-icons a:hover {
+                background-color: #d0d0d0; /* Change this color as needed */
+                color: #555; /* Change hover icon color as needed */
+            }
+
+        .social-icons i {
+            font-size: 20px; /* Adjust icon size as needed */
+        }
+
+    .d-flex.align-item-center {
+        display: flex;
+        align-items: center; /* Center items vertically */
+    }
+
+    .apk {
+        margin-left: -10px;
+        cursor: pointer;
+    }
 </style>
 
 <body>
-    <div class="popup-form">
-        <img src="~/img/hywm_img/login1.png" alt="Image">
-        <div class="form-container">
-            <button  class="close-button" onclick="location.href='@Url.Action("Landing_page2","Hywm")'">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2>Log In</h2>
-            <p>Welcome back! Please enter your details.</p>
-            <form asp-action="Login" asp-controller="Account" method="post">
-                <div class="form-row">
-                    <label asp-for="UserName">Full Name</label>
-                    <div class="dotted-input">
-                        <input asp-for="UserName" type="text" id="username" name="username" required>
+
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="headerofmodel">
+                    <div class="modal-title">
+                        <img src="~/img/hywm_img/login1.png" alt="Image" style="margin-top: -50px; width: 100px;height: 100px;">
+                        <h2 id="exampleModalLabel">Log In</h2>
+                        <h5>Welcome back! Please enter your details</h5>
                     </div>
+                    <button type="button" class="btn-close" onclick="location.href='@Url.Action("Landing_page2","Hywm")'"></button>
                 </div>
-                <div class="form-row">
-                    <label asp-for="Password">Password</label>
-                    <div class="dotted-input input-with-icon">
-                        <i class="fas fa-eye-slash" id="togglePassword"></i>
-                        <input asp-for="Password" type="password" id="password" name="Password" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-8 offset-4">
-                        <div class="d-flex align-items-center mt-4">
-                            <label class="col-form-label fs-6 me-3">Log in as:</label>
-                            <div class="d-flex align-items-center">
-                                <div class="form-check form-check-inline fs-6 me-3">
-                                    <input class="form-check-input" type="radio" name="Role" id="user" value="user" checked>
-                                    <label class="form-check-label" for="user">User</label>
-                                </div>
-                                <div class="form-check form-check-inline fs-6">
-                                    <input class="form-check-input" type="radio" name="Role" id="owner" value="owner">
-                                    <label class="form-check-label" for="owner">Owner</label>
+                <div class="modal-body">
+                    <form asp-action="Login" asp-controller="Account" method="post" id="loginform">
+                        <div class="form-row mb-3">
+                            <div class="col-4">
+                                <label asp-for="UserName">Full Name</label>
+                            </div>
+                            <div class="col-8" style="margin-top: -15px;">
+                                
+                                <input id="username"  type="text" class="form-control dotted-underline"  style="width:80%;" required>
+                                <input type="hidden" asp-for="UserName" id="UserName" />
+
+                            </div>
+                        </div>
+                        <div class="form-row mb-2">
+                            <div class="col-4">
+                                <label asp-for="Password">Password</label>
+                            </div>
+                            <div class="col-8" style="margin-top: -15px;">
+                                <div class="d-flex align-item-center">
+                                    <input asp-for="Password" type="password" id="password" name="Password" class="form-control dotted-underline" style="width:80%;"  required>
+                                    <i class="fas fa-eye-slash apk" id="togglePassword"></i>
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-2">
+                            <div class="col-8 offset-4">
+                                <div class="d-flex align-items-center mt-4">
+                                    <label class="col-form-label fs-6 me-3">Log in as:</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check form-check-inline fs-6 me-3">
+                                            <input class="form-check-input" type="radio" name="Role" id="user" value="user" checked>
+                                            <label class="form-check-label" for="user">User</label>
+                                        </div>
+                                        <div class="form-check form-check-inline fs-6">
+                                            <input class="form-check-input" type="radio" name="Role" id="owner" value="owner">
+                                            <label class="form-check-label" for="owner">Owner</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-8 offset-4 mb-3">
+                            <a data-toggle="modal" data-target="#forgotPasswordModal" class="forgot-link">Forgot Password?</a>
+                        </div>
+                        <div class="text-center mb-2">
+                            <button type="submit" class="btn btn-dark">Next</button>
+                        </div>
+                        <div class="form-row">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
+                    </form>
+                </div>
+
+                <div class="footerofmodel text-center">
+                    <p>--------------------------or Sign Up with--------------------------</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-google"></i></a>
+                    </div>
+                    <div class="already-account">
+                        <p>Don't have an account? <a href="#" onclick="location.href='@Url.Action("Register","Account")'">Sign Up</a></p>
                     </div>
                 </div>
-               
-                <div class="form-row forgot">
-                    <a data-toggle="modal" data-target="#forgotPasswordModal" class="forgot-link">Forgot Password?</a>
-                </div>
-                <div class="form-row">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                </div>
-                <button type="submit">Next</button>
 
-
-            </form>
-            <p>--------------------------or log in with--------------------------</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-google"></i></a>
-            </div>
-            <div class="already-account">
-                <p>Don't have an account? <a href="#" onclick="location.href='@Url.Action("Register","Account")'">Sign Up</a></p>
             </div>
         </div>
     </div>
@@ -298,6 +216,17 @@
         </div>
     </div>
     <script>
+        // Add event listener to replace spaces with underscores
+        document.getElementById('username').addEventListener('input', function () {
+            const visibleName = document.getElementById('username').value;
+            const formattedName = visibleName.replace(/ /g, '_');
+            document.getElementById('UserName').value = formattedName;
+        });
+        $(document).ready(function () {
+
+            $('#exampleModal1').modal('show');
+        });
+
         // JavaScript for toggling password visibility
         document.getElementById('togglePassword').addEventListener('click', function (e) {
             const passwordInput = document.getElementById('password');
@@ -324,7 +253,7 @@
             }
         });
         function closeModel() {
-            $('#forgotPasswordModal').modal('hide'); // hide the modal 
+            $('#forgotPasswordModal').modal('hide'); // hide the modal
 
         }
         function submitForgotPasswordForm() {

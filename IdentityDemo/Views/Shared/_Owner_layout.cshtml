@@ -120,7 +120,7 @@
                         </li>
                        
                         <li class="nav-item menu-open mb-2">                            
-                            <a href="@Url.Action("Owner_Item_List", "Shop")" class="nav-link @(currentAction == "owner_item_list" ? "btn-active" : "")">
+                            <a href="@Url.Action("Owner_Item_List", "Shop")" class="nav-link @(currentAction == "owner_item_list" || currentAction == "updateitem"? "btn-active" : "")">
                                 <i class="nav-icon fas fa-box"></i>
                                 <p>
                                     Item list 
@@ -172,7 +172,7 @@
     <!-- AdminLTE App -->
     <script src="~/dist/js/adminlte.min.js"></script>
     <!-- ./wrapper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="~/js/download_js/2_9_4_Chart.min.js"></script>
     <!-- jQuery -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
@@ -212,7 +212,7 @@
     <script src="../../dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="../../dist/js/pages/dashboard.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
     @RenderSection("Datatablescript", false)
     @RenderSection("Scripts", false)
 </body>

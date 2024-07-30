@@ -227,7 +227,7 @@
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item1">
                                             <div class="label">Full Name</div>
-                                            <div class="value">@Model.UserName</div>
+                                            <div class="value">@Model.UserName.Replace('_',' ')</div>
                                         </li>
                                         <li class="list-group-item1">
                                             <div class="label">Phone Number</div>
@@ -292,8 +292,10 @@
                                         <ul class="list-group list-group-unbordered mb-3 profilecheck">
                                             <li class="list-group-item1">
                                                 <div class="label">Full Name</div>
-                                                <div class="value">                                                   
-                                                    <input asp-for="UserName" id="UserName" class="form-control" value="@Model.UserName?.Replace('_', ' ')" required>                                                    
+                                                <div class="value">
+                                                    <input id="UserNameVisible" class="form-control" value="@Model.UserName?.Replace('_', ' ')" required>
+                                                    <input type="hidden" asp-for="UserName" id="UserName" />
+                                                 
                                                 </div>
                                             </li>
                                             <span id="nameError" class="text-danger"></span>

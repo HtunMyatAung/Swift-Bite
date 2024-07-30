@@ -1,8 +1,10 @@
-﻿using IdentityDemo.Models;
+﻿using IdentityDemo.Data;
+using IdentityDemo.Models;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Near_foods.Controllers
 {
@@ -13,15 +15,25 @@ namespace Near_foods.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWishListService _wishListService;
         private readonly IShopService _shopService;
-        public HywmController(IShopService shopService,IAccountService accountService, IItemService itemService,UserManager<ApplicationUser> userManager,IWishListService wishListService)
+        private readonly AppDbContext _context;
+        public HywmController(AppDbContext context,IShopService shopService,IAccountService accountService, IItemService itemService,UserManager<ApplicationUser> userManager,IWishListService wishListService)
         {
             _accountService = accountService;
             _itemService = itemService;
             _userManager = userManager;
             _wishListService = wishListService;
             _shopService = shopService;
+            _context= context;
         }
-        
+        public IActionResult Search(string searchQuery)
+        {
+            var items = _context.Items
+                .Where(i => i.ItemName.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            // Return partial view with the filtered items
+            return PartialView("_SearchResults", items);
+        }
         public async Task<IActionResult> SingleShopView(int shopid)
         {
             var itemsViewModel = await _itemService.GetItemNShopByShopIdAsync(shopid);

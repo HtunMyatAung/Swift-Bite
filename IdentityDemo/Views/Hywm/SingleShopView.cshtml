@@ -52,6 +52,23 @@
                 margin-right: 5px;
             }
 
+            .search-container button {
+                border: none;
+                outline: none;
+                color:black;
+            }
+             .search-container button:focus {
+                border: none;
+                outline: none;
+                box-shadow:none;
+            }
+
+                .search-container input:focus {
+                    border: none; /* Ensure no border appears on focus */
+                    outline: none; /* Ensure no outline appears on focus */
+                    border-bottom: 1px solid #000; /* Maintain bottom border on focus */
+                    box-shadow:none;
+                }
         .getoverhere {
             display: flex;
             flex-wrap: wrap; /* Allows wrapping on smaller screens */
@@ -149,7 +166,7 @@
         }
         .floating-cart {
             position: fixed;
-            top: 40px;
+            top: 100px;
             right: 20px;
             z-index: 1000;
             background-color: #fff;
@@ -163,6 +180,23 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .floating-cart-top {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #cartQuantity {
+            position: absolute;
+            top: -28px; /* Adjust as needed */
+            right: -10px; /* Adjust as needed */
+            background-color: red; /* Adjust as needed */
+            color: white; /* Adjust as needed */
+            padding: 2px 5px; /* Adjust as needed */
+            border-radius: 50%;
+            font-size: 16px; /* Adjust as needed */
+        }
         .cart-item {
             display: flex;
             align-items: center;
@@ -219,6 +253,10 @@
             width: 60%;
             height: 45px;
         }
+
+        .search{
+        -moz-user-focus:no
+        }
     </style>
 </head>
 <body>
@@ -238,9 +276,9 @@
             <div class="nav-buttons d-flex justify-content-around shadow">
                 <a class="nav-link active allandpromotion choice" id="allButton" href="#">All</a>
                 <a class="nav-link allandpromotion choice" id="promotionButton" href="#">Promotion</a>
-            </div>
+            </div>            
             <div class="search-container">
-                <input type="text" class="form-control" placeholder="Search">
+                <input type="text" class="form-control search" placeholder="Search">
                 <button class="btn btn-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.414-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
@@ -249,7 +287,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="container mt-4" id="all">
         @if (Nullitem != null)
         {
@@ -257,13 +295,12 @@
         }
         else
         {
-            <div class="row">
+            <div class="row items-container">
                 @foreach (var item in Model.Items)
                 {
-                    <div class="col-md-6 col-lg-4 col-sm-12">
+                    <div class="col-md-6 col-lg-4 col-sm-12 item" data-item-name="@item.ItemName.ToLower()">
                         <div href="#" class="menu-item">
                             <img src="~/img/items/@item.ItemImageName" alt="@item.ItemImageName">
-
                             <div class="item-details">
                                 <h5>@item.ItemName</h5>
                                 <p><small>@Model.Shop.ShopName</small></p>
@@ -273,11 +310,8 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
-
                 }
-
             </div>
         }
 
@@ -314,9 +348,11 @@
     </div>
 
     <a class="floating-cart" id="cartIcon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-        <i class="fas fa-shopping-cart" style="font-size: 24px;"></i>
+        <div class="floating-cart-top">
+            <i class="fas fa-shopping-cart" style="font-size: 24px;"></i>
+            <span class="badge" id="cartQuantity">0</span>
+        </div>
     </a>
-
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header d-flex justify-content-between align-items-center">
             <h2 class="mb-0">Cart</h2>
@@ -340,7 +376,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        const isUserLoggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
         document.getElementById('allButton').addEventListener('click', function () {
             document.getElementById('all').style.display = 'block';
             document.getElementById('promotion').style.display = 'none';
@@ -354,20 +392,23 @@
             this.classList.add('active');
             document.getElementById('allButton').classList.remove('active');
         });
-    </script>
-    <script>
         const selectedItems = {};
 
         document.querySelectorAll('.menu-items').forEach(item => {
             item.addEventListener('click', (event) => {
                 event.preventDefault();
+                if (!isUserLoggedIn) {
+                    window.location.href = '/Account/Login';
+                    return;
+                }
+
 
                 const id = item.getAttribute('data-item-id');
                 const name = item.getAttribute('data-item-name');
                 const price = parseFloat(item.getAttribute('data-item-price'));
 
                 if (selectedItems[id]) {
-                    selectedItems[id].quantity++;
+                   selectedItems[id].quantity++;
                 } else {
                     selectedItems[id] = {
                         name: name,
@@ -381,28 +422,31 @@
         });
 
         function updateCart() {
+            const cartQuantityBadge = document.getElementById('cartQuantity');
             const cartItemsContainer = document.getElementById('cartItems');
             const cartItemTotal = document.getElementById('alltotalprice');
             cartItemsContainer.innerHTML = '';
             let total = 0;
-
+            let totalQuantity = 0;
             for (const [id, item] of Object.entries(selectedItems)) {
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
+                totalQuantity += item.quantity;
                 cartItemsContainer.innerHTML += `
-                                <div class="cart-item">
-                                    <span>${item.name}</span>
-                                    <div>
-                                        <button class="btn" onclick="changeQuantity('${id}', -1)">-</button>
-                                        <input type="text" class="item-quantity" value="${item.quantity}" readonly>
-                                        <button class="btn" onclick="changeQuantity('${id}', 1)">+</button>
-                                    </div>
-                                    <span class="itemeachprice">${itemTotal} MMK</span>
-                                </div>
-                            `;
+                                        <div class="cart-item">
+                                            <span>${item.name}</span>
+                                            <div>
+                                                <button class="btn" onclick="changeQuantity('${id}', -1)">-</button>
+                                                <input type="text" class="item-quantity" value="${item.quantity}" readonly>
+                                                <button class="btn" onclick="changeQuantity('${id}', 1)">+</button>
+                                            </div>
+                                            <span class="itemeachprice">${itemTotal} MMK</span>
+                                        </div>
+                                    `;
             }
 
             cartItemTotal.innerHTML = total > 0 ? `${total} MMK` : '0 MMK';
+            cartQuantityBadge.innerHTML = totalQuantity;
             // Update disabled attribute of Purchase button
             const submitButton = document.getElementById('submittocart');
             if (Object.keys(selectedItems).length > 0) {
@@ -423,8 +467,11 @@
                 updateCart();
             }
         }
+
+
         document.getElementById('submittocart').addEventListener('click', function () {
             // Prepare data for submission
+            
             var form = document.createElement('form');
             form.action = '/Order/Order_confirm';
 
@@ -460,5 +507,23 @@
         });
 
     </script>
+    <script>
+        $(document).ready(function () {
+            $('.search').on('input', function () {
+                var searchValue = $(this).val().toLowerCase();
+                console.log('Search value:', searchValue); // Debugging statement
+                $('.item').each(function () {
+                    var itemName = $(this).data('item-name');
+                    console.log('Item name:', itemName); // Debugging statement
+                    if (itemName.includes(searchValue)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
