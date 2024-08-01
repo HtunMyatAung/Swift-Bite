@@ -304,8 +304,8 @@
                         <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
                         <div>
                             <h5>@item.ItemName</h5>
-                            <p>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</p>
-                            <p><small>Restaurant name</small></p>
+                            
+                            <p><small>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</small></p>
                             <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
                         </div>
                         @if (User.Identity.IsAuthenticated)

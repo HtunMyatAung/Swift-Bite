@@ -36,10 +36,12 @@ namespace IdentityDemo.Services
             
             var shops = await _itemRepository.GetAllShopsAsync();
             var items = await _itemRepository.GetAllItemsAsync();
+            var shopLookup = shops.ToDictionary(s => s.ShopId, s => s.ShopName);
             var category = await _categroyRepository.GetCategoryNamesAsync();
             return new ItemsViewModel
             {
                 Shops = shops,
+                ShopLookup = shopLookup,
                 Items = items,
                 Categories = category
             };

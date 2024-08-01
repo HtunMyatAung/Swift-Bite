@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/css/download_css/bootstrap.min.css" rel="stylesheet">
+<script src="~/css/download_css/bootstrap.bundle.min.js"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Screen Video</title>
+    <style>
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; 
+        }
+        /* Full-screen video container */
+        .full-screen-video {
+            height: 100vh; /* Full viewport height */
+            width: 100vw; /* Full viewport width */
+        }
+
+            .full-screen-video iframe {
+                width: 100%;
+                height: 100%;
+                border: none; /* Remove iframe border */
+            }
+
+            .full-screen-video .btn-loc {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="full-screen-video">
+        <iframe src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+        <button class="btn btn-secondary btn-loc" onclick="window.location.href='/Hywm/Landing_page2';">Finish</button>
+    </div>
+
+</body>
+</html>
+
+    
+

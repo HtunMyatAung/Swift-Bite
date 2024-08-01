@@ -603,10 +603,10 @@ body {
 }
 
 .food4 {
-    top: 72%;
-    left: 80%;
-    height: 170px;
-    width: 170px;
+    top: 74%;
+    left: 75%;
+    height: 160px;
+    width: 160px;
 }
 
 .right {
@@ -622,28 +622,28 @@ body {
 }
 
 .foodtext1 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     color: white;
-    margin-top: 10%;
+    margin-top: 19%;
 }
 
 .foodtext2 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     margin-top: 30%;
     color: white;
-    margin-left: 30%;
+    margin-left: 29%;
 }
 
 .foodtext3 {
-    font-size: 2rem;
-    margin-top: 30%;
+    font-size: 1.7rem;
+    margin-top: 35%;
     color: white;
     margin-left: 10%;
 }
 
 .foodtext4 {
-    font-size: 2rem;
-    margin-top: 26%;
+    font-size: 1.7rem;
+    margin-top: 17%;
     color: white;
     margin-left: 5%;
 }
@@ -679,16 +679,16 @@ body {
 .lastpart {
     background-color: #D9D9D9;
     width: 100%;
-    height: 20%;
+    height: 22%;
     margin-top: 30px;
     display: flex;
     justify-content: center; /* Horizontally center */
     align-items: center; /* Vertically center */
+    align-content: center;
 }
 
 .usercount {
     padding-left: 5%;
-    margin: auto 0;
     font-size: 5rem;
 }
 
@@ -712,3 +712,38 @@ body {
     padding-left: 10%;
     font-size: 1.4rem;
 }
+.menu-item1 {
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding-right: 20px;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    color: white;
+    position: relative; /* Ensure the menu item is positioned relative */
+    overflow: hidden;
+}
+
+    .menu-item1:hover {
+        transform: translateY(-10px);
+    }
+
+    .menu-item1 img {
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        margin-right: 20px;
+    }
+
+    .menu-item1 h5 {
+        color: black;
+        margin-top: 0;
+        font-weight: bold;
+    }
+
+    .menu-item1 p {
+        margin: 5px 0;
+        color: black;
+    }

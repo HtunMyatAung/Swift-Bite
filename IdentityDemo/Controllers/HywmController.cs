@@ -25,6 +25,7 @@ namespace Near_foods.Controllers
             _shopService = shopService;
             _context= context;
         }
+        public IActionResult HowToUse() => View();
         public IActionResult Search(string searchQuery)
         {
             var items = _context.Items

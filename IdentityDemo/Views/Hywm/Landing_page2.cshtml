@@ -104,23 +104,24 @@
 
     <div id="food" class="food_list">
         <p><h3>Various Foods in NearFoods</h3></p>
-        <div class="food_items">
-            @foreach (var item in Model.Items)
-            {
-                <a href="@Url.Action("SingleShopView", "Hywm", new { shopId = item.Shop_Id })" >
-                    <div class="food_item">
-                        <div class="food_overlay">
-                            <img class="small_image" src="~/img/items/@item.ItemImageName" alt="Small Background">
-                            <div class="text_bg_container">
-                                <img class="text_bg" src="~/img/hywm_img/items/Item_text_bg.png" alt="Text Background">
-                                <span class="food_name">@item.ItemName</span>
+        <div class="container mt-4">
+            <div class="row">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="col-md-6 col-lg-4 col-sm-12 menu-item-wrapper">
+                        <div class="menu-item1">
+                            <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
+                            <div>
+                                <h5>@item.ItemName</h5>
+                                <p><small>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</small></p>
+                                <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
                             </div>
                         </div>
                     </div>
-                </a>
-
-            }
+                }
+            </div>
         </div>
+        
     </div>
 
     <!--footer-->
