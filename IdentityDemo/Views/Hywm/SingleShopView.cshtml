@@ -257,6 +257,14 @@
         .search{
         -moz-user-focus:no
         }
+
+        .emptytext{
+            display: flex;
+            align-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+        }
     </style>
 </head>
 <body>
@@ -291,7 +299,7 @@
     <div class="container mt-4" id="all">
         @if (Nullitem != null)
         {
-            <p>hi</p>
+            <p class="emptytext">No items available at the moment. Please check back later!</p>
         }
         else
         {
