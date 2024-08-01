@@ -38,7 +38,7 @@ namespace IdentityDemo.Controllers
             catch (Exception ex)
             {
                 // Log the exception
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Landing_page2", "Hywm");
             }
         }
 
