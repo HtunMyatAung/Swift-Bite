@@ -81,7 +81,7 @@ namespace IdentityDemo.Services
         public async void SendOTP(string email)
         {
             string toEmail = email;
-            string subject = "Verify your new uab zone account";
+            string subject = "Verify your new Swift Foods account";
             var otp_code = GenerateOTP();
             var htmlText = $@"
    <!DOCTYPE html>
@@ -89,7 +89,7 @@ namespace IdentityDemo.Services
 <head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Verify Your New Amazon Account</title>
+    <title>Verify Your New Swift Foods Account</title>
     <style>
         /* Ensure styles are inline for better email client compatibility */
         body {{
@@ -133,11 +133,11 @@ namespace IdentityDemo.Services
         <tr>
             <td style=""padding: 20px;"">
                 <div class=""container"">
-                    <h2 style=""text-align: center;"">Verify Your New uab zone Account</h2>
+                    <h2 style=""text-align: center;"">Verify Your New Swift Foods Account</h2>
                     <div class=""otp-section"">
                         <p style=""text-align: center;"">To verify your email address, please use the following One Time Password (OTP):</p>
                         <p class=""otp-code"" style=""text-align: center;"">{otp_code}</p>
-                        <p class=""info-text"" style=""text-align: center;"">Do not share this OTP with anyone.uab zone takes your account security very seriously. uab zone Customer Service will never ask you to disclose or verify your uab zone password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to uab zone for investigation.</p>
+                        <p class=""info-text"" style=""text-align: center;"">Do not share this OTP with anyone.uab zone takes your account security very seriously. Swift Foods Customer Service will never ask you to disclose or verify your Swift Foods password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to Swift Foods for investigation.</p>
                     </div>
                     <p style=""text-align: center;"">Thank you for shopping with us! We hope to see you again soon.</p>
                 </div>
