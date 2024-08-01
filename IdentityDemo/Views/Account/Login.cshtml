@@ -124,10 +124,8 @@
                                 <label asp-for="UserName">Full Name</label>
                             </div>
                             <div class="col-8" style="margin-top: -15px;">
-                                
-                                <input id="username"  type="text" class="form-control dotted-underline"  style="width:80%;" required>
+                                <input id="username" type="text" class="form-control dotted-underline" style="width:80%;" required>
                                 <input type="hidden" asp-for="UserName" id="UserName" />
-
                             </div>
                         </div>
                         <div class="form-row mb-2">
@@ -136,7 +134,7 @@
                             </div>
                             <div class="col-8" style="margin-top: -15px;">
                                 <div class="d-flex align-item-center">
-                                    <input asp-for="Password" type="password" id="password" name="Password" class="form-control dotted-underline" style="width:80%;"  required>
+                                    <input asp-for="Password" type="password" id="password" name="Password" class="form-control dotted-underline" style="width:80%;" required>
                                     <i class="fas fa-eye-slash apk" id="togglePassword"></i>
                                 </div>
                             </div>
@@ -159,7 +157,7 @@
                             </div>
                         </div>
                         <div class="row col-8 offset-4 mb-3">
-                            <a data-toggle="modal" data-target="#forgotPasswordModal" class="forgot-link">Forgot Password?</a>
+                            <a href="#" onclick="openForgotPasswordModal()" class="forgot-link">Forgot Password?</a>
                         </div>
                         <div class="text-center mb-2">
                             <button type="submit" class="btn btn-dark">Next</button>
@@ -169,7 +167,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="footerofmodel text-center">
                     <p>--------------------------or Sign Up with--------------------------</p>
                     <div class="social-icons">
@@ -180,11 +177,11 @@
                         <p>Don't have an account? <a href="#" onclick="location.href='@Url.Action("Register","Account")'">Sign Up</a></p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
+    <!-- Forgot Password Modal -->
     <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -205,16 +202,25 @@
                         <p id="emailSentMessage" style="display: none;">Reset password link has been sent to your email address.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;" onclick="closeModel()">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;" onclick="openLoginModal()">Close</button>
                         <button type="submit" class="btn btn-primary" onclick="submitForgotPasswordForm()" style="width: 100px;">OK</button>
-
                     </div>
-
                 </form>
                 <input type="hidden" id="tempDataMessage" value="@message" />
             </div>
         </div>
     </div>
+    <script>
+        function openForgotPasswordModal() {
+            $('#exampleModal1').modal('hide');
+            $('#forgotPasswordModal').modal('show');
+        }
+
+        function openLoginModal() {
+            $('#forgotPasswordModal').modal('hide');
+            $('#exampleModal1').modal('show');
+        }
+    </script>
     <script>
         // Add event listener to replace spaces with underscores
         document.getElementById('username').addEventListener('input', function () {

@@ -46,7 +46,7 @@
                 }
                 else
                 {
-                    <button id="login-button" onclick="location.href='@Url.Action("Login","Account")'" style="background-color:dimgray;border-radius:15px;">Log In</button>
+                    <button id="login-button" onclick="location.href='@Url.Action("Login","Account")'" style="background-color:dimgray;border-radius:15px;">LOG IN</button>
                     
                 }
                 
@@ -54,7 +54,9 @@
             <div class="leftdesign">
                 <p class="wefood" style="font-size: 2rem;">We provide the</p>
                 <p class="bestfood" style="font-size: 4rem;">Best Food for You</p>
-                <p style="font-size: 1.5rem;">Feel the taste of most popular foods from anywhere and anytime. Experience the culinary delights that transcend borders, bringing you a taste of global cuisine at your convenience.</p>
+                <p style="font-size: 1.5rem;">Feel the taste of most popular foods from anywhere and anytime. 
+                    Experience the culinary delights that transcend borders,
+                    bringing you a taste of global cuisine at your convenience.</p>
                @if(!User.Identity.IsAuthenticated){
                 <button id="login-button" onclick="location.href='@Url.Action("Register","Account")'" class="btn btn-dark signupbtn rounded-pill">SIGN UP</button>
 
