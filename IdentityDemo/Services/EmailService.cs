@@ -20,7 +20,7 @@ public class EmailService : IEmailService
     {
             var smtpSettings = _configuration.GetSection("Smtp");
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("uab zone", smtpSettings["From"]));
+        message.From.Add(new MailboxAddress("Swift Foods", smtpSettings["From"]));
         message.To.Add(new MailboxAddress("Recipient Name", toEmail));
         message.Subject = subject;
         message.Body = new TextPart("html")

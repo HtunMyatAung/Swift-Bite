@@ -113,7 +113,7 @@
                 <p style="margin: 0;">Thank you for your business!<br>If you have any questions, please contact us at swiftfoods48@gmail.com</p>
             </div>
         </div>
-         
+
     </div>
     <!-- Buttons for Download and Cancel -->
     <div class="d-flex justify-content-end w-100">
@@ -134,7 +134,7 @@
                     <p>Your order has been saved as Image.<br />Thank you for your business!</p>
                 </div>
                 <div class="modal-footer">
-                    
+
                     <form method="post" action="/Order/SendInvoiceEmail">
                         <input type="hidden" name="htmlContent" id="htmlContent" />
                         <button type="submit" class="btn btn-primary" style="width: 70px;">Ok</button>
@@ -154,17 +154,17 @@
         // Capture HTML content of the invoice for sending via email
         var invoiceHtml = document.getElementById('invoice-container').innerHTML;
         document.getElementById('htmlContent').value = invoiceHtml;
-        
+
         function confirmAndDownload() {
             downloadAsImage().then(function () {
-                showThankYouModal();                   
-                
+                showThankYouModal();
+
             });
         }
 
         function downloadAsImage() {
             var element = document.getElementById('invoice-container');
-            
+
             return html2canvas(element).then(function (canvas) {
                 var link = document.createElement('a');
                 link.href = canvas.toDataURL('image/png');
@@ -181,7 +181,7 @@
         }
 
         function goBackToAnotherPage() {
-           
+
             window.location.href = '/Order/SaveInvoice';
         }
         function cancelgoBackToAnotherPage() {

@@ -137,7 +137,7 @@ public class OrderService : IOrderService
     public async Task SendInvoiceEmailAsync(string htmlContent, ApplicationUser user)
     {
         string toEmail = user.Email;
-        string subject = "uab invoice";
+        string subject = "Swift Foods invoice";
         await _emailService.SendEmailAsync(toEmail, subject, htmlContent);
     }
 }

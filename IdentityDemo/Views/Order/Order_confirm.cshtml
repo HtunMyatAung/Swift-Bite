@@ -10,12 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Summary</title>
-    <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css"/>
-   
-    
+    <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
+
+
     <script src="~/js/download_js/4_5_3_bootstrap.min.js"></script>
     <style>
-        
+
         .payment-dropdown select {
             padding: 5px;
         }
@@ -24,15 +24,15 @@
                 padding: 5px;
             }
 
-        .container1 { 
+        .container1 {
             padding: 20px;
-            overflow-y: auto; 
+            overflow-y: auto;
             height: 75vh;
         }
 
         .container2 {
             position: sticky;
-            top: 20px; 
+            top: 20px;
             padding: 0 10px;
             height: 75vh;
         }
@@ -164,9 +164,9 @@
         </div>
     </div>
 
-    
 
-    
+
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -188,10 +188,10 @@
             document.getElementById('taxes').textContent = taxes.toFixed(2);
             document.getElementById('total-due').textContent = totalDue.toFixed(2);
         }
-        
+
         // Calculate summary on page load
         window.onload = calculateSummary;
-    
+
         $(document).ready(function () {
             $('#payment-select').on('change', function () {
                 var selectedValue = $(this).val();
@@ -218,8 +218,8 @@
                 $('#blah').attr('src', imagePath);
             });
         });
-  
-        
+
+
     </script>
 
 </body>
