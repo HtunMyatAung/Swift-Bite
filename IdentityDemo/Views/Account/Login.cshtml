@@ -255,11 +255,13 @@
             if (message) {
                 $('#errorMessage').text(message).show(); // Display the message
                 $('#forgotPasswordModal').modal('show'); // Show the modal
+                $('#exampleModal1').modal('hide');
                 $('#tempDataMessage').val(''); // Clear the hidden input
             }
         });
         function closeModel() {
             $('#forgotPasswordModal').modal('hide'); // hide the modal
+            $('#exampleModal1').modal('show');
 
         }
         function submitForgotPasswordForm() {
