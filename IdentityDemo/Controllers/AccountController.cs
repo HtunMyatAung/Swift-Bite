@@ -158,8 +158,57 @@ namespace IdentityDemo.Controllers
         }
         [HttpGet]
         public IActionResult Login() => View();
+        [HttpGet]
+        public IActionResult Login_old() => View();
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
+                var isuser = await _userManager.FindByNameAsync(model.UserName);
+                if (result.Succeeded && isuser != null && isuser.Deleted!=1)
+                {
+                    // Retrieve the current user
+                    ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
+                    // Pass the user data to the view
+                    ViewBag.CurrentUser = currentUser;
+                    if (isuser.Role=="Admin")
+                    {
+                        return RedirectToAction("Admin_dashboard", "AdminControl");
+                    }
+                    else if (isuser.Role == "Owner")
+                    {
+                        if (model.Role== "user")
+                        {
+                            return RedirectToAction("User_profile", "Hywm");
+                        }
+                        else if (model.Role == "owner")
+                        {
+                            return RedirectToAction("Owner_dashboard", "Shop");
+                        }
+                        
+                    }
+                    else
+                    {
+                        return RedirectToAction("User_profile", "Hywm");
+                    }
+                }
+                if (result.IsLockedOut)
+                {
+                    return RedirectToAction("LoginError", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Please enter valid data");
+            return View(model);
+        }[HttpPost]
+        public async Task<IActionResult> Login_old(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
