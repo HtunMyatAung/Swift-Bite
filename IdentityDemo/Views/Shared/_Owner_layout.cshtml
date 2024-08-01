@@ -95,7 +95,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column mb-4" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item menu-open mb-2">
-                            <a href="@Url.Action("Owner_dashboard", "Shop", new { shopId = currentUser.ShopId })" class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "Owner_dashboard".ToLower() ? "btn-active" : "")">
+                            <a href="@Url.Action("Owner_dashboard", "Shop", new { shopId = currentUser.ShopId })" class="nav-link @(currentAction == "Owner_dashboard".ToLower() ? "btn-active" : "")">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -120,7 +120,7 @@
                         </li>
                        
                         <li class="nav-item menu-open mb-2">                            
-                            <a href="@Url.Action("Owner_Item_List", "Shop")" class="nav-link @(currentAction == "owner_item_list" || currentAction == "updateitem"? "btn-active" : "")">
+                            <a href="@Url.Action("Owner_Item_List", "Shop")" class="nav-link @(currentAction == "owner_item_list" || currentAction == "updateitem" || currentAction == "createitem"? "btn-active" : "")">
                                 <i class="nav-icon fas fa-box"></i>
                                 <p>
                                     Item list 

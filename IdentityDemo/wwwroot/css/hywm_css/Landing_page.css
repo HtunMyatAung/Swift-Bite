@@ -205,6 +205,7 @@ body {
     overflow: hidden; /* Hide overflow */
     border-radius: 10px; /* Rounded corners for slides */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    transition: transform 0.3s ease-in-out; /* Add transition effect for smooth hover */
 }
 
     .slide img {
@@ -212,7 +213,12 @@ body {
         height: 190px; /* Maintain aspect ratio */
         display: block;
         object-fit: cover; /* Cover image within its container */
+        transition: transform 0.3s ease-in-out; /* Add transition effect for smooth hover */
     }
+
+        .slide img:hover {
+            transform: scale(1.1); /* Scale the image on hover */
+        }
 
 .food_list {
     padding: 20px;

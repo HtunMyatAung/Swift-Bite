@@ -2,7 +2,7 @@
 @{
     Layout = "_User_layout";    
     var Nullitem = TempData["itemsthere"];
-   
+    var promoitem = 0;
     var currentyear = DateTime.Now.Year;
 }
 
@@ -258,6 +258,14 @@
         .search{
         -moz-user-focus:no
         }
+
+        .emptytext{
+            display: flex;
+            align-content: center;
+            align-items: center;
+            font-size: 2.0rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -290,9 +298,14 @@
     </div>
     
     <div class="container mt-4" id="all">
+        @foreach (var item in Model.Items.Where(i => i.ItemPrice != i.ItemChangedPrice))
+        {
+            promoitem +=1;
+        }
+
         @if (Nullitem != null)
         {
-            <p>hi</p>
+            <p class="emptytext">No items available at the moment. Please check back later!</p>
         }
         else
         {
@@ -318,9 +331,9 @@
 
     </div>
     <div class="container mt-4" id="promotion" style="display:none;">
-        @if (Nullitem != null)
+        @if (promoitem != 0)
         {
-            <p>hi</p>
+            <p class="emptytext">No promotion items available at the moment. Please check back later!</p>
         }
         else
         {
