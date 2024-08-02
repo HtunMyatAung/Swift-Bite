@@ -108,16 +108,21 @@
             <div class="row">
                 @foreach (var item in Model.Items)
                 {
-                    <div class="col-md-6 col-lg-4 col-sm-12 menu-item-wrapper">
-                        <div class="menu-item1">
-                            <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
-                            <div>
-                                <h5>@item.ItemName</h5>
-                                <p><small>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</small></p>
-                                <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
-                            </div>
+                    @if (Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown") != "Unknown")
+                    {
+                        <div class="col-md-6 col-lg-4 col-sm-12 menu-item-wrapper">
+                            <a href="@Url.Action("SingleShopView", "Hywm", new { shopid = item.Shop_Id })" style="text-decoration:none;">
+                                <div class="menu-item1">
+                                    <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
+                                    <div>
+                                        <h5>@item.ItemName</h5>
+                                        <p><small>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</small></p>
+                                        <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
+                    }
                 }
             </div>
         </div>

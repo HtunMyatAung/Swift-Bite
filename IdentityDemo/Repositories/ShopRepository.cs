@@ -18,16 +18,16 @@ namespace IdentityDemo.Repositories
         }
         public async Task<int> ShopCount()
         {
-            return _context.Shops.Count();
+            return _context.Shops.Count(s=>s.deleted==0);
         }
         public async Task<IEnumerable<ShopModel>> GetShopsListAsync()
         {
             // Fetch data from the database or data source
-            return await _context.Shops.ToListAsync(); // Fetch and return as IEnumerable<ShopModel>
+            return await _context.Shops.Where(s => s.deleted == 0).ToListAsync(); // Fetch and return as IEnumerable<ShopModel>
         }
         public IEnumerable<ShopModel> GetAllShopsAsync()
         {
-            return _context.Shops.ToList();
+            return _context.Shops.Where(s => s.deleted == 0).ToList();
         }
 
         public async Task<ShopModel> GetShopByIdAsync(int shopId)
@@ -52,7 +52,7 @@ namespace IdentityDemo.Repositories
             var shop = await _context.Shops.FindAsync(shopId);
             if (shop != null)
             {
-                _context.Shops.Remove(shop);
+                shop.deleted = 1;
                 await _context.SaveChangesAsync();
             }
         }

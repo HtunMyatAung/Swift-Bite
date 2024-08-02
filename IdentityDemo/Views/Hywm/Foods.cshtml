@@ -226,6 +226,16 @@
             height: 300px;
             object-fit: fill;
         }
+
+        .nav-link1.active {
+            background-color: black; /* Background color on hover */
+            color: #ffffff; /* Text color on hover */
+            border-radius: 5px; /* Rounded corners on hover */
+            width: auto;
+            text-align: center;
+            align-content: center;
+        }
+
     </style>
 </head>
 <body>
@@ -288,10 +298,10 @@
         </div>
     </div>
     <div class="navbar d-flex justify-content-around shadow mt-3">
-        <a href="#all" class="nav-link1" onclick="filterItems('all')">All</a>
+        <a href="#all" id="link-all" class="nav-link1 active" onclick="filterItems('all')">All</a>
         @foreach (var category in Model.Categories)
         {
-            <a href="#@category" class="nav-link1" onclick="filterItems('@category')">@category</a>
+            <a href="#@category" id="link-@category" class="nav-link1 " onclick="filterItems('@category')">@category</a>
         }
     </div>
 
@@ -299,26 +309,31 @@
         <div class="row" id="items-container">
             @foreach (var item in Model.Items)
             {
-                <div class="col-md-6 col-lg-4 col-sm-12 menu-item-wrapper" data-category="@item.Category">
-                    <div class="menu-item1">
-                        <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
-                        <div>
-                            <h5>@item.ItemName</h5>
-                            
-                            <p><small>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</small></p>
-                            <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
-                        </div>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            var isInWishlist = Model.WishlistItems != null && Model.WishlistItems.Any(w => w.ItemId == item.ItemId);
-                            <button class="heart-button @(isInWishlist ? "active" : "")" data-item-id="@item.ItemId">
-                                <i class="fas fa-heart"></i>
-                            </button>
+                if (Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown") != "Unknown")
+                {
 
-                            <button class="gotoshop" onclick="window.location.href='/Hywm/SingleShopView?shopId='+@item.Shop_Id;"><i class="fas fa-arrow-right"></i></button>
-                        }
+
+                    <div class="col-md-6 col-lg-4 col-sm-12 menu-item-wrapper" data-category="@item.Category">
+                        <div class="menu-item1">
+                            <img src="~/img/items/@item.ItemImageName" alt="@item.ItemName">
+                            <div>
+                                <h5>@item.ItemName</h5>
+
+                                <p><small>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</small></p>
+                                <p style="font-size: 16px;">@item.ItemChangedPrice MMK</p>
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                var isInWishlist = Model.WishlistItems != null && Model.WishlistItems.Any(w => w.ItemId == item.ItemId);
+                                <button class="heart-button @(isInWishlist ? "active" : "")" data-item-id="@item.ItemId">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+
+                                <button class="gotoshop" onclick="window.location.href='/Hywm/SingleShopView?shopId='+@item.Shop_Id;"><i class="fas fa-shopping-cart"></i></button>
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             }
         </div>
     </div>
@@ -412,6 +427,15 @@
     </footer>
     <!-- Footer -->
     <script>
+        function setActive(link) {
+            // Remove 'active' class from all links
+            document.querySelectorAll('.nav-link1').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked link
+            link.classList.add('active');
+        }
         document.getElementById('allButton').addEventListener('click', function () {
             document.getElementById('all').style.display = 'block';
             document.getElementById('promotion').style.display = 'none';
