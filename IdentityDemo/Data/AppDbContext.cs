@@ -20,6 +20,6 @@ namespace IdentityDemo.Data
         {
             Database.EnsureCreated();
         }
-       
+
     }
 }

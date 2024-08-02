@@ -66,7 +66,7 @@
                 {
                     <tr style="text-align: center;">
                         <td style="text-align: center;">@counter</td>
-                        <td style="text-align: center;">@user.UserName</td>
+                        <td style="text-align: center;">@user.UserName.Replace('_',' ')</td>
                         <td style="text-align: center;">@user.PhoneNumber</td>
                         <td style="color:@(user.Role == "User" ? "green" : user.Role == "Owner" ? "black" : "black"); text-align: center;">
                             <span style="background-color: lightgray; padding: 2px; border-radius: 4px; display: inline-block;">

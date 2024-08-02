@@ -29,7 +29,7 @@ namespace IdentityDemo.Repositories
 
         public async Task<List<ShopModel>> GetAllShopsAsync()
         {
-            return await _context.Shops.ToListAsync();
+            return await _context.Shops.Where(s => s.deleted == 0).ToListAsync();
         }
 
         public async Task<ItemModel> GetItemByIdAsync(int itemId)

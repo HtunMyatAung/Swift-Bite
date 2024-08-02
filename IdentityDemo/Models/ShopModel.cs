@@ -28,8 +28,10 @@ namespace IdentityDemo.Models
         public string ProfileImagePath { get; set; }
         [Column("confirm")]
         public int Is_confirm { get; set; }
-        
+        [Column("Deleted")]
+        public int deleted {  get; set; }
 
-        
+
+
     }
 }

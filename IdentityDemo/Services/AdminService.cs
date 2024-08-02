@@ -124,6 +124,7 @@ namespace IdentityDemo.Services
                         ShopEmail = user.Email,
                         ProfileImagePath = "shop_default.png",
                         Is_confirm=0,
+                        deleted=0
                     };
                     user.ShopId = newShopId;
                     await _shopRepository.AddShopAsync(shop);
@@ -143,7 +144,14 @@ namespace IdentityDemo.Services
         {
             var user = await _accountService.GetUserByIdAsync(userId);            
             user.Deleted = 1;
+            if (user.Role== "Owner")
+            {
+                var shop = await _shopService.GetShopByIdAsync(user.ShopId);
+                shop.deleted = 1;
+                await _shopRepository.DeleteShopAsync(shop.ShopId);
+            }
             await _accountRepository.DeleteUser(user);
+            
         }
 
         public async Task<IdentityResult> ResetPasswordAsync(string userId)
