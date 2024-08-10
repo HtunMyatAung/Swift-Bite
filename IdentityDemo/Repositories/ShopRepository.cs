@@ -1,5 +1,6 @@
 ﻿// ShopRepository.cs
 using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

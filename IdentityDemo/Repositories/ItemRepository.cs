@@ -1,4 +1,5 @@
 ﻿using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,7 +67,7 @@ namespace IdentityDemo.Repositories
 
         public async Task<int> GetMaxItemIdAsync()
         {
-            return _context.Items.Any()?await _context.Items.MaxAsync(s => s.ItemId):0;
+            return _context.Items.Any() ? await _context.Items.MaxAsync(s => s.ItemId) : 0;
         }
     }
 }

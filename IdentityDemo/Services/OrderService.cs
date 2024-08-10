@@ -1,5 +1,5 @@
-﻿using IdentityDemo.Models;
-using IdentityDemo.Repositories;
+﻿using IdentityDemo.Interface;
+using IdentityDemo.Models;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;

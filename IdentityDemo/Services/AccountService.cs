@@ -1,6 +1,6 @@
 ﻿using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.Repositories;
 using IdentityDemo.ViewModels;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
@@ -73,12 +73,12 @@ namespace IdentityDemo.Services
             await _accountRepository.DeleteUser(user);
         }
 
-        public IEnumerable<ApplicationUser> GetAllUser()
+        public  IEnumerable<ApplicationUser> GetAllUser()
         {
             return _accountRepository.GetUsers();
         }
 
-        public async void SendOTP(string email)
+        public async Task SendOTP(string email)
         {
             string toEmail = email;
             string subject = "Verify your new Swift Foods account";

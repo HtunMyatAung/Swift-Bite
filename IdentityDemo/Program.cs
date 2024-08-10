@@ -7,7 +7,8 @@ using IdentityDemo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using IdentityDemo.Repositories;
- 
+using IdentityDemo.Interface;
+
 var builder = WebApplication.CreateBuilder(args);
 // Configure the database context
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -78,7 +79,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -86,7 +86,9 @@ app.UseRouting();
 app.UseSession();
 // Authentication and Authorization
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 
 // Endpoint routing
 app.MapControllerRoute(

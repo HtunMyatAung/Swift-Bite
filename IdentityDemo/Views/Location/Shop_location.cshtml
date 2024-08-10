@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Get User Location";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <h2>@ViewData["Title"]</h2>
+
+    <button onclick="getLocation()">Get Location</button>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            // Send location to the server
+            fetch('/Location/Shop_Location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value // For anti-forgery token
+                },
+                body: JSON.stringify({ latitude: lat, longitude: lon })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Location saved successfully');
+                } else {
+                    alert('Error saving location');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+    </script>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    }
+</body>
+</html>

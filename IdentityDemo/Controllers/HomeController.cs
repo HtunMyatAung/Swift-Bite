@@ -1,6 +1,6 @@
 using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

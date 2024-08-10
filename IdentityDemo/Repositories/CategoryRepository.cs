@@ -1,4 +1,5 @@
 ﻿using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using Microsoft.EntityFrameworkCore;
 

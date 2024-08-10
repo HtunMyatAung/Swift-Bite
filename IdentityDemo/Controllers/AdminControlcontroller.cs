@@ -1,6 +1,6 @@
 ﻿using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.Repositories;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System.Threading.Tasks;
 
 namespace IdentityDemo.Controllers
@@ -41,53 +42,198 @@ namespace IdentityDemo.Controllers
         public IActionResult Index() => View();
         [HttpGet]
         public async Task<IActionResult> Admin_category_list(){
-            var model = new CategoryListViewModel
+            string err=string.Empty;
+            var userId = _userManager.GetUserId(User);
+            string requestData = "Fetching list of catogries";
+            string responseData = string.Empty;
+            try
             {
-                List = await _adminService.GetCategoriesList(),
-                NewCategory = new IdentityDemo.Models.CategoryModel()
-            };
-            return View(model);
+                var model = new CategoryListViewModel
+                {
+                    List = await _adminService.GetCategoriesList(),
+                    NewCategory = new IdentityDemo.Models.CategoryModel()
+                };
+                responseData = JsonConvert.SerializeObject(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                err = ex.Message;
+                responseData = err;
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "Admin_category_list",
+                    ControllerName = "Admin_control",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(err) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+
+            }
+            
         }
         [HttpPost]
-        [ActionName("DeleteCategory")]
-        public async Task<IActionResult> DeleteCategory(int categoryid)
+        [ActionName("DeleteCategory")]        
+        public async Task<IActionResult> DeleteCategory(int categoryId)
         {
-            await _categoryRepository.DeleteCategoryAsync(categoryid);
+            string err = string.Empty;
+            var userId = _userManager.GetUserId(User);
+            string requestData = JsonConvert.SerializeObject(new { CategoryId = categoryId });
+            string responseData = string.Empty;
+
+            try
+            {
+                await _categoryRepository.DeleteCategoryAsync(categoryId);
+                responseData = "Category deleted successfully";
+            }
+            catch (Exception ex)
+            {
+                err = ex.Message;
+                responseData = err;
+                // Redirect to an error page or return an error response
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                // Log the action
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "DeleteCategory",
+                    ControllerName = "AdminControl",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(err) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
+
             return RedirectToAction("Admin_category_list", "AdminControl");
         }
 
         [HttpPost]
         public async Task<IActionResult> Admin_add_category(string category_name)
         {
-            var existingCategory = await _categoryRepository.GetCategoryByNameAsync(category_name);
-            if (existingCategory != null)
+            string requestData = JsonConvert.SerializeObject(new { CategoryName = category_name });
+            string responseData = string.Empty;
+            var userid= _userManager.GetUserId(User);
+            string err=string.Empty;
+            try
             {
-                TempData["error_category"] = "This category is already exsit";
+                var existingCategory = await _categoryRepository.GetCategoryByNameAsync(category_name);
+                if (existingCategory != null)
+                {
+                    responseData = "duplicate category";
+                    TempData["error_category"] = "This category is already exsit";
+                    return RedirectToAction("Admin_category_List", "AdminControl");
+                }
+                var model = new CategoryModel()
+                {
+
+                    Name = category_name,
+                    Item_count = 0
+                };
+                await _adminService.AddCategoryAsync(model);
+                responseData=JsonConvert.SerializeObject(model);
                 return RedirectToAction("Admin_category_List", "AdminControl");
             }
-            var model = new CategoryModel()
+            catch (Exception ex)
             {
-                
-                Name = category_name,
-                Item_count = 0
-            };
-            await _adminService.AddCategoryAsync(model);
-            return RedirectToAction("Admin_category_List", "AdminControl"); 
+                err = ex.Message;
+                responseData = err;
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                var Log = new ActionLog
+                {
+                    UserId=userid,
+                    ActionName= "Admin_add_category",
+                    ControllerName="Admin_control",
+                    Timestamp= DateTime.Now,
+                    RequestData= requestData,
+                    ResponseData= responseData,
+                    LogStatus=string.IsNullOrEmpty(err)?"INFO":"ERROR"
+                };
+                await _actionRepository.Add(Log);
+            }
             
         }
 
         public async Task<IActionResult> Admin_shop_list()
         {
-            TempData["title"] = "Shop list";
-            var shopViewModels = await _shopService.GetShopsNOwnersAsync();
-            return View(shopViewModels);
+            string error = string.Empty;
+            var userid = _userManager.GetUserId(User);
+            string requestData = "Fetching list of shop";
+            string responseData = string.Empty;
+            try
+            {
+                TempData["title"] = "Shop list";
+                var shopViewModels = await _shopService.GetShopsNOwnersAsync();
+                return View(shopViewModels);
+            }
+            catch(Exception ex) {error=ex.Message;
+                responseData = error;
+                return RedirectToAction("Show_erro_loading", "Home");
+            }
+            finally
+            {
+                var log = new ActionLog
+                {
+                    UserId = userid,
+                    ActionName = "Admin_shop_list",
+                    ControllerName = "Admin_control",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
+            
         }
 
         public async Task<IActionResult> Admin_forgot_list()
         {
             TempData["title"] = "Forgot password list";
-            var forgots = await _adminService.GetForgotPasswordUsersAsync();
-            return View(forgots);
+            string err = string.Empty;
+            var userId = _userManager.GetUserId(User);
+            string requestData = "Fetching list of users who requested password reset";
+            string responseData=string.Empty;
+            try
+            {
+                var forgots = await _adminService.GetForgotPasswordUsersAsync();
+                responseData=JsonConvert.SerializeObject(forgots);
+                return View(forgots);
+            }
+            catch (Exception ex) { 
+                err = ex.Message;
+                responseData = err;         
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "Admin_forgot_list",
+                    ControllerName = "Admin_control",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(err) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
+            
         }
 
         [HttpGet]
@@ -106,21 +252,84 @@ namespace IdentityDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Admin_update_user_info(UpdateUserViewModel model)
         {
-            if (!ModelState.IsValid)
+            TempData["title"] = "Update User Information";
+            string err = string.Empty;
+            var userId = _userManager.GetUserId(User);
+            string responseData = string.Empty;
+            string requestData = JsonConvert.SerializeObject(model); // Serialize the request data
+
+            try
             {
-                return View(model);
+                if (!ModelState.IsValid)
+                {
+                    responseData = "Invalid model state";
+                    return View(model);
+                }
+
+                await _adminService.AdminUpdateUserAsync(model);
+                responseData = "User information updated successfully";
+
+                return RedirectToAction("Admin_user_list");
             }
-            await _adminService.AdminUpdateUserAsync(model);
-            return RedirectToAction("Admin_user_list");
+            catch (Exception ex)
+            {
+                err = ex.Message;
+                responseData = err;
+
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                // Log the action
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "Admin_update_user_info",
+                    ControllerName = "AdminControl",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData, // Log the captured request data
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(err) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
         }
 
         public async Task<IActionResult> Admin_dashboard()
         {
-            TempData["title"] = "Dashboard";
-            var viewModel = await _adminService.GetAdminDashboardDataAsync();
-            return View(viewModel);
+            TempData["title"] = "Dashboard";            
+            string err = string.Empty;
+            var userId = _userManager.GetUserId(User);
+            string responseData = string.Empty;
+            
+            try
+            {
+                var viewModel = await _adminService.GetAdminDashboardDataAsync();
+                responseData = JsonConvert.SerializeObject(viewModel);
+                return View(viewModel);
+            }
+            catch (Exception ex) { 
+                err = ex.Message;
+                responseData = err;
+                return RedirectToAction("Show_error_loading", "Home");
+            
+            }
+            finally
+            {
+                // Log the action
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "Admin_dashboard",
+                    ControllerName = "AdminControl",
+                    Timestamp = DateTime.Now,
+                    RequestData = null,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(err) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
         }
-
         public async Task<IActionResult> Admin_user_list()
         {
             string error = string.Empty;
@@ -153,7 +362,7 @@ namespace IdentityDemo.Controllers
                     ResponseData = responseData,
                     LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR"
                 };
-                _actionRepository.Add(log); 
+                await _actionRepository.Add(log); 
                 
             }
         }
@@ -161,45 +370,132 @@ namespace IdentityDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string userId)
         {
-            if (string.IsNullOrEmpty(userId))
+            string error= string.Empty;
+            var userid=_userManager.GetUserId(User);
+            string requestData = JsonConvert.SerializeObject(new { UserId = userId });
+            string responseData = string.Empty;
+            try
             {
-                return BadRequest("User ID cannot be null or empty.");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    responseData = "userid is null";
+                    return BadRequest("User ID cannot be null or empty.");
+                }
+                await _adminService.DeleteUserAsync(userId);
+                responseData = "User is successfully deleted by userid";
+                return RedirectToAction("Admin_user_list");
             }
-            await _adminService.DeleteUserAsync(userId);
-            return RedirectToAction("Admin_user_list");
+            catch (Exception ex) { error = ex.Message; responseData = error; return RedirectToAction("Show_error_loading", "Home"); }
+            finally
+            {
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "DeleteUser",
+                    ControllerName = "Admin_control",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
+              
         }
 
         [HttpPost]
         public async Task<IActionResult> ResetPassword(string userId)
         {
-            TempData["title"] = "Reset password";
-            if (string.IsNullOrEmpty(userId))
+            string error= string.Empty;
+            string requestData=JsonConvert.SerializeObject(new{ UserId = userId });
+            string responseData= string.Empty;
+            try
             {
-                return BadRequest("User ID cannot be null or empty.");
+                TempData["title"] = "Reset password";
+                if (string.IsNullOrEmpty(userId))
+                {
+                    responseData = "null user";
+                    return BadRequest("User ID cannot be null or empty.");
+                }
+                await _adminService.ResetPasswordAsync(userId);
+                responseData = "User's password is successfully reset";
+                return RedirectToAction("Admin_forgot_list");
             }
-            await _adminService.ResetPasswordAsync(userId);
-            return RedirectToAction("Admin_forgot_list");
+            catch(Exception ex)
+            {
+                error = ex.Message; responseData = error;
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    Timestamp = DateTime.Now,
+                    ActionName = "ResetPassword",
+                    ControllerName = "Admin_control",
+                    LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
+            
         }
 
         [HttpGet]
         public IActionResult Admin_change_password() => View();
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public async Task<IActionResult> Admin_change_password(UpdateUserViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            string requestData = JsonConvert.SerializeObject(model);
+            string error = string.Empty;
             var userId = _userManager.GetUserId(User);
-            var result=await _adminService.ChangePasswordAsync(userId,model);
-            if (result.Succeeded)
-            {
+            string responseData = string.Empty;
 
-                return RedirectToAction("Admin_user_list");
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    responseData = "Invalid model state";
+                    return View(model);
+                }
+
+                var result = await _adminService.ChangePasswordAsync(userId, model);
+                if (result.Succeeded)
+                {
+                    responseData = "Password changed successfully";
+                    return RedirectToAction("Admin_user_list");
+                }
+                else
+                {
+                    responseData = "Password change failed";
+                    return RedirectToAction("Show_error_loading", "Home");
+                }
             }
-            return RedirectToAction("Show_error_loading", "Home");
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                responseData = error;
+                return RedirectToAction("Show_error_loading", "Home");
+            }
+            finally
+            {
+                // Log the action
+                var log = new ActionLog
+                {
+                    UserId = userId,
+                    ActionName = "Admin_change_password",
+                    ControllerName = "AdminControl",
+                    Timestamp = DateTime.Now,
+                    RequestData = requestData,
+                    ResponseData = responseData,
+                    LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR"
+                };
+                await _actionRepository.Add(log);
+            }
         }
 
         [HttpPost]

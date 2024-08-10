@@ -1,6 +1,6 @@
 ﻿using IdentityDemo.Data;
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.Repositories;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace IdentityDemo.Services
         private readonly AppDbContext _context;
         private readonly IWishListService _wishListService;
         private readonly IShopService _shopService;
-        public ItemService(IShopService shopService,IWishListService wishListService,IItemRepository itemRepository, UserManager<ApplicationUser> userManager,ICategoryRepository categoryRepository,AppDbContext context,IWebHostEnvironment environment)
+        public ItemService(IShopService shopService, IWishListService wishListService, IItemRepository itemRepository, UserManager<ApplicationUser> userManager, ICategoryRepository categoryRepository, AppDbContext context, IWebHostEnvironment environment)
         {
             _itemRepository = itemRepository;
             _userManager = userManager;
@@ -32,8 +32,8 @@ namespace IdentityDemo.Services
         }
         public async Task<ItemsViewModel> GetHomePageItemsAsync()
         {
-           
-            
+
+
             var shops = await _itemRepository.GetAllShopsAsync();
             var items = await _itemRepository.GetAllItemsAsync();
             var shopLookup = shops.ToDictionary(s => s.ShopId, s => s.ShopName);
@@ -54,13 +54,13 @@ namespace IdentityDemo.Services
                 Shop_Id = shopId,
                 Categories = categories
             };
-            
+
         }
         public async Task<int> AllItemCount()
         {
             return await _itemRepository.AllItemCount();
         }
-       
+
         public async Task<List<ItemModel>> GetAllItemsByShopIdAsync(int shopId)
         {
             var items = await _itemRepository.GetAllItemsAsync();
@@ -146,6 +146,7 @@ namespace IdentityDemo.Services
             item.ItemChangedPrice = updateItem.ItemChangedPrice;
             item.Discount_rate = updateItem.Discount_rate;
             item.Discount_price = updateItem.Discount_price;
+            item.Category = updateItem.Category;
             item.ItemUpdatedDate = DateTime.Now;
 
             // Save the updated item to the repository
@@ -168,7 +169,7 @@ namespace IdentityDemo.Services
                 Discount_rate = 0,
                 Discount_price = 0,
                 ItemImageName = uniqueFileName,
-                Category= item.Category,
+                Category = item.Category,
             };
             var updatecategory = await _categroyRepository.GetCategoryByNameAsync(item.Category);
             updatecategory.Item_count = updatecategory.Item_count + 1;

@@ -1,8 +1,10 @@
 ﻿@{
+   
     string title = ViewBag.Title as string;
     TempData.Keep("title");
     string foodLinkClass = title == "foods" ? "nav-link text-dark" : "nav-link text-dark";
     string foodLinkStyle = title == "foods" ? "color:red;" : "";
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -62,6 +64,8 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-white mb-3 shadow" style="position:sticky;border-radius:0px;margin-top:0px;">
+           
+
             <div class="container">
                 <img src="~/img/hywm_img/items/logo1.png" style="height:60px;position:sticky;color:black!important;"/>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavi" aria-controls="navbarNavi" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,9 +104,6 @@
         </nav>
     </header>
     @RenderBody()
-
-    
-
     <script src="~/js/site.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

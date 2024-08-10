@@ -5,6 +5,7 @@ using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using IdentityDemo.Interface;
 
 namespace IdentityDemo.Repositories
 {

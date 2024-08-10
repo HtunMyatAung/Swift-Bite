@@ -1,6 +1,6 @@
 ﻿// ShopService.cs
+using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.Repositories;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
