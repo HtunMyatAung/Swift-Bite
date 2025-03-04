@@ -29,10 +29,15 @@ public class OrderRepository : IOrderRepository
     {
         return _context.Orders.Any() ? await _context.Orders.MaxAsync(s => s.OrderID) + 1 : 1;
     }
-
+    
     public async Task<List<ItemModel>> GetItemsByIdsAsync(List<int> itemIds)
     {
-        return await _context.Items.Where(i => itemIds.Contains(i.ItemId)).ToListAsync();
+        return await Task.Run(() =>
+             _context.Items
+            .AsEnumerable()
+            .Where(i => itemIds.Contains(i.ItemId))
+            .ToList()
+        );
     }
 
     public async Task<ShopModel> GetShopByIdAsync(int shopId)

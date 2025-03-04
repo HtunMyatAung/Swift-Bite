@@ -261,10 +261,8 @@ namespace IdentityDemo.Services
                 user.ShopId = 0;
                 user.Deleted = 0;
                 user.UserImageName = "male_default.png";
-                await _accountRepository.UpdateNewUserAsync(user);       
-                // Sign in the user
+                await _accountRepository.UpdateNewUserAsync(user);      
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                // Add user to role
                 await _userManager.AddToRoleAsync(user, "User");
                 return true;
             }
@@ -377,12 +375,8 @@ namespace IdentityDemo.Services
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(user)}'.");
             }
-
             
-            var itemIds = await _wishListService.GetItemIdsFromWishlistAsync(applicationUser.Id);
-
-            // Get items by IDs
-            
+            var itemIds = await _wishListService.GetItemIdsFromWishlistAsync(applicationUser.Id);                       
             var items = await _itemService.GetItemsByIdsAsync(itemIds);
             var orders = await _context.Orders
                              .Where(o => o.User_Id == applicationUser.Id)
@@ -501,7 +495,7 @@ namespace IdentityDemo.Services
                 <h1>Reset Your Password</h1>
                 <p>Dear User,</p>
                 <p>To reset your password, please click the button below:</p>
-                <a href=""http://10.235.151.97:5000/Account/ResetPassword"" target=""_blank"">Reset Password link</a>
+                <a href=""http://192.168.60.191:5000/Account/ResetPassword"" target=""_blank"">Reset Password link</a>
                 <p>If you didn't request this change, you can safely ignore this email.</p>
                 <p>Best regards,<br>uab Zone</p>
             </div>

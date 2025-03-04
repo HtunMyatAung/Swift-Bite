@@ -12,6 +12,7 @@
     <title>Change Password</title>
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+    <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
     <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
     <style>
@@ -20,7 +21,7 @@
             padding: 30px;
             border: 1px solid #e1e4e8;
             border-radius: 6px;
-            background-color: #fff;
+            background-color: transparent;
         }
 
         .github-label {
@@ -93,41 +94,19 @@
         </div>
         
     </form>
-    <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4">
-        <table id="shoptable" class="display" style="width:100%">
+    <div >
+        <table id="myTable" class="display" style="width:100%">
             <thead>
                 <tr style="text-align: center;">
                     <th>ID</th>
                     <th>Name</th>
                     <th>Items Count</th>
                     <th>Delete</th>
-
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var category in Model.List)
-                {
-                    <tr style="text-align: center;">
-                        <td>@counter</td>
-                        <td>@category.Name</td>
-                        <td>@category.Item_count</td>
-                        <td>
-                            <form id="deleteCategoryForm-@category.Id" asp-action="DeleteCategory" asp-controller="AdminControl" method="post">
-                                <input type="hidden" name="categoryid" value="@category.Id" />
-                                <button type="button" class="btn btn-link" style="color:red" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="setCategoryId('@category.Id')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-
-                    </tr>
-                    counter += 1;
-                    <!-- Add more rows with data as needed -->
-                }
-            </tbody>
+            </thead>            
         </table>
     </div>
-    <!-- Modal for delete Confirmation -->
+
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -145,16 +124,15 @@
             </div>
         </div>
     </div>
-    <!-- jQuery -->
-    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
-    <!-- DataTables JS -->
-    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
-    <script>
-        // Initialize DataTable
-        $(document).ready(function () {
-            $('#shoptable').DataTable();
-        });
 
+   @section Scripts{
+   
+    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
+    <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
+    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+    <script>
+        
         let currentCategoryId;
 
         function setCategoryId(categoryId) {
@@ -165,7 +143,71 @@
             document.getElementById('deleteCategoryForm-' + currentCategoryId).submit();
         });
 
+        $.fn.dataTable.ext.errMode = "none";
+        var myTable = $('#myTable').DataTable({
+            serverSide : true,
+            processing : false,
+            ordering : false,
+            language: {
+                processing: '<div id="loadingSpinner" class="d-flex justify-content-center align-items-center" ' +
+                    'style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
+                    'background: rgba(255, 255, 255, 0.8); z-index: 1000; width: 100%; height: 100%;">' +
+                    '<div class="spinner-border text-primary" role="status">' +
+                    '<span class="visually-hidden">Loading...</span>' +
+                    '</div>' +
+                    '</div>'
+            },
+            dom:
+                "<'row'<'col-sm-12 col-md-6 d-flex justify-content-start align-items-center flex-grow-1 pt-0 pb-0 mt-2 mb-2'l>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row pt-2'<'col-sm-12 d-flex justify-content-between align-items-center'<i><p>>>",
+
+            ajax: {
+                url: "@Url.RouteUrl("AdminCategoryList.Datatable")",
+                type: "POST",
+                datatype: "json",
+                beforeSend: function () {
+                    $('#myTable tbody').html('<tr><td colspan="12" class="text-center" style="position: relative; height: 100px;">' +
+                        '<div class="d-flex justify-content-center align-items-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+                        '<div class="spinner-border text-primary" role="status">' +
+                        '<span class="visually-hidden">Loading...</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td></tr>');
+                }
+            },
+            columnDefs: [
+                {
+                    targets: 0,
+                    searchable: false,
+                    orderable: false,
+                    className: 'text-center',
+                    render: function (data, type, row, meta) {
+                        var pageInfo = myTable.page.info();
+                        return pageInfo.start + meta.row + 1;
+                    }
+                }
+            ],
+            columns: [
+                { data: "No." },
+                { data: "name", name: "Itemname", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "item_count", name: "Item Count", autoWidth: true, className: "text-nowrap text-center" },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="javascript:void(0)" class="text-danger " data-id="${row.Id}"><i class="fas fa-trash-alt"></i> </a>`;
+                    },
+                    width: "100px",
+                    className: "text-center"
+                }
+            ],
+            rowId: "Id",
+            order: [1, 'asc']
+        });
+        var oTable = $('#myTable').DataTable();
+
     </script>
+   }
 </body>
 </html>
 

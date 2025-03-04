@@ -61,24 +61,19 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Owner_Item_List()
         {
-            var userid = _userManager.GetUserId(User);
-            string requestData = "Fetching items which to owner shop with id"+userid;
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.shopId = user.ShopId;
+            string requestData = "Fetching items which to owner shop with id"+user.Id;
             string responseData = string.Empty;
             string error = string.Empty;
+            
             try
             {
-                var user = await _userManager.GetUserAsync(User);
-                var items = await _itemService.GetAllItemsByShopIdAsync(user.ShopId);
-                if (items == null)
-                {
-                    responseData = "no items in this shop";
-                    return NotFound();
-                }
-                responseData = JsonConvert.SerializeObject(items);
-                return View(items);
+                return View();
             }
             catch (Exception ex)
             {
@@ -93,13 +88,30 @@ namespace IdentityDemo.Controllers
                     LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR",
                     ActionName = "Owner_Item_List",
                     ControllerName = "Shop",
-                    UserId = userid,
+                    UserId = (user.Id).ToString(),
                     Timestamp = DateTime.Now,
                     RequestData = requestData,
                     ResponseData = responseData
                 };
                 await _actionRepository.Add(log);
             }
+        }
+
+        [HttpPost]
+        [Route("Shop/ItemListDataTable", Name = "ItemList.Datatable")]
+        public async Task<IActionResult> ItemListDataTable()
+        {
+            var draw = Request.Form["draw"].FirstOrDefault();
+            var user = await _userManager.GetUserAsync(User);
+            var items = await _itemService.GetAllItemsByShopIdAsync(user.ShopId);
+
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = items.Count(),
+                recordsTotal = items.Count(),
+                data = items
+            });
         }
 
         public async Task<IActionResult> Shop_view(int shopid)
@@ -385,5 +397,17 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
         }
-    }
+
+
+        public class RomanConvert
+        {
+            public static string Solution(int n)
+            {
+                // var roman = [ 1: 'I', ]
+                throw new NotImplementedException();
+            }
+        }
+
+}
+
 }

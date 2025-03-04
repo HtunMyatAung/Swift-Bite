@@ -1,16 +1,9 @@
 ﻿using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace IdentityDemo.Controllers
 {

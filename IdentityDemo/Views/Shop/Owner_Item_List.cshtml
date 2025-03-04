@@ -3,68 +3,16 @@
 @{
     Layout = "_Owner_layout";
     ViewData["Title"] = "Home Page";
-    int counter = 1;
 }
-@section Scripts {
-    <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+<!DOCTYPE html>
+<html lang="end">
+    <head>
+<link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
 
-    <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
-    <!-- jQuery -->
-    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
-    <!-- DataTables JS -->
-    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
-    <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
-    <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
-    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
-    <script>
-        // Initialize DataTable
-        $(document).ready(function () {
-            $('#shoptable').DataTable();
-        });
-        $(document).ready(function () {
-            $('#example1').DataTable({
-                responsive: true,
-                lengthChange: false,
-                autoWidth: false,
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                }
-            });
-        });
+<link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+<link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
 
-        function openPopup(itemName, itemPrice, itemQuantity, finalprice, updatedDate, itemImageName) {
-            // Set the text content of the modal
-            $('#modalItemName').text(itemName);
-            $('#modalItemPrice').text(itemPrice+" MMK");
-            $('#modalItemQuantity').text(itemQuantity);
-            $('#modalFinalPrice').text(finalprice+" MMK");
-            $('#modalUpdatedDate').text(new Date(updatedDate).toLocaleString());
-
-            // Set the image source
-            $('#modalImage').attr('src', '/img/items/' + itemImageName);
-
-            // Show the modal
-            $('#popup').modal('show');
-        }
-        function closePopup() {
-            $('#popup').modal('hide');
-        }
-
-
-        let currentItemId;
-
-        function setItemId(itemId) {
-            currentItemId = itemId;
-        }
-
-        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
-            document.getElementById('deleteItemForm-' + currentItemId).submit();
-        });
-        
-
-    </script>
-}
 <style>
     #shoptable th, #shoptable td {
         text-align: center;
@@ -92,20 +40,16 @@
         background: none;
     }
 </style>
-
-
-
+</head>
+<body>
 <div class="d-flex justify-content-between">
     <h1 style="color: black">Items</h1>
-    @foreach (var item in Model)
-    {
-        ViewBag.id = item.Shop_Id;
-    }
+    
     <div class="my-auto">
-    <a href="@Url.Action("CreateItem","Item",new{shopid = @ViewBag.id})" class="btn " style="background-color:black;color:white;"><i class="fa fa-circle-plus" ></i> New Item</a>
+    <a href="@Url.Action("CreateItem","Item",new{shopid = @ViewBag.shopId})" class="btn " style="background-color:black;color:white;"><i class="fa fa-circle-plus" ></i> New Item</a>
     </div>
 </div>
-<table id="shoptable" class="display" style="width:100%;">
+<table id="myTable" class="display" style="width:100%;">
     <thead>
         <tr style="text-align: center;">
             <th style="text-align:center;">No.</th>
@@ -115,15 +59,11 @@
             <th style="text-align:center;">Quantity</th>
             <th style="text-align:center;">Discount Price</th>
             <th style="text-align:center;">
-                <div class="d-flex justify-content-around">
-                    <span>Edit</span>
-                    <span>View</span>
-                    <span>Delete</span>
-                </div>
+                Actions
             </th>
         </tr>
     </thead>
-    <tbody>
+    @*<tbody>
         @foreach (var item in Model)
         {
             <tr style="text-align:center;">
@@ -152,12 +92,11 @@
             </tr>
             counter += 1;
         }
-    </tbody>
+    </tbody>*@
 </table>
 
 
 
-<!-- Modal for delete Confirmation -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -175,7 +114,7 @@
         </div>
     </div>
 </div>
-<!-- Bootstrap Modal for showing item info -->
+
 <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="buyItemModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -221,4 +160,105 @@
     </div>
 </div>
 
+@section Scripts {
+   
+    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
+    <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
+    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+    <script>
+        let currentItemId;
+
+        function setItemId(itemId) {
+            currentItemId = itemId;
+        }
+
+        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+            document.getElementById('deleteItemForm-' + currentItemId).submit();
+        });
+
+        $.fn.dataTable.ext.errMode = 'none';
+        var myTable = $('#myTable').dataTable({
+            processing: false,
+            serverSide: true,
+            ordering : false,
+            language: {
+                processing: '<div id="loadingSpinner" class="d-flex justify-content-center align-items-center" ' +
+                    'style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
+                    'background: rgba(255, 255, 255, 0.8); z-index: 1000; width: 100%; height: 100%;">' +
+                    '<div class="spinner-border text-primary" role="status">' +
+                    '<span class="visually-hidden">Loading...</span>' +
+                    '</div>' +
+                    '</div>'
+            },
+            dom:
+                "<'row'<'col-sm-12 col-md-6 d-flex justify-content-start align-items-center flex-grow-1 pt-0 pb-0 mt-2 mb-2'l>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row pt-2'<'col-sm-12 d-flex justify-content-between align-items-center'<i><p>>>",
+
+            ajax: {
+                url: "@Url.RouteUrl("ItemList.Datatable")",
+                type: "POST",
+                datatype: "json",
+                beforeSend: function () {
+                    $('#myTable tbody').html('<tr><td colspan="12" class="text-center" style="position: relative; height: 100px;">' +
+                        '<div class="d-flex justify-content-center align-items-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+                        '<div class="spinner-border text-primary" role="status">' +
+                        '<span class="visually-hidden">Loading...</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td></tr>');
+                }
+            },
+            columnDefs: [
+                {
+                    targets: 0,
+                    searchable: false,
+                    orderable: false,
+                    className: 'text-center',
+                    render: function (data, type, row, meta) {
+                        var pageInfo = myTable.page.info();
+                        return pageInfo.start + meta.row + 1;
+                    }
+                }
+            ],
+            columns: [
+                { data: "No." },
+                { data: "itemName", name: "Item Name", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "category", name: "Category", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "itemPrice", name: "Initial price", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "itemQuantity", name: "Quantity", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "itemChangedPrice", name: "Final Price", autoWidth: true, className: "text-nowrap text-center" },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a href="javascript:void(0)" class="text-danger " data-id="${row.Id}"><i class="fas fa-trash-alt"></i> </a>`;
+                    },
+                    width: "100px",
+                    className: "text-center"
+                }
+            ],
+            rowId: "Id",
+            order: [1, 'asc']
+        });
+        var oTable = $('#myTable').DataTable();
+
+            function openPopup(itemName, itemPrice, itemQuantity, finalprice, updatedDate, itemImageName) {
+                $('#modalItemName').text(itemName);
+                $('#modalItemPrice').text(itemPrice + " MMK");
+                $('#modalItemQuantity').text(itemQuantity);
+                $('#modalFinalPrice').text(finalprice + " MMK");
+                $('#modalUpdatedDate').text(new Date(updatedDate).toLocaleString());
+
+                $('#modalImage').attr('src', '/img/items/' + itemImageName);
+
+                $('#popup').modal('show');
+            }
+            function closePopup() {
+                $('#popup').modal('hide');
+            }
+    </script>
+}
+</body>
+</html>
 

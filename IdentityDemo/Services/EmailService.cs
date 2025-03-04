@@ -1,10 +1,8 @@
 ﻿using IdentityDemo.Services;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 
 public class EmailService : IEmailService

@@ -42,7 +42,7 @@
                 <button id="about-button" onclick="location.href='@Url.Action("About","Home")'">About Us</button>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <button id="login-button" onclick="location.href='@Url.Action("User_profile","Hywm")'" style="background-color:dimgray;border-radius:15px;">Profile</button>
+                    <button id="login-button" onclick="location.href='@Url.Action("User_profile","Hywm")'" style="background-color:dimgray;border-radius:15px;color:white;">Profile</button>
                 }
                 else
                 {

@@ -76,8 +76,9 @@ namespace IdentityDemo.Repositories
 
         public async Task<List<ApplicationUser>> GetUsersByIdsAsync(List<string> ids)
         {
-            return await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
+            return await Task.Run(() => _context.Users.AsEnumerable().Where(i => ids.Contains(i.Id)).ToList());
         }
+        
         public async Task<int> GetNewShopIdAsync()
         {
             return  _context.Shops.Any() ? await _context.Shops.MaxAsync(s => s.ShopId) + 1 : 1;

@@ -13,12 +13,17 @@ namespace IdentityDemo.Repositories
         {
             _context = context;
         }
+        
         public async Task<List<ItemModel>> GetItemsByIdsAsync(List<int> itemIds)
         {
-            return await _context.Items
+            return await Task.Run(() =>
+                _context.Items
+                .AsEnumerable()  
                 .Where(i => itemIds.Contains(i.ItemId))
-                .ToListAsync();
+                .ToList()  
+            );
         }
+
         public async Task<int> AllItemCount()
         {
             return _context.Items.Count();

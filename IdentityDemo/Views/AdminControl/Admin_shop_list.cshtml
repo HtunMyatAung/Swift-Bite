@@ -12,14 +12,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Table</title>
-    @section Scripts{
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
 
-        <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
-        <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
-        <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+    <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+    <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="padding-top: 2%;">
+        <table id="myTable" class="display" style="width:100%">
+            <thead>
+                <tr >
+                    <th >No.</th>
+                    <th class="text-start">Owner</th>
+                    <th class="text-start">Name</th>
+                    <th class="text-start">Phone</th>
+                    <th class="text-start">Email</th>
+                    <th class="text-start">Address</th>
+                    <th class="text-start">Description</th>
+                </tr>
+            </thead>            
+        </table>
+    </div>
+    @section Scripts {
+
         <!-- jQuery -->
         <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
         <!-- DataTables JS -->
@@ -28,45 +46,66 @@
         <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
         <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
         <script>
-            // Initialize DataTable
-            $(document).ready(function () {
-                $('#shoplisttable').DataTable();
+            $.fn.dataTable.ext.errMode = 'none';
+            var myTable = $('#myTable').DataTable({
+                processing: false,
+                serverSide: true,
+                ordering: false,
+                scrollX: true,
+                language: {
+                    processing: '<div id="loadingSpinner" class="d-flex justify-content-center align-items-center" ' +
+                        'style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
+                        'background: rgba(255, 255, 255, 0.8); z-index: 1000; width: 100%; height: 100%;">' +
+                        '<div class="spinner-border text-primary" role="status">' +
+                        '<span class="visually-hidden">Loading...</span>' +
+                        '</div>' +
+                        '</div>'
+                },
+                dom:
+                    "<'row'<'col-sm-12 col-md-6 d-flex justify-content-start align-items-center flex-grow-1 pt-0 pb-0 mt-2 mb-2'l>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row pt-2'<'col-sm-12 d-flex justify-content-between align-items-center'<i><p>>>",
+
+                ajax: {
+                    url: "@Url.RouteUrl("AdminShopList.Datatable")",
+                    type: "POST",
+                    datatype: "json",
+                    beforeSend: function () {
+                        $('#myTable tbody').html('<tr><td colspan="12" class="text-center" style="position: relative; height: 100px;">' +
+                            '<div class="d-flex justify-content-center align-items-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+                            '<div class="spinner-border text-primary" role="status">' +
+                            '<span class="visually-hidden">Loading...</span>' +
+                            '</div>' +
+                            '</div>' +
+                            '</td></tr>');
+                    }
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        searchable: false,
+                        orderable: false,
+                        className: 'text-center',
+                        render: function (data, type, row, meta) {
+                            var pageInfo = myTable.page.info();
+                            return pageInfo.start + meta.row + 1;
+                        }
+                    }
+                ],
+                columns: [
+                    { data: "No." },
+                    { data: "shopOwnerName", name: "Ownername", autoWidth: true, className: "text-nowrap text-start" },
+                    { data: "shopName", name: "Shop Name", autoWidth: true, className: "text-nowrap text-start" },
+                    { data: "shopPhone", name: "PhoneNumber", autoWidth: true, className: "text-nowrap text-start" },
+                    { data: "shopEmail", name: "Email", autoWidth: true, className: "text-nowrap text-start" },
+                    { data: "shopAddress", name: "Address", autoWidth: true, className: "text-nowrap text-start" },
+                    { data: "shopDescription", name: "Description", autoWidth: true, className: "text-nowrap text-start" }                    
+                ],
+                rowId: "Id",
+                order: [1, 'asc']
             });
+            var oTable = $('#myTable').DataTable();
         </script>
     }
-    
-</head>
-<body>
-    <div style="padding-top: 2%;">
-        <table id="shoplisttable" class="display" style="width:100%">
-            <thead>
-                <tr style ="text-align: center;">
-                    <th style="text-align:center;">No.</th>
-                    <th style ="text-align:center;">Owner</th>
-                    <th style="text-align:center;">Name</th>
-                    <th style="text-align:center;">Phone</th>
-                    <th style="text-align:center;">Email</th>
-                    <th style="text-align:center;">Address</th>
-                    <th style="text-align:center;">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var shop in Model)
-                {
-                    <tr style ="text-align: center;">
-                        <td style ="text-align:center;">@counter</td>
-                        <td style="text-align:center;">@shop.ShopOwnerName</td>
-                        <td style="text-align:center;">@shop.ShopName</td>
-                        <td style="text-align:center;">@shop.ShopPhone</td>
-                        <td style="text-align:center;">@shop.ShopEmail</td>
-                        <td style="text-align:center;">@shop.ShopAddress</td>
-                        <td style="text-align:center;">@shop.ShopDescription</td>
-                    </tr>
-                    counter += 1;
-                    <!-- Add more rows with data as needed -->
-                }
-            </tbody>
-        </table>
-    </div>
 </body>
 </html>

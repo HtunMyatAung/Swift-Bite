@@ -52,13 +52,14 @@
                 }
 
             .wishlist-table img {
-                max-width: 150px; /* Ensures the image doesn’t exceed a certain width */
-                max-height: 150px; /* Ensures the image doesn’t exceed a certain height */
+                max-width: 150px; 
+                max-height: 150px; 
+                border-radius: 10px;
             }
 
             .wishlist-table .image-column {
-                width: 200px; /* Set a fixed width for the image column */
-                text-align: center; /* Center content in the column */
+                width: 200px;
+                text-align: center; 
             }
 
             .wishlist-table .details-column {
@@ -200,6 +201,10 @@
 
         .profilecheck span{
             font-size:13px;
+        }
+        .item-row{
+            display:flex;
+            justify-content:space-between;
         }
     </style>
 </head>
@@ -345,7 +350,6 @@
                                 </div><!-- /.card-header -->
                                 <div class="card-body" style="position:sticky">
                                     <div class="tab-content">
-
                                         <!-- /.tab-pane -->
                                         <div class="active tab-pane" id="Order_list">
                                             <div class="container-fluid mt-4">
@@ -365,7 +369,7 @@
                                                                 <table class="order-table" id="order_table">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>#</th>
+                                                                            <th>No.</th>
                                                                             <th>Order Price</th>
                                                                             <th>Shop</th>
                                                                             <th>Order Date</th>
@@ -404,7 +408,7 @@
                                                                     <table class="wishlist-table" id="wish_table">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th>#</th>
+                                                                                <th>No.</th>
                                                                                 <th>Item</th>
                                                                                 <th>Details</th>
                                                                             </tr>
@@ -421,8 +425,9 @@
                                                                                     <td class="image-column">
                                                                                         <img src="~/img/items/@item.ItemImageName" alt="Item Image" />
                                                                                     </td>
-                                                                                    <td class="details-column">
+                                                                                    @*<td class="details-column">
                                                                                         <div class="item-details">
+
                                                                                             <div class="label">Item Name</div>
                                                                                             <div>@item.ItemName</div>
                                                                                             <div class="label">Item Price</div>
@@ -430,7 +435,22 @@
                                                                                             <div class="label">Shop</div>
                                                                                             <div>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</div>
                                                                                         </div>
+                                                                                    </td>*@
+                                                                                    <td class="details-column">
+                                                                                        <div class="item-row">
+                                                                                            <div class="label">Item Name:</div>
+                                                                                            <div>@item.ItemName</div>
+                                                                                        </div>
+                                                                                        <div class="item-row">
+                                                                                            <div class="label">Item Price:</div>
+                                                                                            <div>@item.ItemChangedPrice</div>
+                                                                                        </div>
+                                                                                        <div class="item-row">
+                                                                                            <div class="label">Shop:</div>
+                                                                                            <div>@Model.ShopLookup.GetValueOrDefault(item.Shop_Id, "Unknown")</div>
+                                                                                        </div>
                                                                                     </td>
+
                                                                                 </tr>
                                                                                 counter1 += 1;
                                                                             }

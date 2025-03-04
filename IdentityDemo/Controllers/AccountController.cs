@@ -4,19 +4,9 @@ using IdentityDemo.Models;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using IdentityDemo.Extensions;
-using Org.BouncyCastle.Bcpg;
-using System.Web.Helpers;
-using System;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Xml.Linq;
-using MySqlX.XDevAPI;
-using static System.Net.WebRequestMethods;
-using System.Security.Claims;
 using IdentityDemo.Interface;
 
 namespace IdentityDemo.Controllers
@@ -275,10 +265,8 @@ namespace IdentityDemo.Controllers
                     var isuser = await _userManager.FindByNameAsync(model.UserName);
                     if (result.Succeeded && isuser != null && isuser.Deleted != 1)
                     {
-                        // Retrieve the current user
                         ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
-                        // Pass the user data to the view
                         ViewBag.CurrentUser = currentUser;
                         if (isuser.Role == "Admin")
                         {

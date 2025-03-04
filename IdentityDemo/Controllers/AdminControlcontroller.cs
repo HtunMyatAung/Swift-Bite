@@ -40,6 +40,7 @@ namespace IdentityDemo.Controllers
         }
 
         public IActionResult Index() => View();
+
         [HttpGet]
         public async Task<IActionResult> Admin_category_list(){
             string err=string.Empty;
@@ -47,14 +48,8 @@ namespace IdentityDemo.Controllers
             string requestData = "Fetching list of catogries";
             string responseData = string.Empty;
             try
-            {
-                var model = new CategoryListViewModel
-                {
-                    List = await _adminService.GetCategoriesList(),
-                    NewCategory = new IdentityDemo.Models.CategoryModel()
-                };
-                responseData = JsonConvert.SerializeObject(model);
-                return View(model);
+            {                
+                return View();
             }
             catch (Exception ex)
             {
@@ -75,10 +70,25 @@ namespace IdentityDemo.Controllers
                     LogStatus = string.IsNullOrEmpty(err) ? "INFO" : "ERROR"
                 };
                 await _actionRepository.Add(log);
-
-            }
-            
+            }            
         }
+
+        [HttpPost]
+        [Route("AdminControl/AdminCategoryListDataTable", Name = "AdminCategoryList.Datatable")]
+        public async Task<IActionResult> AdminCategoryListDataTable()
+        {
+            var draw = Request.Form["draw"].FirstOrDefault();
+            var categories = await _adminService.GetCategoriesList();
+
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = categories.Count(),
+                recordsTotal = categories.Count(),
+                data = categories
+            });
+        }
+
         [HttpPost]
         [ActionName("DeleteCategory")]        
         public async Task<IActionResult> DeleteCategory(int categoryId)
@@ -168,6 +178,7 @@ namespace IdentityDemo.Controllers
             
         }
 
+        [HttpGet]
         public async Task<IActionResult> Admin_shop_list()
         {
             string error = string.Empty;
@@ -177,8 +188,7 @@ namespace IdentityDemo.Controllers
             try
             {
                 TempData["title"] = "Shop list";
-                var shopViewModels = await _shopService.GetShopsNOwnersAsync();
-                return View(shopViewModels);
+                return View();
             }
             catch(Exception ex) {error=ex.Message;
                 responseData = error;
@@ -199,6 +209,22 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
             
+        }
+
+        [HttpPost]
+        [Route("AdminControl/AdminShopListDataTable", Name = "AdminShopList.Datatable")]
+        public async Task<IActionResult> AdminShopListDataTable()
+        {
+            var draw = Request.Form["draw"].FirstOrDefault();
+            var shops = await _shopService.GetShopsNOwnersAsync();
+
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = shops.Count(),
+                recordsTotal = shops.Count(),
+                data = shops
+            });
         }
 
         public async Task<IActionResult> Admin_forgot_list()
@@ -330,6 +356,8 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
+        [HttpGet]
         public async Task<IActionResult> Admin_user_list()
         {
             string error = string.Empty;
@@ -338,10 +366,7 @@ namespace IdentityDemo.Controllers
             try
             {
                 TempData["title"] = "User List";
-                var users = _accountService.GetAllUser();
-                responseData = JsonConvert.SerializeObject(users);
-
-                return View(users);
+                return View();
             }
             catch (Exception ex)
             {
@@ -367,6 +392,22 @@ namespace IdentityDemo.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("AdminControl/AdminUsersListDataTable", Name = "AdminUsersList.Datatable")]
+        public async Task<IActionResult> AdminUsersListDataTable()
+        {
+            var draw = Request.Form["draw"].FirstOrDefault();            
+            var users = _accountService.GetAllUser();
+
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = users.Count(),
+                recordsTotal = users.Count(),
+                data = users
+            });            
+        }
+        
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string userId)
         {
