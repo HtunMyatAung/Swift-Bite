@@ -262,7 +262,7 @@ namespace IdentityDemo.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
-                    var isuser = await _userManager.FindByNameAsync(model.UserName);
+                    var isuser = await _userManager.FindByEmailAsync(model.UserName);
                     if (result.Succeeded && isuser != null && isuser.Deleted != 1)
                     {
                         ApplicationUser currentUser = await _userManager.GetUserAsync(User);
