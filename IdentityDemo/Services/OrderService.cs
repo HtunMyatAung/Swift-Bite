@@ -3,26 +3,25 @@ using IdentityDemo.Models;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IEmailService _emailService;
     private readonly UserManager<ApplicationUser> _userManager;
+
     public OrderService(IOrderRepository orderRepository, IEmailService emailService, UserManager<ApplicationUser> userManager)
     {
         _orderRepository = orderRepository;
         _emailService = emailService;
         _userManager = userManager;
     }
+
     public Task<List<OrderModel>> GetAllOrders()
     {
         return _orderRepository.GetAllOrdersAsync();
     }
+
     public async Task<List<OrderViewModel>> GetOrderNUserByShopIdAsync(int shopId)
     {
         var all_orders = await _orderRepository.GetAllOrdersAsync();
@@ -44,12 +43,14 @@ public class OrderService : IOrderService
 
         return orderViewModels;
     }
+
     public  async Task<List<OrderModel>> GetAllOrdersByShopIdAsync(int shopId)
     {
         var orders = await _orderRepository.GetAllOrdersAsync();
 
         return orders.Where(s => s.Shop_Id == shopId).ToList();
     }
+
     public async Task<InvoiceViewModel> PrepareInvoiceAsync(Dictionary<int, int> selectedItems, HttpContext httpContext)
     {
         if (selectedItems == null || selectedItems.Count == 0)

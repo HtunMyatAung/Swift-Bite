@@ -103,6 +103,7 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }            
         }
+
         public async Task<IActionResult> Invoice()
         {
             var userid = _userManager.GetUserId(User);
@@ -147,6 +148,7 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }            
         }
+
         public async Task<IActionResult> SaveInvoice()
         {
             var userid = _userManager.GetUserId(User);

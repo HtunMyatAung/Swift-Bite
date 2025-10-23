@@ -1,5 +1,4 @@
-﻿
- using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 namespace IdentityDemo.ViewModels
 {
     public class UpdateUserViewModel

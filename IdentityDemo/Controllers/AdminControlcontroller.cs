@@ -6,10 +6,7 @@ using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Threading.Tasks;
 
 namespace IdentityDemo.Controllers
 {

@@ -1,11 +1,7 @@
-﻿// ShopRepository.cs
-using IdentityDemo.Data;
+﻿using IdentityDemo.Data;
 using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdentityDemo.Repositories
 {
@@ -17,15 +13,18 @@ namespace IdentityDemo.Repositories
         {
             _context = context;
         }
+
         public async Task<int> ShopCount()
         {
             return _context.Shops.Count(s=>s.deleted==0);
         }
+
         public async Task<IEnumerable<ShopModel>> GetShopsListAsync()
         {
             // Fetch data from the database or data source
             return await _context.Shops.Where(s => s.deleted == 0).ToListAsync(); // Fetch and return as IEnumerable<ShopModel>
         }
+
         public IEnumerable<ShopModel> GetAllShopsAsync()
         {
             return _context.Shops.Where(s => s.deleted == 0).ToList();

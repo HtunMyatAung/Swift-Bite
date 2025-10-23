@@ -34,6 +34,7 @@ namespace IdentityDemo.Repositories
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
+
         public async Task<int> GetUserCountByRoleAsync(string role)
         {
             return _context.Users.Where(u => u.Role == role).Count();

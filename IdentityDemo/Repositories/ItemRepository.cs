@@ -28,6 +28,7 @@ namespace IdentityDemo.Repositories
         {
             return _context.Items.Count();
         }
+
         public async Task<List<ItemModel>> GetAllItemsAsync()
         {
             return await _context.Items.ToListAsync();

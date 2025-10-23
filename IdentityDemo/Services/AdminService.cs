@@ -1,9 +1,8 @@
-﻿using IdentityDemo.Data;
+﻿using GYW.Helpers;
 using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace IdentityDemo.Services
 {
@@ -67,15 +66,18 @@ namespace IdentityDemo.Services
                 Datas = data
             };
         }
+
         public async Task<List<CategoryModel>> GetCategoriesList()
         {
             var list= await _categoryRepository.GetAllCategories();
             return list;
         }
+
         public async Task AddCategoryAsync(CategoryModel category)
         {
             await _categoryRepository.AddCategoryAsync(category);
         }
+
         public async Task<List<ApplicationUser>> GetForgotPasswordUsersAsync()
         {
             var users = _accountService.GetAllUser();
@@ -83,7 +85,6 @@ namespace IdentityDemo.Services
             return fogotusers;
         }
         
-
         public async Task<List<ShopViewModel>> GetShopViewModelsAsync()
         {
             var shops = _shopRepository.GetAllShopsAsync();
@@ -106,10 +107,10 @@ namespace IdentityDemo.Services
         public async Task AdminUpdateUserAsync(UpdateUserViewModel model)
         {
             var user = await _accountService.GetUserByIdAsync(model.Id);
-            if (model.Role == "Owner")
+            if (model.Role == ConstantUtility.Owner)
             {
-                await _userManager.RemoveFromRoleAsync(user, "User");
-                await _userManager.AddToRoleAsync(user, "Owner");
+                await _userManager.RemoveFromRoleAsync(user, ConstantUtility.User);
+                await _userManager.AddToRoleAsync(user, ConstantUtility.Owner);
 
                 if (user.ShopId == 0)
                 {
@@ -132,8 +133,8 @@ namespace IdentityDemo.Services
             }
             else
             {
-                await _userManager.RemoveFromRoleAsync(user, "Owner");
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.RemoveFromRoleAsync(user, ConstantUtility.Owner);
+                await _userManager.AddToRoleAsync(user, ConstantUtility.User);
             }
 
             user.Role = model.Role;
@@ -144,7 +145,7 @@ namespace IdentityDemo.Services
         {
             var user = await _accountService.GetUserByIdAsync(userId);            
             user.Deleted = 1;
-            if (user.Role== "Owner")
+            if (user.Role== ConstantUtility.Owner)
             {
                 var shop = await _shopService.GetShopByIdAsync(user.ShopId);
                 shop.deleted = 1;

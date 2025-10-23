@@ -4,19 +4,10 @@ using IdentityDemo.Models;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using IdentityDemo.Extensions;
-using Org.BouncyCastle.Bcpg;
-using System.Web.Helpers;
-using System;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Xml.Linq;
-using MySqlX.XDevAPI;
-using static System.Net.WebRequestMethods;
-using System.Security.Claims;
 
 namespace IdentityDemo.Controllers
 {
@@ -29,7 +20,6 @@ namespace IdentityDemo.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _environment;
         private readonly IEmailService _emailService;
-        // private readonly IEmailSender _emailSender; // Implement an email sender service
         public Accountcontroller_old(UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager,AppDbContext context, RoleManager<IdentityRole> roleManager, IWebHostEnvironment environment,IEmailService emailService)
         {
@@ -42,13 +32,16 @@ namespace IdentityDemo.Controllers
             //_emailSender = emailSender;
         }
         public IActionResult SendOTP(){return View();}
+
         [HttpGet]
         public IActionResult User_change_password()
         {
             return View();
         }
+
         [HttpGet]
         public IActionResult Confirm_register(){return View();}
+
         [HttpPost]
         public async Task<IActionResult> SendOTP(string email)
         {
@@ -122,6 +115,7 @@ namespace IdentityDemo.Controllers
             await _emailService.SendEmailAsync(toEmail, subject, htmlText);
             return RedirectToAction("Confirm_register", "Account");
         } 
+
         public async Task<IActionResult> Save_register()
         {
             // Retrieve rest of RegisterViewModel from session           
@@ -166,6 +160,7 @@ namespace IdentityDemo.Controllers
             HttpContext.Session.Remove("RegisterViewModel");
             return View();
         }        
+
         [HttpPost]
         public async Task<IActionResult> SendChangePasswordEmail(string email)
         {
@@ -247,14 +242,17 @@ namespace IdentityDemo.Controllers
                 return RedirectToAction("Show_error_loading", "Home");
             }
         }
+
         [HttpGet]
         public async Task<IActionResult> Register() => View();
+
         private string GenerateOTP()// Helper method to generate 6-digit OTP
         {
             Random random = new Random();
             int otpNumber = random.Next(100000, 999999); // Generate a random 6-digit number
             return otpNumber.ToString("D6"); // Format as a 6-digit string
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -362,8 +360,10 @@ namespace IdentityDemo.Controllers
             // If registration fails, return the registration view with validation errors
             return View(model);
         }
+
         [HttpGet]
         public IActionResult Login() => View();
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -399,6 +399,7 @@ namespace IdentityDemo.Controllers
             ModelState.AddModelError(string.Empty, "Please enter valid data");
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -406,7 +407,10 @@ namespace IdentityDemo.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
-        [HttpGet]public IActionResult UpdatePassword(){return View();}
+
+        [HttpGet]
+        public IActionResult UpdatePassword(){return View();}
+
         [HttpPost][ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePassword(UpdateUserViewModel model)
         {
@@ -444,6 +448,7 @@ namespace IdentityDemo.Controllers
                 return View(model);
             }
         }
+
         [HttpGet]
         public async Task<IActionResult> UpdateUser()
         {
@@ -464,6 +469,7 @@ namespace IdentityDemo.Controllers
             };
             return View(viewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
@@ -526,6 +532,7 @@ namespace IdentityDemo.Controllers
                 return View(model);
             }
         }        
+
         [HttpGet]
         public async Task<IActionResult> User_profile()
         {
@@ -559,6 +566,7 @@ namespace IdentityDemo.Controllers
             };
             return View(profileViewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> User_profile(ProfileViewModel model)

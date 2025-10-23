@@ -1,7 +1,6 @@
 ﻿using IdentityDemo.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 namespace IdentityDemo.Data
 {
     public class AppDbContext:IdentityDbContext<ApplicationUser>

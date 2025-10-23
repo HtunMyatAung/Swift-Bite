@@ -8,10 +8,12 @@ namespace IdentityDemo.Repositories
     public class WishListRepository:IWishListRepository
     {
         private readonly AppDbContext _context;
+
         public WishListRepository(AppDbContext context)
         {
             _context = context;
         }
+
         public async Task<List<int>> GetItemIdsByUserIdAsync(string userId)
         {
             return await _context.WishList
@@ -19,6 +21,7 @@ namespace IdentityDemo.Repositories
                 .Select(w => w.ItemId)
                 .ToListAsync();
         }
+
         public async Task<bool> RemoveItemAsync(int itemId, string userId)
         {
             try
@@ -43,16 +46,19 @@ namespace IdentityDemo.Repositories
                 return false;
             }
         }
+
         public async Task AddWisthItemAsync(WishListModel item)
         {
             await _context.WishList.AddAsync(item);
             await _context.SaveChangesAsync();
         }
+
         public async Task<WishListModel> GetWishlistItemAsync(int itemId, string userId)
         {
 
             return await _context.WishList.FirstOrDefaultAsync(wi => wi.ItemId == itemId && wi.UserId == userId);
         }
+
         public async Task<List<WishListModel>> GetWishlistItemsAsync(string userId)
         {
             return await _context.WishList

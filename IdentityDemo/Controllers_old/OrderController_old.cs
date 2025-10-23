@@ -2,12 +2,9 @@
 using IdentityDemo.Models;
 using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
 using Newtonsoft.Json;
 
 namespace IdentityDemo.Controllers
@@ -24,6 +21,7 @@ namespace IdentityDemo.Controllers
             _userManager = userManager;
             _emailService = emailService;            
         }                
+
         [HttpPost]
         public async Task<IActionResult> SendInvoiceEmail(string htmlContent)
         {
@@ -45,6 +43,7 @@ namespace IdentityDemo.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
         public async Task<IActionResult> Order_confirm(Dictionary<int,int> selectedItems)
         {
             TempData["SelectedItems"] = JsonConvert.SerializeObject(selectedItems);
@@ -224,6 +223,7 @@ namespace IdentityDemo.Controllers
             //return Ok("Invoice data saved successfully");
             return RedirectToAction("HomePageItems", "Item");
         }
+
         [HttpPost]
         public IActionResult DeleteOrder(int orderid)
         {

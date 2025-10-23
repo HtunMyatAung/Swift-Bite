@@ -1,15 +1,6 @@
-﻿// ShopService.cs
-using IdentityDemo.Interface;
+﻿using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdentityDemo.Services
 {
@@ -25,6 +16,7 @@ namespace IdentityDemo.Services
             _environment = environment;
             _userRepository = userRepository;
         }
+
         public async Task<List<ShopModel>> GetShopsListAsync()
         {
             // Get shops from repository
@@ -33,6 +25,7 @@ namespace IdentityDemo.Services
             // Ensure the return type matches List<ShopModel>
             return shops.ToList(); // Convert IEnumerable<ShopModel> to List<ShopModel>
         }
+
         public  IEnumerable<ShopModel> GetAllShopsAsync()
         {
             return  _shopRepository.GetAllShopsAsync();
@@ -42,6 +35,7 @@ namespace IdentityDemo.Services
         {
             return await _shopRepository.GetShopByIdAsync(shopId);
         }
+
         public async Task<List<ShopViewModel>> GetShopsNOwnersAsync()
         {
             var shops =  _shopRepository.GetAllShopsAsync();
@@ -60,6 +54,7 @@ namespace IdentityDemo.Services
                         ShopOwnerName = user.UserName // Assuming User has a UserName property
                     }).ToList(); ;
         }
+
         public async Task AddShopAsync(ShopViewModel shopViewModel)
         {
             var shop = new ShopModel
@@ -111,10 +106,12 @@ namespace IdentityDemo.Services
             }
             await _shopRepository.UpdateShopAsync(shop);
         }
+
         public Task<int> ShopCount()
         {
             return _shopRepository.ShopCount();
         }
+
         public async Task DeleteShopAsync(int shopId)
         {
             await _shopRepository.DeleteShopAsync(shopId);

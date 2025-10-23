@@ -3,9 +3,6 @@ using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class OrderRepository : IOrderRepository
 {
@@ -17,19 +14,22 @@ public class OrderRepository : IOrderRepository
         _context = context;
         _userManager = userManager;
     }
+
     public async Task<List<OrderModel>> GetAllOrdersAsync()
     {
         return await _context.Orders.ToListAsync();
     }
+
     public async Task<int> GetNewOrderDetailIdAsync()
     {
         return _context.OrderDetails.Any() ? await _context.OrderDetails.MaxAsync(s => s.OrderDetailId) :0;
     }
+
     public async Task<int> GetNewOrderIdAsync()
     {
         return _context.Orders.Any() ? await _context.Orders.MaxAsync(s => s.OrderID) + 1 : 1;
     }
-    
+        
     public async Task<List<ItemModel>> GetItemsByIdsAsync(List<int> itemIds)
     {
         return await Task.Run(() =>
@@ -49,7 +49,6 @@ public class OrderRepository : IOrderRepository
     {
         return await _userManager.GetUserAsync(httpContext.User);
     }
-
 
     public async Task SaveOrderAsync(OrderModel order, List<OrderDetailModel> orderDetails)
     {

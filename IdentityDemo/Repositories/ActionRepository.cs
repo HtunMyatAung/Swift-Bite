@@ -1,7 +1,6 @@
 ﻿using IdentityDemo.Data;
 using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace IdentityDemo.Repositories
 {
@@ -10,7 +9,6 @@ namespace IdentityDemo.Repositories
         private readonly AppDbContext _context;
         public ActionRepository(AppDbContext context)
         {
-
             _context = context;
         }
 

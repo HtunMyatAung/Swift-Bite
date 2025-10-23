@@ -1,7 +1,6 @@
 using IdentityDemo.Data;
 using IdentityDemo.Filters;
 using IdentityDemo.Initializers;
-using IdentityDemo.Extensions;
 using IdentityDemo.Services;
 using IdentityDemo.Models;
 using Microsoft.AspNetCore.Identity;

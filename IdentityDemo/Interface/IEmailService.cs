@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-namespace IdentityDemo.Services
+﻿namespace IdentityDemo.Services
 {
     public interface IEmailService
     {

@@ -3,36 +3,6 @@
     Layout = "_Owner_layout";
     int counter=1;
 }
-
-@section Scripts {
-    <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
-
-    <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
-    <!-- jQuery -->
-    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
-    <!-- DataTables JS -->
-    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
-    <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
-    <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
-    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#ordertable').DataTable();
-        });
-        
-        let currentOrderId;
-
-        function setOrderId(orderId) {
-            currentOrderId = orderId;
-        }
-
-        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
-            document.getElementById('deleteOrderForm-' + currentOrderId).submit();
-        });
-
-    </script>
-}
 <div>
     <h1 class="">Order List</h1>
         <table id="ordertable" class="display" style="width:100%;">
@@ -46,7 +16,7 @@
                     <th style="text-align:center;">Delete</th>
                 </tr>
             </thead>
-            <tbody>
+            @* <tbody>
 
                 @foreach (var order in Model)
                 {
@@ -69,7 +39,7 @@
                     counter += 1;
                 }
 
-            </tbody>
+            </tbody> *@
         </table>
 </div>
 
@@ -91,3 +61,99 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <link rel="stylesheet" href="~/css/download_css/5_2_3_bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
+    <!-- jQuery -->
+    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
+    <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+    <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
+    <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+    <script>
+        // $(document).ready(function () {
+        //     $('#ordertable').DataTable();
+        // });
+
+        let currentOrderId;
+
+        function setOrderId(orderId) {
+            currentOrderId = orderId;
+        }
+
+        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+            document.getElementById('deleteOrderForm-' + currentOrderId).submit();
+        });
+
+        $.fn.dataTable.ext.errMode = "none";
+        var myTable = $("#ordertable").DataTable({
+            processing: false,
+            serverSide: true,
+            ordering: false,
+            language: {
+                processing: '<div id="loadingSpinner" class="d-flex justify-content-center align-items-center" ' +
+                    'style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
+                    'background: rgba(255, 255, 255, 0.8); z-index: 1000; width: 100%; height: 100%;">' +
+                    '<div class="spinner-border text-primary" role="status">' +
+                    '<span class="visually-hidden">Loading...</span>' +
+                    '</div>' +
+                    '</div>'
+            },
+            dom: "<'row'<'col-sm-12 col-md-6 d-flex justify-content-start align-items-center flex-grow-1 pt-0 pb-0 mt-2 mb-2'l>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row pt-2'<'col-sm-12 d-flex justify-content-between align-items-center'<i><p>>>",
+
+            ajax: {
+                url: "@Url.RouteUrl("OrderList.Datatable")",
+                type: "POST",
+                datatype: "json",
+                beforeSend: function () {
+                    $('#ordertable tbody').html('<tr><td colspan="12" class="text-center" style="position: relative; height: 100px;">' +
+                        '<div class="d-flex justify-content-center align-items-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+                        '<div class="spinner-border text-primary" role="status">' +
+                        '<span class="visually-hidden">Loading...</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td></tr>');
+                }
+            },
+            columnDefs: [{
+                targets: 0,
+                searchable: false,
+                orderable: false,
+                className: 'text-center',
+                render: function (data, type, row, meta) {
+                    var pageInfo = myTable.page.info();
+                    return pageInfo.start + meta.row + 1;
+                }
+            }],
+            columns: [
+                { data: "No." },
+                { data: "orderDate", name: "Order Date", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "orderPrice", name: "Order Price", autoWidth: true, className: "text-nowrap text-center" },
+                { data: "user_Name", name: "User Name", autoWidth: true, className: "text-nowrap text-center" },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<form id="deleteOrderForm-${row.orderID}" method="post" action="/Order/DeleteOrder">
+                                        <input type="hidden" name="orderid" value="${row.orderID}" />
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="setOrderId('${row.orderID}')">
+                                            <i class="fas fa-trash sm pr-1"></i> Delete
+                                        </button>
+                                    </form>`
+                    },
+                    innerWidth: "100px",
+                    className: "text-center"
+                }
+            ],
+            rowId: "orderId",
+            orderable: [1, 'asc']
+        });
+
+        
+
+    </script>
+}

@@ -2,14 +2,9 @@
 using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
-using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Net.Sockets;
 using System.Security.Claims;
-using System.Web.Mvc;
-using System.Xml;
 
 namespace IdentityDemo.Services
 {
@@ -25,6 +20,7 @@ namespace IdentityDemo.Services
         private readonly IWishListService _wishListService;
         private readonly IItemService _itemService;
         private readonly IShopService _shopService;
+        
         public AccountService(IShopService shopService,IItemService itemService,IWishListService wishListService,UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager, IAccountRepository accountRepository, AppDbContext context, RoleManager<IdentityRole> roleManager, IWebHostEnvironment environment, IEmailService emailService)
         {
@@ -39,6 +35,7 @@ namespace IdentityDemo.Services
             _itemService = itemService;
             _shopService= shopService;
         }
+        
         public async Task<UpdateUserViewModel> GetUpdateUserViewModelAsync(string userId)
         {
             var user = _accountRepository.GetUserById(userId);
@@ -54,6 +51,7 @@ namespace IdentityDemo.Services
                 Useraddress = user.Address
             };
         }
+        
         public async Task<IdentityResult> ChangePasswordAsync(string userId, ChangePasswordViewModel model)
         {
             var user = await GetUserByIdAsync(userId);
@@ -66,6 +64,7 @@ namespace IdentityDemo.Services
             }
             return result;
         }
+        
         public async Task DeleteUserAsync(string userId)
         {
             var user = _accountRepository.GetUserById(userId);
@@ -84,74 +83,71 @@ namespace IdentityDemo.Services
             string subject = "Verify your new Swift Foods account";
             var otp_code = GenerateOTP();
             var htmlText = $@"
-   <!DOCTYPE html>
-<html lang=""en"">
-<head>
-    <meta charset=""UTF-8"">
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Verify Your New Swift Foods Account</title>
-    <style>
-        /* Ensure styles are inline for better email client compatibility */
-        body {{
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }}
-        .container {{
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }}
-        .otp-section {{
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }}
-        .otp-code {{
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 10px;
-        }}
-        .info-text {{
-            margin-bottom: 10px;
-        }}
-        .note {{
-            font-size: 14px;
-            color: #777;
-            margin-top: 20px;
-        }}
-    </style>
-</head>
-<body>
-    <table role=""presentation"" cellspacing=""0"" cellpadding=""0"" border=""0"" align=""center"" width=""100%"">
-        <tr>
-            <td style=""padding: 20px;"">
-                <div class=""container"">
-                    <h2 style=""text-align: center;"">Verify Your New Swift Foods Account</h2>
-                    <div class=""otp-section"">
-                        <p style=""text-align: center;"">To verify your email address, please use the following One Time Password (OTP):</p>
-                        <p class=""otp-code"" style=""text-align: center;"">{otp_code}</p>
-                        <p class=""info-text"" style=""text-align: center;"">Do not share this OTP with anyone.uab zone takes your account security very seriously. Swift Foods Customer Service will never ask you to disclose or verify your Swift Foods password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to Swift Foods for investigation.</p>
-                    </div>
-                    <p style=""text-align: center;"">Thank you for shopping with us! We hope to see you again soon.</p>
-                </div>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
-";
+                           <!DOCTYPE html>
+                        <html lang=""en"">
+                        <head>
+                            <meta charset=""UTF-8"">
+                            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                            <title>Verify Your New Swift Foods Account</title>
+                            <style>
+                                /* Ensure styles are inline for better email client compatibility */
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    line-height: 1.6;
+                                    background-color: #f5f5f5;
+                                    padding: 20px;
+                                }}
+                                .container {{
+                                    max-width: 600px;
+                                    margin: auto;
+                                    background: #fff;
+                                    padding: 20px;
+                                    border-radius: 8px;
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                }}
+                                .otp-section {{
+                                    background: #f0f0f0;
+                                    padding: 10px;
+                                    border-radius: 4px;
+                                    margin-bottom: 20px;
+                                }}
+                                .otp-code {{
+                                    font-size: 24px;
+                                    font-weight: bold;
+                                    color: #007bff;
+                                    margin-bottom: 10px;
+                                }}
+                                .info-text {{
+                                    margin-bottom: 10px;
+                                }}
+                                .note {{
+                                    font-size: 14px;
+                                    color: #777;
+                                    margin-top: 20px;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <table role=""presentation"" cellspacing=""0"" cellpadding=""0"" border=""0"" align=""center"" width=""100%"">
+                                <tr>
+                                    <td style=""padding: 20px;"">
+                                        <div class=""container"">
+                                            <h2 style=""text-align: center;"">Verify Your New Swift Foods Account</h2>
+                                            <div class=""otp-section"">
+                                                <p style=""text-align: center;"">To verify your email address, please use the following One Time Password (OTP):</p>
+                                                <p class=""otp-code"" style=""text-align: center;"">{otp_code}</p>
+                                                <p class=""info-text"" style=""text-align: center;"">Do not share this OTP with anyone.uab zone takes your account security very seriously. Swift Foods Customer Service will never ask you to disclose or verify your Swift Foods password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to Swift Foods for investigation.</p>
+                                            </div>
+                                            <p style=""text-align: center;"">Thank you for shopping with us! We hope to see you again soon.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </body>
+                        </html>
+                        ";
             await _emailService.SendEmailAsync(toEmail, subject, htmlText);
         }
-        
-
-        
 
         public async Task SendRegisterConfirmEmail(string email,string otpcode)
         {
@@ -161,75 +157,75 @@ namespace IdentityDemo.Services
             //ViewBag.Emailotpcode = otp_code;
             Console.WriteLine("otpppppppppppppppp " + otpcode);
             var htmlText = $@"
-   <!DOCTYPE html>
-<html lang=""en"">
-<head>
-    <meta charset=""UTF-8"">
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>Verify Your New Amazon Account</title>
-    <style>
-        /* Ensure styles are inline for better email client compatibility */
-        body {{
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }}
+                           <!DOCTYPE html>
+                        <html lang=""en"">
+                        <head>
+                            <meta charset=""UTF-8"">
+                            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                            <title>Verify Your New Amazon Account</title>
+                            <style>
+                                /* Ensure styles are inline for better email client compatibility */
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    line-height: 1.6;
+                                    background-color: #f5f5f5;
+                                    padding: 20px;
+                                }}
 
-        .container {{
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }}
+                                .container {{
+                                    max-width: 600px;
+                                    margin: auto;
+                                    background: #fff;
+                                    padding: 20px;
+                                    border-radius: 8px;
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                }}
 
-        .otp-section {{
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }}
+                                .otp-section {{
+                                    background: #f0f0f0;
+                                    padding: 10px;
+                                    border-radius: 4px;
+                                    margin-bottom: 20px;
+                                }}
 
-        .otp-code {{
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 10px;
-        }}
+                                .otp-code {{
+                                    font-size: 24px;
+                                    font-weight: bold;
+                                    color: #007bff;
+                                    margin-bottom: 10px;
+                                }}
 
-        .info-text {{
-            margin-bottom: 10px;
-        }}
-        .note {{
-            font-size: 14px;
-            color: #777;
-            margin-top: 20px;
-        }}
-    </style>
-</head>
-<body>
-    <table role=""presentation"" cellspacing=""0"" cellpadding=""0"" border=""0"" align=""center"" width=""100%"">
-        <tr>
-            <td style=""padding: 20px;"">
-                <div class=""container"">
-                    <h2 style=""text-align: center;"">Verify Your New uab zone Account</h2>
-                    <div class=""otp-section"">
-                        <p style=""text-align: center;"">To verify your email address, please use the following One Time Password (OTP):</p>
-                        <p class=""otp-code"" style=""text-align: center;"">{otpcode}</p>
-                        <p class=""info-text"" style=""text-align: center;"">Do not share this OTP with anyone.uab zone takes your account security very seriously. uab zone Customer Service will never ask you to disclose or verify your uab zone password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to uab zone for investigation.</p>
-                    </div>
-                    <p style=""text-align: center;"">Thank you for shopping with us! We hope to see you again soon.</p>
+                                .info-text {{
+                                    margin-bottom: 10px;
+                                }}
+                                .note {{
+                                    font-size: 14px;
+                                    color: #777;
+                                    margin-top: 20px;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <table role=""presentation"" cellspacing=""0"" cellpadding=""0"" border=""0"" align=""center"" width=""100%"">
+                                <tr>
+                                    <td style=""padding: 20px;"">
+                                        <div class=""container"">
+                                            <h2 style=""text-align: center;"">Verify Your New uab zone Account</h2>
+                                            <div class=""otp-section"">
+                                                <p style=""text-align: center;"">To verify your email address, please use the following One Time Password (OTP):</p>
+                                                <p class=""otp-code"" style=""text-align: center;"">{otpcode}</p>
+                                                <p class=""info-text"" style=""text-align: center;"">Do not share this OTP with anyone.uab zone takes your account security very seriously. uab zone Customer Service will never ask you to disclose or verify your uab zone password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to uab zone for investigation.</p>
+                                            </div>
+                                            <p style=""text-align: center;"">Thank you for shopping with us! We hope to see you again soon.</p>
                     
-                </div>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </body>
+                        </html>
 
-";
+                        ";
             try
             {
 
@@ -281,6 +277,7 @@ namespace IdentityDemo.Services
         {
             throw new NotImplementedException();
         }
+
         public async Task<ApplicationUser> GetUserByIdAsync(string userId)
         {
             return  _accountRepository.GetUserById(userId);
@@ -429,6 +426,7 @@ namespace IdentityDemo.Services
 
             return viewModel;
         }
+
         private string GenerateOTP()// Helper method to generate 6-digit OTP
         {
             Random random = new Random();

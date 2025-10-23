@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using IdentityDemo.Extensions;
 using IdentityDemo.Interface;
+using GYW.Helpers;
 
 namespace IdentityDemo.Controllers
 {
@@ -262,28 +263,29 @@ namespace IdentityDemo.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
-                    var isuser = await _userManager.FindByEmailAsync(model.UserName);
+                    //var isuser = await _userManager.FindByEmailAsync(model.UserName);
+                    var isuser = await _userManager.FindByNameAsync(model.UserName);
                     if (result.Succeeded && isuser != null && isuser.Deleted != 1)
                     {
                         ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
                         ViewBag.CurrentUser = currentUser;
-                        if (isuser.Role == "Admin")
+                        if (isuser.Role == ConstantUtility.Admin)
                         {
                             responseData = "Admin is logged in ";
                             ViewBag.LogUserRole = "Admin";
                             return RedirectToAction("Admin_dashboard", "AdminControl");
                         }
-                        else if (isuser.Role == "Owner")
+                        else if (isuser.Role == ConstantUtility.Owner)
                         {
                             
                             ViewBag.LogUserRole = "Owner";
-                            if (model.Role == "user")
+                            if (model.Role == ConstantUtility.User)
                             {
                                 responseData = "Owner logged in as user ";
                                 return RedirectToAction("User_profile", "Hywm");
                             }
-                            else if (model.Role == "owner")
+                            else if (model.Role == ConstantUtility.Owner)
                             {
                                 responseData = "Owner logged in as owner";
                                 return RedirectToAction("Owner_dashboard", "Shop");
@@ -303,7 +305,7 @@ namespace IdentityDemo.Controllers
                     }
                     else
                     {
-                        responseData = " Incorrect login attempt";
+                        responseData = " Incorrect username or password";
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                         return View(model);
                     }
@@ -353,19 +355,19 @@ namespace IdentityDemo.Controllers
 
                         // Pass the user data to the view
                         ViewBag.CurrentUser = currentUser;
-                        if (isuser.Role == "Admin")
+                        if (isuser.Role == ConstantUtility.Admin)
                         {
                             responseData = "Admin logged in";
                             return RedirectToAction("Admin_dashboard", "AdminControl");
                         }
-                        else if (isuser.Role == "Owner")
+                        else if (isuser.Role == ConstantUtility.Owner)
                         {
                             if (model.Role == "user")
                             {
                                 responseData = "Owner logged in as user";
                                 return RedirectToAction("User_profile", "Hywm");
                             }
-                            else if (model.Role == "owner")
+                            else if (model.Role == ConstantUtility.Owner)
                             {
                                 responseData = "Owner logged in as owner";
                                 return RedirectToAction("Owner_dashboard", "Shop");
@@ -377,6 +379,7 @@ namespace IdentityDemo.Controllers
                             return RedirectToAction("User_profile", "Hywm");
                         }
                     }
+
                     if (result.IsLockedOut)
                     {
                         responseData = "Login fail attempts exceed 5 times";
@@ -388,10 +391,13 @@ namespace IdentityDemo.Controllers
                         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                         return View(model);
                     }
+
                 }
+
                 responseData = "Invalid model state";
                 ModelState.AddModelError(string.Empty, "Please enter valid data");
                 return View(model);
+
             }
             catch(Exception ex)
             {
@@ -412,9 +418,9 @@ namespace IdentityDemo.Controllers
                     Timestamp=DateTime.Now,
                 };
                 await _actionRepository.Add(log);
-            }
-            
+            }            
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -422,7 +428,10 @@ namespace IdentityDemo.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
-        [HttpGet]public IActionResult ResetPassword(){return View();}
+
+        [HttpGet]
+        public IActionResult ResetPassword(){return View();}
+
         [HttpPost][ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(UpdateUserViewModel model)
         {
@@ -488,6 +497,7 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }            
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePasswordFromProfile(ChangePasswordViewModel model)
@@ -532,15 +542,16 @@ namespace IdentityDemo.Controllers
                     ResponseData = responseData
                 };
                 await _actionRepository.Add(log);
-            }
-            
+            }            
         }
+
         [HttpGet]
         public async Task<IActionResult> UpdateUser()
         {
             var viewModel = _accountService.GetUpdateUserAsync(User);
             return View(viewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
@@ -601,7 +612,8 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
             
-        }        
+        } 
+        
         [HttpGet]
         public async Task<IActionResult> User_profile()
         {
@@ -618,6 +630,7 @@ namespace IdentityDemo.Controllers
             }
             
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> User_profile(ProfileViewModel model)
@@ -689,8 +702,7 @@ namespace IdentityDemo.Controllers
                     ResponseData = responseData
                 };
                 await _actionRepository.Add(log);
-            }
-            
+            }            
         }
     }
 }

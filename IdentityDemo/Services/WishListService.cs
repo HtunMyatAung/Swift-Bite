@@ -1,7 +1,6 @@
 ﻿using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace IdentityDemo.Services
 {
@@ -10,20 +9,24 @@ namespace IdentityDemo.Services
         private readonly IWishListRepository _repository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<WishListService> _logger;
+
         public WishListService(IWishListRepository repository,UserManager<ApplicationUser> userManager, ILogger<WishListService> logger)
         {
             _repository = repository;
             _userManager = userManager;
             _logger = logger;
         }
+
         public async Task<List<int>> GetItemIdsFromWishlistAsync(string userId)
         {
             return await _repository.GetItemIdsByUserIdAsync(userId);
         }
+
         public async Task<List<WishListModel>> GetWishlistItemsAsync(string userId)
         {
             return await _repository.GetWishlistItemsAsync(userId);
         }
+
         public async Task<bool> AddItemToWishlistAsync(int itemId, string userId)
         {
             try
@@ -52,6 +55,7 @@ namespace IdentityDemo.Services
                 return false;
             }
         }
+
         public async Task<bool> RemoveItemFromWishlistAsync(int itemId, string userId)
         {
             try

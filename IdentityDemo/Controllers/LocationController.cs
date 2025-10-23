@@ -9,6 +9,7 @@ namespace IdentityDemo.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Shop_Location([FromBody] LocationModel location)
@@ -24,6 +25,7 @@ namespace IdentityDemo.Controllers
 
             return BadRequest();
         }
+
         public IActionResult DeviceLocation() => View();
 
         

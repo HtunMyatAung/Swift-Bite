@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using IdentityDemo.Data;
 using IdentityDemo.Services;
-using IdentityDemo.ViewModels;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using IdentityDemo.Interface;
@@ -17,6 +16,7 @@ namespace IdentityDemo.Repositories
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _environment;
         private readonly IEmailService _emailService;
+
         public AccountRepository(UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager, AppDbContext context, RoleManager<IdentityRole> roleManager, IWebHostEnvironment environment, IEmailService emailService)
         {
@@ -27,11 +27,13 @@ namespace IdentityDemo.Repositories
             _environment = environment;
             _emailService = emailService;
         }
+
         public async Task DeleteUser(ApplicationUser user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
+
         public IEnumerable<ApplicationUser> GetUsers()
         {
             return _context.Users.Where(u => u.Role != "Admin" && u.Deleted != 1).ToList();
@@ -68,6 +70,7 @@ namespace IdentityDemo.Repositories
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded;
         }
+
         public async Task<ApplicationUser> FindByEmailAsync1(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -78,6 +81,7 @@ namespace IdentityDemo.Repositories
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
             return result.Succeeded;
         }
+
         public async Task<bool> DeleteUserImageAsync(string userId, string imageName)
         {
             var user = await _userManager.FindByIdAsync(userId);

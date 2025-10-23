@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
 
 namespace IdentityDemo.Controllers
 {
@@ -16,12 +13,14 @@ namespace IdentityDemo.Controllers
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public ItemController_old(AppDbContext context, IWebHostEnvironment environment,UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _environment = environment;
             _userManager = userManager;
         }
+
         public async Task<IActionResult> HomePageItems()
         {
             var shops = await _context.Shops.ToListAsync();
@@ -33,6 +32,7 @@ namespace IdentityDemo.Controllers
             };
             return View(shopitems);
         }
+
         public async Task<IActionResult> ItemByShopid(int shopid)
         {
             ShopModel shop  = _context.Shops.SingleOrDefault(s=>s.ShopId == shopid);
@@ -73,6 +73,7 @@ namespace IdentityDemo.Controllers
             };
             return View(updateitem);
         }
+
         [HttpPost]
         public async Task<IActionResult> UpdateItem(SingleItemViewModel updateItem)
         {
@@ -124,6 +125,7 @@ namespace IdentityDemo.Controllers
             _context.SaveChanges();
             return RedirectToAction("Owner_Item_List", "Shop");
         }
+
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> CreateItem()
         {
@@ -138,6 +140,7 @@ namespace IdentityDemo.Controllers
             };
             return View(view);
         }
+
         [Authorize(Roles = "Owner")]
         [HttpPost]
         public async Task<IActionResult> CreateItem(SingleItemViewModel item)
@@ -187,7 +190,8 @@ namespace IdentityDemo.Controllers
                 return RedirectToAction("Owner_item_List", "Shop");
             }
             return View(item);
-        }        
+        }       
+        
         [HttpPost]
         [ActionName("DeleteItem")]
         public IActionResult DeleteItem(int itemid)

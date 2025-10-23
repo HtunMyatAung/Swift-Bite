@@ -4,7 +4,6 @@ using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace IdentityDemo.Controllers

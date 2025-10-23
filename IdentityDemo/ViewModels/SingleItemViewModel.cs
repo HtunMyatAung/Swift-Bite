@@ -1,7 +1,4 @@
-﻿using IdentityDemo.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace IdentityDemo.ViewModels
+﻿namespace IdentityDemo.ViewModels
 {
     public class SingleItemViewModel
     {

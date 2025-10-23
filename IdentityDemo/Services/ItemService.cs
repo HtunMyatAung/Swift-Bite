@@ -3,7 +3,6 @@ using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace IdentityDemo.Services
 {
@@ -16,6 +15,7 @@ namespace IdentityDemo.Services
         private readonly AppDbContext _context;
         private readonly IWishListService _wishListService;
         private readonly IShopService _shopService;
+        
         public ItemService(IShopService shopService, IWishListService wishListService, IItemRepository itemRepository, UserManager<ApplicationUser> userManager, ICategoryRepository categoryRepository, AppDbContext context, IWebHostEnvironment environment)
         {
             _itemRepository = itemRepository;
@@ -26,14 +26,14 @@ namespace IdentityDemo.Services
             _wishListService = wishListService;
             _shopService = shopService;
         }
+        
         public async Task<List<ItemModel>> GetItemsByIdsAsync(List<int> itemIds)
         {
             return await _itemRepository.GetItemsByIdsAsync(itemIds);
         }
+        
         public async Task<ItemsViewModel> GetHomePageItemsAsync()
         {
-
-
             var shops = await _itemRepository.GetAllShopsAsync();
             var items = await _itemRepository.GetAllItemsAsync();
             var shopLookup = shops.ToDictionary(s => s.ShopId, s => s.ShopName);
@@ -46,6 +46,7 @@ namespace IdentityDemo.Services
                 Categories = category
             };
         }
+        
         public async Task<SingleItemViewModel> getSingleItemViewModelAsync(int shopId)
         {
             var categories = await _categroyRepository.GetCategoryNamesAsync();
@@ -56,6 +57,7 @@ namespace IdentityDemo.Services
             };
 
         }
+        
         public async Task<int> AllItemCount()
         {
             return await _itemRepository.AllItemCount();
@@ -66,6 +68,7 @@ namespace IdentityDemo.Services
             var items = await _itemRepository.GetAllItemsAsync();
             return items.Where(s => s.Shop_Id == shopId).ToList();
         }
+        
         public async Task<ItemsViewModel> GetItemNShopByShopIdAsync(int shopId)
         {
             var shop = await _itemRepository.GetShopByIdAsync(shopId);

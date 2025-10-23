@@ -1,12 +1,9 @@
 ﻿using IdentityDemo.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace IdentityDemo.ViewModels
 {
     public class ProfileViewModel
     {
-        
         public string? UserId { get; set; }
         public string? UserName { get; set; }        
         public string? UserEmail { get; set; }
@@ -20,8 +17,6 @@ namespace IdentityDemo.ViewModels
         public List<ItemModel>? WishlistItems { get; set; }
         public List<ShopModel>? Shops { get; set; }
         public Dictionary<int, string>? ShopLookup { get; set; }
-
-
         //public string? Order { get; set; }
     }
 }

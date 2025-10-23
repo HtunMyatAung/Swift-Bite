@@ -3,11 +3,6 @@ using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
-
-using System;
-using System.Linq;
 using Newtonsoft.Json;
 using IdentityDemo.Interface;
 
@@ -96,6 +91,7 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         public async Task<IActionResult> HomePageItems()
         {
             var userid = _userManager.GetUserId(User);
@@ -280,6 +276,7 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         [Authorize(Roles = "Owner")]
         [HttpGet]
         public async Task<IActionResult> CreateItem()
@@ -292,8 +289,7 @@ namespace IdentityDemo.Controllers
             var viewModel = await _itemService.getSingleItemViewModelAsync(user.ShopId); // Ensure await here
 
             return View(viewModel); // Pass the resolved SingleItemViewModel to the view
-        }
-        
+        }        
 
         [Authorize(Roles = "Owner")]
         [HttpPost]

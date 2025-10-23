@@ -1,12 +1,11 @@
-﻿// ShopController.cs
-using IdentityDemo.Interface;
+﻿using IdentityDemo.Interface;
 using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace IdentityDemo.Controllers
 {
@@ -26,8 +25,7 @@ namespace IdentityDemo.Controllers
             _actionRepository = actionRepository;
             
         }
-
-       
+               
         public async Task<IActionResult> Restaurant()
         {
             var userid = _userManager.GetUserId(User);
@@ -155,25 +153,18 @@ namespace IdentityDemo.Controllers
             }
         }
 
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> Owner_order_list()
         {
-            var userid = _userManager.GetUserId(User);
-            string requestData = "Fetching orders list with user's shopid";
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.shopId = user.ShopId;
+            string requestData = "Fetching order records with shop id" + user.Id;
             string responseData = string.Empty;
             string error = string.Empty;
+
             try
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                if (user == null)
-                {
-                    responseData = "Invalid user";
-                    return NotFound();
-                }
-
-                var orderViewModels = await _orderService.GetOrderNUserByShopIdAsync(user.ShopId);
-                responseData=JsonConvert.SerializeObject(orderViewModels);
-                return View(orderViewModels);
+                return View();
             }
             catch (Exception ex)
             {
@@ -188,13 +179,49 @@ namespace IdentityDemo.Controllers
                     LogStatus = string.IsNullOrEmpty(error) ? "INFO" : "ERROR",
                     ActionName = "Owner_order_list",
                     ControllerName = "Shop",
-                    UserId = userid,
+                    UserId = (user.Id).ToString(),
                     Timestamp = DateTime.Now,
                     RequestData = requestData,
                     ResponseData = responseData
                 };
                 await _actionRepository.Add(log);
             }
+        }
+
+        [HttpPost]
+        [Route("Shop/OrderListDataTable", Name = "OrderList.Datatable")]
+        public async Task<IActionResult> OrderListDataTable()
+        {
+            //var userid = _userManager.GetUserId(User);
+            //string requestData = "Fetching orders list with user's shopid";
+            //string responseData = string.Empty;
+            //string error = string.Empty;
+            //try
+            //{
+            //    var user = await _userManager.GetUserAsync(User);
+
+            //    if (user == null)
+            //    {
+            //        responseData = "Invalid user";
+            //        return NotFound();
+            //    }
+
+            //    var orderViewModels = await _orderService.GetOrderNUserByShopIdAsync(user.ShopId);
+            //    responseData=JsonConvert.SerializeObject(orderViewModels);
+            //    return View(orderViewModels);
+            //}                     
+
+            var draw = Request.Form["draw"].FirstOrDefault();
+            var user = await _userManager.GetUserAsync(User);
+            var orders = await _orderService.GetOrderNUserByShopIdAsync(user.ShopId);
+
+            return Json(new
+            {
+                draw = draw,
+                recordsFiltered = orders.Count(),
+                recordsTotal = orders.Count(),
+                data = orders
+            });
         }
 
         [Authorize(Roles = "Owner")]
@@ -369,7 +396,7 @@ namespace IdentityDemo.Controllers
                 var shop = await _shopService.GetShopByIdAsync(user.ShopId);
                 if (shop.Is_confirm == 0)
                 {
-                    responseData = "Owner first time log in and send to update shop page";
+                    responseData = "Owner first time log in and send to update shop profile page";
                     return RedirectToAction("UpdateShop", "Shop");
                 }
                 var dashboard = await _shopService.GetOwnerDashboardAsync(user.Id);
@@ -397,7 +424,6 @@ namespace IdentityDemo.Controllers
                 await _actionRepository.Add(log);
             }
         }
-
 
         public class RomanConvert
         {

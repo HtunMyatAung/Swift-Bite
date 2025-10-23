@@ -1,10 +1,7 @@
 ﻿using IdentityDemo.Data;
 using IdentityDemo.Interface;
 using IdentityDemo.Models;
-using IdentityDemo.ViewModels;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace IdentityDemo.Services
 {
@@ -16,6 +13,7 @@ namespace IdentityDemo.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailService _emailService;
         private readonly IWebHostEnvironment _environment;
+
         public UserService(IUserRepository userRepository,AppDbContext context,UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,IEmailService emailService,IWebHostEnvironment webHostEnvironment)
         {
             _userRepository = userRepository;
@@ -25,14 +23,17 @@ namespace IdentityDemo.Services
             _emailService= emailService;
             _environment= webHostEnvironment;
         }
+        
         public IEnumerable<ApplicationUser> GetAllUser()
         {
             return _userRepository.GetUsers();
         }
+        
         public async Task<int> GetUserCount()
         {            
             return _userRepository.GetUsers().Count();
         }
+        
         public async Task DeleteUserAsync(string userId)
         {
             var user =  _userRepository.GetUserById(userId);

@@ -1,6 +1,5 @@
 ﻿using IdentityDemo.Data;
 using IdentityDemo.Models;
-using IdentityDemo.Services;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

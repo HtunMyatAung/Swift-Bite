@@ -4,7 +4,6 @@ using MailKit.Security;
 using MimeKit;
 using System.Net.Sockets;
 
-
 public class EmailService : IEmailService
 {
     private readonly IConfiguration _configuration;

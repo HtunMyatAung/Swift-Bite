@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="~/css/download_css/4_5_3_bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="~/css/download_css/1_10_24_jquery.dataTables.min.css" />
 <link href="~/css/download_css/sb_1_7_1_datatables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
 
 <style>
     #shoptable th, #shoptable td {
@@ -162,10 +164,11 @@
 
 @section Scripts {
    
-    <script src="~/js/download_js/3_5_1_jquery.min.js"></script>
+    @* <script src="~/js/download_js/3_5_1_jquery.min.js"></script> *@
     <script type="text/javascript" src="~/js/download_js/1_10_24_jquery.dataTables.min.js"></script>
     <script src="~/js/download_js/sb_1_7_1_datatables.min.js"></script>
     <script src="~/js/download_js/5_2_3_bootstrap.bundle.min.js"></script>
+
     <script>
         let currentItemId;
 
@@ -178,7 +181,7 @@
         });
 
         $.fn.dataTable.ext.errMode = 'none';
-        var myTable = $('#myTable').dataTable({
+        var myTable = $('#myTable').DataTable({
             processing: false,
             serverSide: true,
             ordering : false,
@@ -229,34 +232,65 @@
                 { data: "itemPrice", name: "Initial price", autoWidth: true, className: "text-nowrap text-center" },
                 { data: "itemQuantity", name: "Quantity", autoWidth: true, className: "text-nowrap text-center" },
                 { data: "itemChangedPrice", name: "Final Price", autoWidth: true, className: "text-nowrap text-center" },
+                // {
+                //     data: null,
+                //     render: function (data, type, row) {
+                //         return `<a href="javascript:void(0)" class="text-danger " data-id="${row.itemId}"><i class="fas fa-trash-alt"></i> </a>`;
+                //     },
+                //     width: "100px",
+                //     className: "text-center"
+                // }
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return `<a href="javascript:void(0)" class="text-danger " data-id="${row.Id}"><i class="fas fa-trash-alt"></i> </a>`;
+                        return `
+                            <div class="d-flex justify-content-around">
+                                <!-- Edit -->
+                                <a href="/Item/UpdateItem?itemid=${row.itemId}" class="text-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <!-- View -->
+                                <a href="javascript:void(0)" class="text-info"
+                                    onclick="openPopup('${row.itemName}', '${row.itemPrice}', '${row.itemQuantity}', '${row.itemChangedPrice}', '${row.itemUpdatedDate}', '${row.itemImageName}')">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
+                                <!-- Delete -->
+                                <form id="deleteItemForm-${row.itemId}" method="post" action="/Item/DeleteItem">
+                                    <input type="hidden" name="itemid" value="${row.itemId}" />
+                                    <button type="button" class="btn btn-link p-0 text-danger" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#confirmDeleteModal" 
+                                            onclick="setItemId('${row.itemId}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>`;
                     },
-                    width: "100px",
-                    className: "text-center"
+                    width: "150px",
+                    className: "text-center text-nowrap"
                 }
+
             ],
             rowId: "Id",
             order: [1, 'asc']
         });
-        var oTable = $('#myTable').DataTable();
+        
+        function openPopup(itemName, itemPrice, itemQuantity, finalprice, updatedDate, itemImageName) {
+            $('#modalItemName').text(itemName);
+            $('#modalItemPrice').text(itemPrice + " MMK");
+            $('#modalItemQuantity').text(itemQuantity);
+            $('#modalFinalPrice').text(finalprice + " MMK");
+            $('#modalUpdatedDate').text(new Date(updatedDate).toLocaleString());
 
-            function openPopup(itemName, itemPrice, itemQuantity, finalprice, updatedDate, itemImageName) {
-                $('#modalItemName').text(itemName);
-                $('#modalItemPrice').text(itemPrice + " MMK");
-                $('#modalItemQuantity').text(itemQuantity);
-                $('#modalFinalPrice').text(finalprice + " MMK");
-                $('#modalUpdatedDate').text(new Date(updatedDate).toLocaleString());
+            $('#modalImage').attr('src', '/img/items/' + itemImageName);
 
-                $('#modalImage').attr('src', '/img/items/' + itemImageName);
-
-                $('#popup').modal('show');
-            }
-            function closePopup() {
-                $('#popup').modal('hide');
-            }
+            $('#popup').modal('show');
+        }
+        function closePopup() {
+            $('#popup').modal('hide');
+        }
     </script>
 }
 </body>

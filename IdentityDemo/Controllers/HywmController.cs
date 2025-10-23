@@ -4,7 +4,6 @@ using IdentityDemo.Models;
 using IdentityDemo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Near_foods.Controllers
@@ -28,7 +27,9 @@ namespace Near_foods.Controllers
             _context= context;
             _actionRepository= actionRepository;
         }
+
         public IActionResult HowToUse() => View();
+
         public async Task<IActionResult> Search(string searchQuery)
         {
             var userid = _userManager.GetUserId(User);
@@ -65,6 +66,7 @@ namespace Near_foods.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         public async Task<IActionResult> SingleShopView(int shopid)
         {
             var userid = _userManager.GetUserId(User);
@@ -102,6 +104,7 @@ namespace Near_foods.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         public async Task<IActionResult> Foods()
         {
             var userid = _userManager.GetUserId(User);
@@ -152,14 +155,17 @@ namespace Near_foods.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult SignUp() => View();
+
         public IActionResult Login() => View();
-        public IActionResult Landing_page() => View();
-        
+
+        public IActionResult Landing_page() => View();        
         
         public async Task<IActionResult> Landing_page2()
         {
@@ -194,7 +200,9 @@ namespace Near_foods.Controllers
                 await _actionRepository.Add(log);
             }
         }
+
         public IActionResult Otp() => View();
+
         public async Task<IActionResult> User_profile()
         {    
             var userid = _userManager.GetUserId(User);
